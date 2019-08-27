@@ -1,0 +1,161 @@
+{
+	"nodes": [
+		{
+			"component": "write",
+			"type": "iconNodeOutput",
+			"iconPath": "/jobTypes/数据存储@2x.png",
+			"name": "输出-1",
+			"help": "基于Snap.svg可以方便的进行动画操作",
+			"operatorGroup": "load",
+			"config": {
+				"name": "输出-1",
+				"srcDbName": "test",
+				"tableName": "user",
+				"isPartition": 0,
+				"dstFields": [
+					{
+						"id": 53217,
+						"name": "id",
+						"dataType": "string",
+						"detail": "id",
+						"srcField": "id"
+					}
+				]
+			},
+			"output": [
+				{
+					"id": 53217,
+					"name": "id",
+					"dataType": "string",
+					"detail": "id",
+					"srcField": "id"
+				}
+			],
+			"x": 265,
+			"y": 176,
+			"uuid": "04026110-c7df-11e9-8e77-b1834b6279dc"
+		},
+		{
+			"component": "read",
+			"type": "iconNodeInput",
+			"iconPath": "/jobTypes/数据引入@2x.png",
+			"name": "输入-2",
+			"help": "支持对节点的形状大小完全自定义",
+			"operatorGroup": "extract",
+			"config": {
+				"name": "输入-2",
+				"srcDbName": "test",
+				"isPartition": 0,
+				"dstFields": [
+					{
+						"id": 53217,
+						"name": "id",
+						"dataType": "string",
+						"detail": "id",
+						"srcField": "id"
+					},
+					{
+						"id": 53217,
+						"name": "name",
+						"dataType": "string",
+						"detail": "names",
+						"srcField": "name"
+					},
+					{
+						"id": 53217,
+						"name": "school",
+						"dataType": "string",
+						"detail": "school name",
+						"srcField": "school"
+					}
+				]
+			},
+			"output": [
+				{
+					"id": 53217,
+					"name": "id",
+					"dataType": "string",
+					"detail": "id",
+					"srcField": "id"
+				},
+				{
+					"id": 53217,
+					"name": "name",
+					"dataType": "string",
+					"detail": "names",
+					"srcField": "name"
+				},
+				{
+					"id": 53217,
+					"name": "school",
+					"dataType": "string",
+					"detail": "school name",
+					"srcField": "school"
+				}
+			],
+			"x": 272,
+			"y": 53,
+			"uuid": "0559b3b0-c7df-11e9-8e77-b1834b6279dc"
+		},
+		{
+			"component": "select",
+			"type": "iconNode",
+			"iconPath": "/jobTypes/数据转换@2x.png",
+			"name": "过程组件-3",
+			"help": "这是一个使用MMEditor的基础例子",
+			"operatorGroup": "transform",
+			"config": {
+				"name": "过程组件-3",
+				"dstFields": [
+					{
+						"id": 53217,
+						"name": "id",
+						"dataType": "string",
+						"detail": "id",
+						"srcField": "id"
+					},
+					{
+						"id": 53217,
+						"name": "name",
+						"dataType": "string",
+						"detail": "names",
+						"srcField": "name"
+					}
+				]
+			},
+			"output": [
+				{
+					"id": 53217,
+					"name": "id",
+					"dataType": "string",
+					"detail": "id",
+					"srcField": "id"
+				},
+				{
+					"id": 53217,
+					"name": "name",
+					"dataType": "string",
+					"detail": "names",
+					"srcField": "name"
+				}
+			],
+			"x": 265,
+			"y": 113,
+			"uuid": "06d1d4c0-c7df-11e9-8e77-b1834b6279dc"
+		}
+	],
+	"lines": [
+		{
+			"to": "06d1d4c0-c7df-11e9-8e77-b1834b6279dc",
+			"toPoint": "0",
+			"from": "0559b3b0-c7df-11e9-8e77-b1834b6279dc",
+			"fromPoint": 0
+		},
+		{
+			"to": "04026110-c7df-11e9-8e77-b1834b6279dc",
+			"toPoint": "0",
+			"from": "06d1d4c0-c7df-11e9-8e77-b1834b6279dc",
+			"fromPoint": 1
+		}
+	]
+}

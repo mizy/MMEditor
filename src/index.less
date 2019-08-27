@@ -1,0 +1,98 @@
+@keyframes dashing {
+	from {
+		stroke-dashoffset: 200;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+.mm-editor {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	> .mm-editor-svg {
+		cursor: grab;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		svg {
+			outline: none;
+		}
+		* {
+			transition: x, y, transform, cx, cy, width, stroke, height, fill 400ms;
+		}
+		.mm-node {
+			cursor: move;
+
+			.mm-node-shape {
+				&.active {
+					> .icon-node {
+						transition: stroke 400ms;
+						stroke: rgba(76, 121, 255, 1);
+					}
+				}
+				&.success {
+					.icon-node {
+						stroke: green;
+						fill: #fff;
+					}
+				}
+				&.error {
+					.icon-node {
+						stroke: red;
+					}
+				}
+				&.running {
+					.icon-node {
+						stroke: blue;
+					}
+				}
+			}
+		}
+		.mm-line {
+			&.active {
+				.mm-line-shape {
+					stroke-width: 5px;
+					opacity: 0.5;
+				}
+				.mm-line-arrow {
+					opacity: 0.5;
+				}
+			}
+			&:hover {
+				.mm-line-shape {
+					stroke-width: 5px;
+					opacity: 0.5;
+				}
+				.mm-line-arrow {
+					opacity: 0.5;
+				}
+			}
+			&.running {
+				.mm-line-shape {
+					stroke-dasharray: 10 !important;
+					animation: dashing 5s linear infinite;
+				}
+			}
+			.mm-line-shape {
+				cursor: pointer;
+			}
+			.mm-line-arrow {
+				cursor: crosshair;
+			}
+		}
+		.link-points-g {
+			.mm-link-points {
+				&:hover {
+					fill: #08c;
+					cursor: crosshair;
+				}
+			}
+		}
+	}
+	> .mm-editor-html {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+	}
+}
