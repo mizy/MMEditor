@@ -120,7 +120,7 @@ class Line {
 	 * 删除线
 	 * @param {*} uuid
 	 */
-	deleteLine(data, ifEvent, byNode) {
+	deleteLine(data, notEvent, byNode) {
 		let uuid = data;
 		if (data.data) {
 			uuid = data.data.uuid;
@@ -133,7 +133,7 @@ class Line {
 		const id = this.getLineId(line.data);
 		nodes[from] && nodes[from].toLines.delete(id);
 		nodes[to] && nodes[to].fromLines.delete(id);
-		!ifEvent &&
+		!notEvent &&
 			// 是否由删除节点触发的线删除操作
 			this.graph.fire("line:remove", {
 				line,
