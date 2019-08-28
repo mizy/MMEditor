@@ -11,8 +11,10 @@ allComponents.keys().forEach(item => {
 	const refresh = each.refresh;
 	const refreshBroadcast = each.refreshBroadcast;
 	// const makeSQL = each.makeSQL;
-	let name = component.WrappedComponent ? component.WrappedComponent.name : component.name;
-	name = name.toLowerCase();
+	const name = item
+		.replace(/\.*\/index.js/, "")
+		.replace("./", "")
+		.toLowerCase();
 	Components[name] = component;
 	refreshs[name] = refresh;
 	refreshBroadcasts[name] = refreshBroadcast;
