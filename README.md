@@ -11,6 +11,8 @@ npm run start
 
 # api
 
+![](https://raw.githubusercontent.com/mizy/MMEditor/master/api.svg)
+
 ............................
 
 # MMEditor
