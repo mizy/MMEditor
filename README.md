@@ -1,6 +1,6 @@
 # flow chart editor
 
-![](https://raw.githubusercontent.com/mizy/MMEditor/master/public/screenshot.png)
+![](https://raw.githubusercontent.com/mizy/MMEditor/master/snapshot.png)
 
 # run demo
 

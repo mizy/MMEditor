@@ -1,10 +1,11 @@
 {
 	"name": "mmeditor",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"description": "svg flow editor",
 	"main": "./dist/MMEditor.js",
 	"scripts": {
 		"start": "webpack-dev-server",
+		"demo:build": "webpack -p --config webpack.config.js",
 		"build": "webpack --config webpack.config.build.js"
 	},
 	"repository": {
@@ -16,6 +17,13 @@
 		"flow",
 		"editor"
 	],
+	"files": [
+		"demo"
+	],
+	"td": {
+		"type": "block",
+		"preview": true
+	},
 	"dependencies": {
 		"babel-plugin-transform-remove-console": "^6.9.4",
 		"babel-runtime": "^6.9.2",

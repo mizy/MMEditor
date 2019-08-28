@@ -1,6 +1,6 @@
 import React, { Fragment, PureComponent } from "react";
 import "./index.less";
-import MMEditor from "../src/MMEditor";
+import MMEditor from "../dist/MMEditor"; //import MMEditor from "MMEditor";
 import LeftBar from "./Content/LeftBar";
 import RightBar from "./Content/RightBar";
 import TopBar from "./Content/TopBar";
