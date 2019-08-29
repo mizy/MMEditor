@@ -25,6 +25,12 @@
 			cursor: move;
 
 			.mm-node-shape {
+				&:hover {
+					> .icon-node {
+						stroke: #4c79ff;
+						fill-opacity: 0.2;
+					}
+				}
 				&.active {
 					> .icon-node {
 						transition: stroke 400ms;
@@ -44,7 +50,7 @@
 				}
 				&.running {
 					.icon-node {
-						stroke: blue;
+						stroke: #4c79ff;
 					}
 				}
 			}
@@ -70,7 +76,7 @@
 			}
 			&.running {
 				.mm-line-shape {
-					stroke-dasharray: 10 !important;
+					stroke-dasharray: 5 !important;
 					animation: dashing 5s linear infinite;
 				}
 			}
@@ -84,7 +90,7 @@
 		.link-points-g {
 			.mm-link-points {
 				&:hover {
-					fill: #08c;
+					fill: #4c79ff;
 					cursor: crosshair;
 				}
 			}

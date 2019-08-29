@@ -253,7 +253,7 @@ class Line {
 					display: "none"
 				});
 				shape.attr({
-					strokeDasharray: "10 10"
+					strokeDasharray: "5 5"
 				});
 				this.graph.addLinkHoverEvent();
 				data.status = "active";
