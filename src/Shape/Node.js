@@ -48,7 +48,9 @@ class Node {
 	}
 
 	addNode = (data = {}) => {
-		data.uuid = uuid();
+		if(typeof data.uuid==="undefined"){
+			data.uuid = uuid();
+		}
 		const node = this.renderNode(data);
 		this.graph.fire("node:change", { node });
 	};

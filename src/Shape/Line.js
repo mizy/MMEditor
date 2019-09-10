@@ -201,6 +201,7 @@ class Line {
 				},
 				this.tempLineData
 			);
+			if(this.lines[data.uuid])return;
 			if (this.shapes["default"].checkNewLine(data, this.graph.editor)) {
 				this.addLine(data);
 			}

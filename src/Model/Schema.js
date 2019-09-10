@@ -1,6 +1,10 @@
 import History from "./History";
 export default class Schema {
 	constructor(editor) {
+		this.data = {
+			nodesMap:[],
+			linesMap:[]
+		}
 		this.editor = editor;
 		this.history = new History(this);
 		this.listenEvents();

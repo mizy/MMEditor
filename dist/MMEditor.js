@@ -5135,7 +5135,7 @@ exports = module.exports = __webpack_require__(201)(false);
 
 
 // module
-exports.push([module.i, "@keyframes dashing {\n  from {\n    stroke-dashoffset: 200;\n  }\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.mm-editor {\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n.mm-editor > .mm-editor-svg {\n  cursor: grab;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor > .mm-editor-svg svg {\n  outline: none;\n}\n.mm-editor > .mm-editor-svg * {\n  transition: x, y, transform, cx, cy, width, stroke, height, fill 400ms;\n}\n.mm-editor > .mm-editor-svg .mm-node {\n  cursor: move;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:hover > .icon-node {\n  stroke: #4c79ff;\n  fill-opacity: 0.2 !important;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.active > .icon-node {\n  transition: stroke 400ms;\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.success .icon-node {\n  stroke: green;\n  fill: #fff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.error .icon-node {\n  stroke: red;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.running .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.running .mm-line-shape {\n  stroke-dasharray: 5 !important;\n  animation: dashing 5s linear infinite;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-shape {\n  cursor: pointer;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-arrow {\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points:hover {\n  fill: #4c79ff;\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-html {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n", ""]);
+exports.push([module.i, "@keyframes dashing {\n  from {\n    stroke-dashoffset: 200;\n  }\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.mm-editor {\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n.mm-editor > .mm-editor-svg {\n  cursor: grab;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor > .mm-editor-svg svg {\n  outline: none;\n}\n.mm-editor > .mm-editor-svg * {\n  transition: x, y, transform, cx, cy, width, stroke, height, fill 400ms;\n}\n.mm-editor > .mm-editor-svg .mm-node {\n  cursor: move;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:hover > .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.active > .icon-node {\n  transition: stroke 400ms;\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.success .icon-node {\n  stroke: green;\n  fill: #fff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.error .icon-node {\n  stroke: red;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.running .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.running .mm-line-shape {\n  stroke-dasharray: 5 !important;\n  animation: dashing 5s linear infinite;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-shape {\n  cursor: pointer;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-arrow {\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points:hover {\n  fill: #4c79ff;\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-html {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n", ""]);
 
 // exports
 
@@ -5918,7 +5918,10 @@ function () {
 
     this.addNode = function () {
       var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      data.uuid = v1_default()();
+
+      if (typeof data.uuid === "undefined") {
+        data.uuid = v1_default()();
+      }
 
       var node = _this.renderNode(data);
 
@@ -6443,6 +6446,7 @@ function () {
           to: toNodeId,
           toPoint: toPoint
         }, _this.tempLineData);
+        if (_this.lines[data.uuid]) return;
 
         if (_this.shapes["default"].checkNewLine(data, _this.graph.editor)) {
           _this.addLine(data);
@@ -16758,6 +16762,10 @@ function () {
   function Schema(editor) {
     classCallCheck_default()(this, Schema);
 
+    this.data = {
+      nodesMap: [],
+      linesMap: []
+    };
     this.editor = editor;
     this.history = new Model_History(this);
     this.listenEvents();
