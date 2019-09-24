@@ -16666,10 +16666,31 @@ function (_Event) {
   }
 
   createClass_default()(Controller, [{
+    key: "autoFit",
+    value: function autoFit() {
+      var width = this.editor.dom.node.clientWidth;
+      var height = this.editor.dom.node.clientHeight;
+      var bbox = this.paper.getBBox();
+      var ratio = 1;
+
+      if (bbox.width > width) {
+        ratio = 2 * bbox.width / width;
+      }
+
+      var svgWidth = bbox.width / ratio;
+      var svgHeight = bbox.height / ratio;
+      var matrix = Snap.matrix();
+      matrix.translate((width - svgWidth) / 2 - bbox.x, (height - svgHeight) / 2 - bbox.y);
+      matrix.scale(1 / ratio, 1 / ratio);
+      var transformString = matrix.toTransformString();
+      this.paper.transform(transformString);
+    }
+  }, {
     key: "listenEvents",
     value: function listenEvents() {
       this.svg.mousedown(this.panStart);
       this.svg.mouseup(this.panStop);
+      this.svg.mouseout(this.panStop);
       this.svg.node.addEventListener("wheel", this.onWheel);
     }
   }, {
@@ -16687,6 +16708,11 @@ function (_Event) {
     key: "disablePan",
     value: function disablePan() {
       this.svg.unmousedown(this.panStart);
+    }
+  }, {
+    key: "pan",
+    value: function pan(x, y) {
+      this.paper.transform("translate(".concat(x, "px,").concat(y, "px)"));
     }
   }]);
 

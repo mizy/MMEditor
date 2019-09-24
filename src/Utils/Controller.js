@@ -9,9 +9,27 @@ export default class Controller extends Event {
 		this.listenEvents();
 	}
 
+	autoFit() {
+		const width = this.editor.dom.node.clientWidth;
+		const height = this.editor.dom.node.clientHeight;
+		const bbox = this.paper.getBBox();
+		let ratio = 1;
+		if (bbox.width > width) {
+			ratio = (2 * bbox.width) / width;
+		}
+		let svgWidth = bbox.width / ratio;
+		let svgHeight = bbox.height / ratio;
+		const matrix = Snap.matrix();
+		matrix.translate((width - svgWidth) / 2 - bbox.x, (height - svgHeight) / 2 - bbox.y);
+		matrix.scale(1 / ratio, 1 / ratio);
+		const transformString = matrix.toTransformString();
+		this.paper.transform(transformString);
+	}
+
 	listenEvents() {
 		this.svg.mousedown(this.panStart);
 		this.svg.mouseup(this.panStop);
+		this.svg.mouseout(this.panStop);
 		this.svg.node.addEventListener("wheel", this.onWheel);
 	}
 
@@ -26,6 +44,10 @@ export default class Controller extends Event {
 
 	disablePan() {
 		this.svg.unmousedown(this.panStart);
+	}
+
+	pan(x, y) {
+		this.paper.transform(`translate(${x}px,${y}px)`);
 	}
 
 	onWheel = e => {
