@@ -1,6 +1,6 @@
 # MMEditor
 * 基于Snap.svg绘图库完成的流程图框架，依赖少，开箱即用，提供dom接口方便对dom进行各种状态操作，demo 提供一个基础的数据流程demo 和 基础的流程项目 设计框架
-* a flowchart liberary with Snap.svg , 
+* 详情DEMO见https://mizy.github.io/MMEditor/index.html 
 
 # Run demo
 
