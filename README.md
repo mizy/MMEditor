@@ -5,7 +5,9 @@
 # demo
 
 [基础demo](https://mizy.github.io/MMEditor/dist/basic.html)
-[流程框架]](https://mizy.github.io/MMEditor/dist/index.html)
+
+[流程框架](https://mizy.github.io/MMEditor/dist/index.html)
+
 ![](https://raw.githubusercontent.com/mizy/MMEditor/master/snapshot.png)
 
 # 安装
