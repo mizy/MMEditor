@@ -87,7 +87,7 @@ npm i MMEditor --save
 
 # Documention
 
-![doc](https://mizy.github.io/MMEditor/doc/index.html)
+[doc](https://mizy.github.io/MMEditor/doc/index.html)
 
 
 # Test
