@@ -1,5 +1,12 @@
-export default {
+/**
+ * @interface
+ */
+const IconNode = {
 	linkPoints: [{ x: 0.5, y: 0 }, { x: 0.5, y: 1 }],
+	/**
+	 * @param  {} data
+	 * @param  {} snapPaper
+	 */
 	render: (data, snapPaper) => {
 		const node = snapPaper.rect(0, 0, 180, 32);
 		const text = snapPaper.text(40, 21, data.name);
@@ -13,7 +20,11 @@ export default {
 		});
 		return snapPaper.group(node, text, icon);
 	},
-
+	/**
+	 * @param  {} node
+	 * @param  {} linkPoint
+	 * @param  {} circle
+	 */
 	renderLinkPoint: (node, linkPoint, circle) => {
 		circle = circle || node.paper.circle(0, 0, 5, 5);
 		const box = node.shape.getBBox();
@@ -38,7 +49,10 @@ export default {
 		};
 		return circle;
 	},
-
+	/**
+	 * @param  {} node
+	 * @param  {} linkPoint
+	 */
 	updateLinkPoint: (node, linkPoint) => {
 		const { local } = linkPoint;
 		const x = local.x + node.data.x;
@@ -51,3 +65,4 @@ export default {
 		linkPoint.y = y;
 	}
 };
+export default IconNode;

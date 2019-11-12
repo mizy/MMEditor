@@ -4,6 +4,11 @@ import Event from "./Utils/Event";
 import Controller from "./Utils/Controller";
 import Schema from "./Model/Schema";
 import "./index.less";
+
+/**
+ * @class 
+ * @extends Event
+ */
 class MMEditor extends Event {
 	constructor(config) {
 		super();
@@ -28,6 +33,9 @@ class MMEditor extends Event {
 		return Snap(dom);
 	}
 
+	/**
+	 * 重新布局
+	 */
 	resize() {
 		const { width, height } = this.config;
 		this.svg.attr({
@@ -36,6 +44,9 @@ class MMEditor extends Event {
 		});
 	}
 
+	/**
+	 * 销毁函数
+	 */
 	destroy() {
 		this.clearGraph();
 		this.graph.clear();
@@ -48,11 +59,17 @@ class MMEditor extends Event {
 		this.schema = null;
 	}
 
+	/**
+	 * 重绘 
+	 */
 	repaint() {
 		this.clearGraph();
 		this.graph.render(this.schema.data);
 	}
 
+	/**
+	 * 清空画布
+	 */
 	clearGraph() {
 		this.graph.line.clear();
 		this.graph.node.clear();

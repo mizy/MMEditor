@@ -1,5 +1,12 @@
-export default {
+/**
+ * @interface
+ */
+const DefaultNode = {
 	linkPoints: [{ x: 0.5, y: 0 }, { x: 0.5, y: 1 }],
+
+	/**
+	 * 默认渲染函数 data,snapPaper
+	 */
 	render: (data, snapPaper) => {
 		const node = snapPaper.rect(0, 0, 100, 40);
 		const text = snapPaper.text(20, 25, data.name);
@@ -11,6 +18,10 @@ export default {
 		});
 		return snapPaper.group(node, text);
 	},
+
+	/**
+	 * 渲染连接点 (node, linkPoint, circle)
+	 */
 	renderLinkPoint: (node, linkPoint, circle) => {
 		circle = circle || node.paper.circle(0, 0, 5, 5);
 		const box = node.shape.getBBox();
@@ -36,6 +47,9 @@ export default {
 		return circle;
 	},
 
+	/**
+	 * 更新渲染点 (node, linkPoint)
+	 */
 	updateLinkPoint: (node, linkPoint) => {
 		const { local } = linkPoint;
 		const x = local.x + node.data.x;
@@ -48,3 +62,4 @@ export default {
 		linkPoint.y = y;
 	}
 };
+export default DefaultNode;

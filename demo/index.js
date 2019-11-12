@@ -51,7 +51,7 @@ class Editor extends PureComponent {
 				node: { nodes },
 				line: { lines }
 			}
-		} = editor;
+		} = this.editor;
 		node.fromLines.forEach(key => {
 			const fromId = lines[key].data.from;
 			fromIds.push(fromId);
