@@ -1,6 +1,7 @@
 # MMEditor
 * 基于Snap.svg绘图库完成的流程图框架，依赖少，开箱即用，提供dom接口方便对dom进行各种状态操作，demo 提供一个基础的数据流程demo 和 基础的流程项目 设计框架
 * flow editor lib with snap.svg
+* ![](https://mizy.github.io/MMEditor/snapshot.png)
 
 # Demo
 
@@ -8,7 +9,6 @@
 
 [flow demo](https://mizy.github.io/MMEditor/dist/index.html)
 
-![](https://raw.githubusercontent.com/mizy/MMEditor/master/snapshot.png)
 
 # Install
 ```sh
@@ -98,6 +98,6 @@ npm run start
 
 # API
 
-![](https://raw.githubusercontent.com/mizy/MMEditor/master/MMEditor.png)
+![](https://mizy.github.io/MMEditor/MMEditor.png)
 详情见[脑图 API](http://naotu.baidu.com/file/1dd5c0ff16911b44ca80ab25424908d0?token=b0b597b3b04dedb2)
  
