@@ -5776,7 +5776,11 @@ var es6_function_name = __webpack_require__(83);
 
 // CONCATENATED MODULE: ./src/Shape/Nodes/DefaultNodes.js
 
-/* harmony default export */ var DefaultNodes = ({
+
+/**
+ * @interface
+ */
+var DefaultNode = {
   linkPoints: [{
     x: 0.5,
     y: 0
@@ -5784,6 +5788,10 @@ var es6_function_name = __webpack_require__(83);
     x: 0.5,
     y: 1
   }],
+
+  /**
+   * 默认渲染函数 data,snapPaper
+   */
   render: function render(data, snapPaper) {
     var node = snapPaper.rect(0, 0, 100, 40);
     var text = snapPaper.text(20, 25, data.name);
@@ -5795,6 +5803,10 @@ var es6_function_name = __webpack_require__(83);
     });
     return snapPaper.group(node, text);
   },
+
+  /**
+   * 渲染连接点 (node, linkPoint, circle)
+   */
   renderLinkPoint: function renderLinkPoint(node, linkPoint, circle) {
     circle = circle || node.paper.circle(0, 0, 5, 5);
     var box = node.shape.getBBox();
@@ -5819,6 +5831,10 @@ var es6_function_name = __webpack_require__(83);
     };
     return circle;
   },
+
+  /**
+   * 更新渲染点 (node, linkPoint)
+   */
   updateLinkPoint: function updateLinkPoint(node, linkPoint) {
     var local = linkPoint.local;
     var x = local.x + node.data.x;
@@ -5830,10 +5846,15 @@ var es6_function_name = __webpack_require__(83);
     linkPoint.x = x;
     linkPoint.y = y;
   }
-});
+};
+/* harmony default export */ var DefaultNodes = (DefaultNode);
 // CONCATENATED MODULE: ./src/Shape/Nodes/IconNode.js
 
-/* harmony default export */ var IconNode = ({
+
+/**
+ * @interface
+ */
+var IconNode = {
   linkPoints: [{
     x: 0.5,
     y: 0
@@ -5841,6 +5862,11 @@ var es6_function_name = __webpack_require__(83);
     x: 0.5,
     y: 1
   }],
+
+  /**
+   * @param  {} data
+   * @param  {} snapPaper
+   */
   render: function render(data, snapPaper) {
     var node = snapPaper.rect(0, 0, 180, 32);
     var text = snapPaper.text(40, 21, data.name);
@@ -5854,6 +5880,12 @@ var es6_function_name = __webpack_require__(83);
     });
     return snapPaper.group(node, text, icon);
   },
+
+  /**
+   * @param  {} node
+   * @param  {} linkPoint
+   * @param  {} circle
+   */
   renderLinkPoint: function renderLinkPoint(node, linkPoint, circle) {
     circle = circle || node.paper.circle(0, 0, 5, 5);
     var box = node.shape.getBBox();
@@ -5878,6 +5910,11 @@ var es6_function_name = __webpack_require__(83);
     };
     return circle;
   },
+
+  /**
+   * @param  {} node
+   * @param  {} linkPoint
+   */
   updateLinkPoint: function updateLinkPoint(node, linkPoint) {
     var local = linkPoint.local;
     var x = local.x + node.data.x;
@@ -5889,7 +5926,8 @@ var es6_function_name = __webpack_require__(83);
     linkPoint.x = x;
     linkPoint.y = y;
   }
-});
+};
+/* harmony default export */ var Nodes_IconNode = (IconNode);
 // CONCATENATED MODULE: ./src/Shape/Node.js
 
 
@@ -5907,6 +5945,9 @@ var es6_function_name = __webpack_require__(83);
 
 
 
+/**
+ * @class
+ */
 
 var Node_Node =
 /*#__PURE__*/
@@ -5972,7 +6013,7 @@ function () {
     this.listenEvent();
     this.shapes = {
       "default": DefaultNodes,
-      iconNode: IconNode
+      iconNode: Nodes_IconNode
     };
   }
 
@@ -6017,6 +6058,11 @@ function () {
         _this3.renderNode(data[key]);
       });
     }
+    /**
+     * 添加节点
+     * @param {object} data  
+     */
+
   }, {
     key: "renderNode",
 
@@ -6199,6 +6245,10 @@ function () {
         });
       });
     }
+    /**
+     * 
+     */
+
   }, {
     key: "unActiveNode",
     value: function unActiveNode() {
@@ -6217,6 +6267,11 @@ function () {
       });
       this.activeNode = null;
     }
+    /**
+     * 
+     * @param {*} node 
+     */
+
   }, {
     key: "setActiveNode",
     value: function setActiveNode(node) {
@@ -6231,6 +6286,10 @@ function () {
         });
       });
     }
+    /**
+     * 
+     */
+
   }, {
     key: "clear",
     value: function clear() {
@@ -6247,9 +6306,15 @@ function () {
 
 /* harmony default export */ var Shape_Node = (Node_Node);
 // CONCATENATED MODULE: ./src/Shape/Lines/Line.js
-/* harmony default export */ var Lines_Line = ({
+/**
+ * graph.line.shapes
+ * @interface
+ */
+var DefaultLine = {
   /**
-   * 渲染线
+   * @param  {} data
+   * @param  {} allNodesMap
+   * @param  {} line
    */
   render: function render(data, allNodesMap, line) {
     var from = data.from,
@@ -6289,7 +6354,12 @@ function () {
   },
 
   /**
-   * 渲染路径
+   * @param  {} fromX
+   * @param  {} fromY
+   * @param  {} toX
+   * @param  {} toY
+   * @param  {} fromPointNode
+   * @param  {} toPointNode
    */
   makePath: function makePath(fromX, fromY, toX, toY, fromPointNode, toPointNode) {
     var edgeX = fromX;
@@ -6330,7 +6400,9 @@ function () {
   },
 
   /**
-   * 渲染箭头
+   * @param  {} data
+   * @param  {} allNodesMap
+   * @param  {} arrow
    */
   renderArrow: function renderArrow(data, allNodesMap, arrow) {
     var to = data.to,
@@ -6368,7 +6440,7 @@ function () {
   },
 
   /**
-   * 检查是否生成新线
+   * @param  {} data
    */
   checkNewLine: function checkNewLine(data) {
     var from = data.from,
@@ -6380,7 +6452,8 @@ function () {
 
     return true;
   }
-});
+};
+/* harmony default export */ var Lines_Line = (DefaultLine);
 // CONCATENATED MODULE: ./src/Shape/Line.js
 
 
@@ -6393,6 +6466,9 @@ function () {
 
 
 
+/**
+ * @class
+ */
 
 var Line_Line =
 /*#__PURE__*/
@@ -6537,6 +6613,11 @@ function () {
         _this2.unActiveLine();
       });
     }
+    /**
+     * 添加线
+     * @param {*} data 
+     */
+
   }, {
     key: "addLine",
     value: function addLine(data) {
@@ -6687,12 +6768,18 @@ function () {
     key: "registeLine",
 
     /**
-     * 注册节点
+     * 注册线
+     * @param {*} data 
      */
     value: function registeLine(data) {
       var type = data.type;
       this.shapes[type] = Object.assign({}, this.shapes["default"], data);
     }
+    /**
+     * 
+     * @param {*} lines 
+     */
+
   }, {
     key: "render",
     value: function render() {
@@ -6705,6 +6792,12 @@ function () {
         _this4.renderLine(item);
       });
     }
+    /**
+     * 
+     * @param {*} nodes 
+     * @param {*} g 
+     */
+
   }, {
     key: "addToNodes",
     value: function addToNodes(nodes, g) {
@@ -6775,6 +6868,11 @@ function () {
         });
       });
     }
+    /**
+     * 
+     * @param {*} line 
+     */
+
   }, {
     key: "setActiveLine",
     value: function setActiveLine(line) {
@@ -6782,6 +6880,10 @@ function () {
       this.activeLine = line;
       this.activeLine.addClass("active");
     }
+    /**
+     * 取消激活
+     */
+
   }, {
     key: "unActiveLine",
     value: function unActiveLine() {
@@ -6797,6 +6899,10 @@ function () {
 
   }, {
     key: "clear",
+
+    /**
+     * 
+     */
     value: function clear() {
       var lines = this.lines;
 
@@ -6820,6 +6926,9 @@ var es6_array_sort = __webpack_require__(184);
 
 
 
+/**
+ * @class
+ */
 var Event_Event =
 /*#__PURE__*/
 function () {
@@ -6832,6 +6941,13 @@ function () {
 
   createClass_default()(Event, [{
     key: "on",
+
+    /**
+     * 箭头
+     * @param {*} event 
+     * @param {*} func 
+     * @param {*} index 
+     */
     value: function on(event, func, index) {
       if (!this.events[event]) {
         this.events[event] = [];
@@ -6847,6 +6963,12 @@ function () {
         return a.index > b.index;
       });
     }
+    /**
+     * 
+     * @param {*} event 
+     * @param {*} data 
+     */
+
   }, {
     key: "fire",
     value: function fire(event, data) {
@@ -6855,6 +6977,12 @@ function () {
         item.func(data);
       });
     }
+    /**
+     * 关闭绑定的事件
+     * @param {*} event 
+     * @param {*} offFunc 不传清空所有
+     */
+
   }, {
     key: "off",
     value: function off(event, offFunc) {
@@ -6862,6 +6990,10 @@ function () {
         return offFunc !== func;
       });
     }
+    /**
+     * 清空
+     */
+
   }, {
     key: "clear",
     value: function clear() {
@@ -6872,7 +7004,7 @@ function () {
   return Event;
 }();
 
-
+/* harmony default export */ var Utils_Event = (Event_Event);
 // CONCATENATED MODULE: ./src/Shape/Animation.js
 /* harmony default export */ var Shape_Animation = ({
   createRadialGradient: function createRadialGradient() {
@@ -6899,6 +7031,10 @@ function () {
 
 
 
+/**
+ * @class
+ * @extends Event
+ */
 
 var Graph_Graph =
 /*#__PURE__*/
@@ -7007,6 +7143,10 @@ function (_Event) {
     }
   }, {
     key: "offLinkHoverEvent",
+
+    /**
+     * 关闭线hover事件
+     */
     value: function offLinkHoverEvent() {
       var _this4 = this;
 
@@ -7016,6 +7156,11 @@ function (_Event) {
         point.unmouseout(_this4.onLinkPointOut);
       });
     }
+    /**
+     * 
+     * @param {*} data 
+     */
+
   }, {
     key: "render",
     value: function render(data) {
@@ -7023,6 +7168,10 @@ function (_Event) {
       this.node.render(data.nodesMap);
       this.line.render(data.linesMap);
     }
+    /**
+     * 
+     */
+
   }, {
     key: "clearGraph",
     value: function clearGraph() {
@@ -7032,7 +7181,7 @@ function (_Event) {
   }]);
 
   return Graph;
-}(Event_Event);
+}(Utils_Event);
 
 /* harmony default export */ var Shape_Graph = (Graph_Graph);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.number.constructor.js
@@ -16558,6 +16707,11 @@ snap_svg_Snap.mina = Snap_mina;
 
 
 
+/**
+ * 控制器
+ * @class
+ * @extends Event
+ */
 
 var Controller_Controller =
 /*#__PURE__*/
@@ -16658,12 +16812,21 @@ function (_Event) {
     _this.editor = editor;
     _this.paper = editor.paper;
     _this.svg = editor.svg;
+    /**
+     * 缩放比例系数
+     * @type {number}
+     */
+
     _this.scaleRatio = 0.01;
 
     _this.listenEvents();
 
     return _this;
   }
+  /**
+   * 自适应
+   */
+
 
   createClass_default()(Controller, [{
     key: "autoFit",
@@ -16699,11 +16862,19 @@ function (_Event) {
       this.svg.unmousedown(this.panStart);
       this.svg.node.removeEventListener("wheel", this.onWheel);
     }
+    /**
+     * 禁用滚轮缩放
+     */
+
   }, {
     key: "disableWheel",
     value: function disableWheel() {
       this.svg.node.removeEventListener("wheel", this.onWheel);
     }
+    /**
+     * 禁用鼠标移动
+     */
+
   }, {
     key: "disablePan",
     value: function disablePan() {
@@ -16717,9 +16888,9 @@ function (_Event) {
   }]);
 
   return Controller;
-}(Event_Event);
+}(Utils_Event);
 
-
+/* harmony default export */ var Utils_Controller = (Controller_Controller);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.string.trim.js
 var es6_string_trim = __webpack_require__(198);
 
@@ -16728,6 +16899,9 @@ var es6_string_trim = __webpack_require__(198);
 
 
 
+/**
+ * @class
+ */
 var History_History =
 /*#__PURE__*/
 function () {
@@ -16738,6 +16912,10 @@ function () {
     this.schemaList = [];
     this.schema = schema;
   }
+  /**
+   * @param  {} data
+   */
+
 
   createClass_default()(History, [{
     key: "push",
@@ -16747,18 +16925,24 @@ function () {
       this.index++;
       this.schema.editor.fire("change");
     }
+    /**
+     * @param  {} index
+     * @param  {} data
+     */
+
   }, {
     key: "replace",
     value: function replace(index, data) {
       this.schemaList[this.index + index] = data;
-    } // 重新设置shema
+    } // 重做
 
   }, {
     key: "redo",
     value: function redo() {
       this.schema.data = JSON.parse(this.schemaList[++this.index]);
       this.schema.editor.fire("change");
-    }
+    } // 撤销
+
   }, {
     key: "undo",
     value: function undo() {
@@ -16781,6 +16965,9 @@ function () {
 
 
 
+/**
+ * @class
+ */
 
 var Schema_Schema =
 /*#__PURE__*/
@@ -16793,6 +16980,10 @@ function () {
       linesMap: []
     };
     this.editor = editor;
+    /**
+     * @property history
+     */
+
     this.history = new Model_History(this);
     this.listenEvents();
   }
@@ -16842,7 +17033,7 @@ function () {
       }, 9999);
     }
     /**
-     * 重新设置shema
+     * @param  {} data
      */
 
   }, {
@@ -16854,6 +17045,10 @@ function () {
       this.renderData(data);
       this.editor.fire("load", data);
     }
+    /**
+     * @param  {} data
+     */
+
   }, {
     key: "setInitData",
     value: function setInitData(data) {
@@ -16905,6 +17100,10 @@ function () {
     value: function renderData() {
       this.editor.graph.render(this.data);
     }
+    /**
+     * 重做
+     */
+
   }, {
     key: "redo",
     value: function redo() {
@@ -16913,6 +17112,10 @@ function () {
       this.editor.fire("redo");
       this.renderData(this.data);
     }
+    /**
+     * 撤销
+     */
+
   }, {
     key: "undo",
     value: function undo() {
@@ -16945,17 +17148,17 @@ function () {
   return Schema;
 }();
 
-
+/* harmony default export */ var Model_Schema = (Schema_Schema);
 // EXTERNAL MODULE: ./src/index.less
 var src = __webpack_require__(199);
 
 // CONCATENATED MODULE: ./src/MMEditor.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MMEditor", function() { return MMEditor_MMEditor; });
-/* concated harmony reexport Event */__webpack_require__.d(__webpack_exports__, "Event", function() { return Event_Event; });
-/* concated harmony reexport Schema */__webpack_require__.d(__webpack_exports__, "Schema", function() { return Schema_Schema; });
+/* concated harmony reexport Event */__webpack_require__.d(__webpack_exports__, "Event", function() { return Utils_Event; });
+/* concated harmony reexport Schema */__webpack_require__.d(__webpack_exports__, "Schema", function() { return Model_Schema; });
 /* concated harmony reexport Snap */__webpack_require__.d(__webpack_exports__, "Snap", function() { return snap_svg; });
 /* concated harmony reexport Graph */__webpack_require__.d(__webpack_exports__, "Graph", function() { return Shape_Graph; });
-/* concated harmony reexport Controller */__webpack_require__.d(__webpack_exports__, "Controller", function() { return Controller_Controller; });
+/* concated harmony reexport Controller */__webpack_require__.d(__webpack_exports__, "Controller", function() { return Utils_Controller; });
 /* concated harmony reexport eve */__webpack_require__.d(__webpack_exports__, "eve", function() { return eve_default.a; });
 /* concated harmony reexport mina */__webpack_require__.d(__webpack_exports__, "mina", function() { return Snap_mina; });
 
@@ -16970,6 +17173,10 @@ var src = __webpack_require__(199);
 
 
 
+/**
+ * @class 
+ * @extends Event
+ */
 
 var MMEditor_MMEditor =
 /*#__PURE__*/
@@ -16993,8 +17200,8 @@ function (_Event) {
     _this.resize();
 
     _this.graph = new Shape_Graph(assertThisInitialized_default()(_this));
-    _this.controller = new Controller_Controller(assertThisInitialized_default()(_this));
-    _this.schema = new Schema_Schema(assertThisInitialized_default()(_this));
+    _this.controller = new Utils_Controller(assertThisInitialized_default()(_this));
+    _this.schema = new Model_Schema(assertThisInitialized_default()(_this));
     return _this;
   }
 
@@ -17004,6 +17211,10 @@ function (_Event) {
       dom.innerHTML = "<div class=\"mm-editor\" >\n\t\t\t\t<div class=\"mm-editor-svg\" >\n\t\t\t\t\t<svg  />\n\t\t\t\t</div>\n\t\t\t</div>";
       return snap_svg(dom);
     }
+    /**
+     * 重新布局
+     */
+
   }, {
     key: "resize",
     value: function resize() {
@@ -17015,6 +17226,10 @@ function (_Event) {
         height: height || "100%"
       });
     }
+    /**
+     * 销毁函数
+     */
+
   }, {
     key: "destroy",
     value: function destroy() {
@@ -17028,12 +17243,20 @@ function (_Event) {
       this.controller = null;
       this.schema = null;
     }
+    /**
+     * 重绘 
+     */
+
   }, {
     key: "repaint",
     value: function repaint() {
       this.clearGraph();
       this.graph.render(this.schema.data);
     }
+    /**
+     * 清空画布
+     */
+
   }, {
     key: "clearGraph",
     value: function clearGraph() {
@@ -17043,13 +17266,13 @@ function (_Event) {
   }]);
 
   return MMEditor;
-}(Event_Event);
+}(Utils_Event);
 
-MMEditor_MMEditor.Event = Event_Event;
-MMEditor_MMEditor.Schema = Schema_Schema;
+MMEditor_MMEditor.Event = Utils_Event;
+MMEditor_MMEditor.Schema = Model_Schema;
 MMEditor_MMEditor.Snap = snap_svg;
 MMEditor_MMEditor.Graph = Shape_Graph;
-MMEditor_MMEditor.Controller = Controller_Controller;
+MMEditor_MMEditor.Controller = Utils_Controller;
 /* harmony default export */ var src_MMEditor = __webpack_exports__["default"] = (MMEditor_MMEditor);
 
 
