@@ -2,6 +2,7 @@
  * @interface
  */
 const DefaultNode = {
+	adsorb: [20, 20],//磁吸的范围
 	linkPoints: [{ x: 0.5, y: 0 }, { x: 0.5, y: 1 }],
 
 	/**

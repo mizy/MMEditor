@@ -9,6 +9,7 @@ class Line {
 		this.paper = graph.editor.paper;
 		this.lines = [];
 		this.lineG = this.paper.g();
+		this.allLinkPointsXY = [];
 		this.shapes = {
 			default: DefaultLine,
 			tempLine: {
@@ -178,7 +179,7 @@ class Line {
 		} = g;
 		const line = this.lines[uuid];
 		if (hoverLinkPoint) {
-			const { toElement } = hoverLinkPoint;
+			const toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
 			const beforeData = Object.assign({}, line.data);
 			line.data.to = toElement.getAttribute("data-node-id");
 			line.data.toPoint = parseInt(toElement.getAttribute("data-index"), 10);
@@ -186,6 +187,7 @@ class Line {
 			nodes[to].fromLines.delete(uuid);
 			nodes[line.data.to].fromLines.add(uuid);
 			this.graph.fire("line:change", { line, type: "change", before: beforeData });
+			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass("hover")
 		}
 		this.updateLine(uuid);
 	};
@@ -193,10 +195,10 @@ class Line {
 	/**
 	 * 检查是否生成新线
 	 */
-	checkNewLine = () => {
+	checkNewLine = (e) => {
 		const { hoverLinkPoint } = this.graph;
 		if (hoverLinkPoint) {
-			const { toElement } = hoverLinkPoint;
+			const toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
 			const toNodeId = toElement.getAttribute("data-node-id");
 			const toPoint = toElement.getAttribute("data-index");
 			const { from, fromPoint = 0 } = this.tempLineData;
@@ -212,7 +214,10 @@ class Line {
 			if (this.shapes["default"].checkNewLine(data, this.graph.editor)) {
 				this.addLine(data);
 			}
+			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass("hover")
+			this.graph.hoverLinkPoint = undefined;
 		}
+
 	};
 
 	/**
@@ -256,8 +261,13 @@ class Line {
 		g.arrow.drag(
 			(dx, dy) => {
 				const { shape, data } = g;
-				const x = (g.startX || 0) + dx;
-				const y = (g.startY || 0) + dy;
+				let x = (g.startX || 0) + dx;
+				let y = (g.startY || 0) + dy;
+				// 计算磁吸坐标
+				const newXY = this.calcLinkPoint(x, y, data.type);
+				if (newXY) {
+					x = newXY[0]; y = newXY[1];
+				}
 				shape.attr({
 					d: `M${data.fromX} ${data.fromY}L${x} ${y}`
 				});
@@ -273,8 +283,10 @@ class Line {
 				shape.attr({
 					strokeDasharray: "5 5"
 				});
+				this.makeAdsorbPoints();
 				this.graph.addLinkHoverEvent();
 				data.status = "active";
+				this.graph.fire("line:drag");
 			},
 			() => {
 				const { arrow, shape } = g;
@@ -314,6 +326,35 @@ class Line {
 		this.activeLine = null;
 	}
 
+	//计算磁吸
+	calcLinkPoint = (x, y, type = 'default') => {
+		const { adsorb = [20, 20] } = this.graph.node.shapes[type];
+		const newXY = this.allLinkPointsXY.find(item => {
+			console.log(Math.abs(x - item[0]), Math.abs(y - item[1]))
+			if (Math.abs(x - item[0]) < adsorb[0] && Math.abs(y - item[1]) < adsorb[1]) {
+				this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass && this.graph.hoverLinkPoint.removeClass("hover");
+				this.graph.hoverLinkPoint = item[2];
+				item[2].addClass("hover");
+				return item;
+			}
+		})
+		if (!newXY) {
+			this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass("hover")
+		}
+		return newXY
+	}
+
+	// 生成磁吸
+	makeAdsorbPoints = () => {
+		const linkPoints = this.paper.selectAll(".mm-link-points");
+		this.allLinkPointsXY = [];
+		linkPoints.forEach(item => {
+			const x = parseInt(item.attr("cx"));
+			const y = parseInt(item.attr("cy"));
+			this.allLinkPointsXY.push([x, y, item])
+		})
+	}
+
 	/**
 	 * 节点的新增线逻辑
 	 */
@@ -325,8 +366,14 @@ class Line {
 				} = this;
 				const transform = this.paper.transform();
 				const info = transform.globalMatrix.split();
-				const x = (fromX || 0) + dx / info.scalex + 1;
-				const y = (fromY || 0) + dy / info.scalex - 1;
+				let x = (fromX || 0) + dx / info.scalex + 1;
+				let y = (fromY || 0) + dy / info.scalex - 1;
+
+				// 计算磁吸坐标
+				const newXY = this.calcLinkPoint(x, y, node.data.type);
+				if (newXY) {
+					x = newXY[0]; y = newXY[1];
+				}
 				this.shapes.tempLine.renderPath(
 					{
 						fromX,
@@ -344,12 +391,13 @@ class Line {
 					fromX: point.x,
 					fromY: point.y
 				};
+				this.makeAdsorbPoints();
 				this.graph.addLinkHoverEvent();
 				this.tempLine = this.shapes.tempLine.render(this.paper);
 				this.graph.fire("line:drag");
 			},
-			() => {
-				this.checkNewLine();
+			(e) => {
+				this.checkNewLine(e);
 				this.tempLine.remove();
 				this.graph.fire("line:drop");
 			}

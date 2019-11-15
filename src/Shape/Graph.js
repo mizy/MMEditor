@@ -80,7 +80,7 @@ class Graph extends Event {
 		this.hoverLinkPoint = ele;
 	};
 	onLinkPointOut = ele => {
-		this.hoverLinkPoint = null;
+		this.hoverLinkPoint = undefined;
 	};
 
 	/**
@@ -92,6 +92,7 @@ class Graph extends Event {
 			point.unmouseover(this.onLinkPointHover);
 			point.unmouseout(this.onLinkPointOut);
 		});
+		this.hoverLinkPoint = undefined;
 	}
 
 	/**
