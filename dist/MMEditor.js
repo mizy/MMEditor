@@ -6569,8 +6569,6 @@ function () {
           adsorb = _this$graph$node$shap === void 0 ? [20, 20] : _this$graph$node$shap;
 
       var newXY = _this.allLinkPointsXY.find(function (item) {
-        console.log(Math.abs(x - item[0]), Math.abs(y - item[1]));
-
         if (Math.abs(x - item[0]) < adsorb[0] && Math.abs(y - item[1]) < adsorb[1]) {
           _this.graph.hoverLinkPoint && _this.graph.hoverLinkPoint.removeClass && _this.graph.hoverLinkPoint.removeClass("hover");
           _this.graph.hoverLinkPoint = item[2];
@@ -17008,7 +17006,6 @@ function () {
   createClass_default()(History, [{
     key: "push",
     value: function push(data) {
-      console.log(this.index);
       this.schemaList.push(JSON.stringify(data).trim(" "));
       this.index++;
       this.schema.editor.fire("change");

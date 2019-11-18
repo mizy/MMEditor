@@ -14,7 +14,6 @@ class History {
 	 * @param  {} data
 	 */
 	push(data) {
-		console.log(this.index);
 		this.schemaList.push(JSON.stringify(data).trim(" "));
 		this.index++;
 		this.schema.editor.fire("change");

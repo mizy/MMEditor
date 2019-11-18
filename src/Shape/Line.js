@@ -330,7 +330,6 @@ class Line {
 	calcLinkPoint = (x, y, type = 'default') => {
 		const { adsorb = [20, 20] } = this.graph.node.shapes[type];
 		const newXY = this.allLinkPointsXY.find(item => {
-			console.log(Math.abs(x - item[0]), Math.abs(y - item[1]))
 			if (Math.abs(x - item[0]) < adsorb[0] && Math.abs(y - item[1]) < adsorb[1]) {
 				this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass && this.graph.hoverLinkPoint.removeClass("hover");
 				this.graph.hoverLinkPoint = item[2];
