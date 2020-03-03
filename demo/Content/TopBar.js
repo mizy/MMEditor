@@ -81,7 +81,8 @@ class TopBar extends PureComponent {
 		const newData = JSON.stringify(schema.data);
 		if (oldData !== newData) {
 			schema.history.push(JSON.parse(oldData));
-		}
+			this.props.editor.controller.autoFit();
+		};
 	};
 
 	run = () => {

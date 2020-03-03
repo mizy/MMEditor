@@ -14,7 +14,8 @@ module.exports = {
 	devServer: {
 		host: "0.0.0.0",
 		port: "7799",
-		open: "./index.html",
+		open: true,
+		openPage:"./index.html",
 		contentBase: "./public",
 		hot: true
 	},

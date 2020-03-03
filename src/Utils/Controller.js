@@ -32,7 +32,7 @@ class Controller extends Event {
 		let svgWidth = bbox.width / ratio;
 		let svgHeight = bbox.height / ratio;
 		const matrix = Snap.matrix();
-		matrix.translate((width - svgWidth) / 2 - bbox.x, (height - svgHeight) / 2 - bbox.y);
+		matrix.translate(width / 2 - bbox.x, height /2 - bbox.y);
 		matrix.scale(1 / ratio, 1 / ratio);
 		const transformString = matrix.toTransformString();
 		this.paper.transform(transformString);
