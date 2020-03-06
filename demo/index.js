@@ -73,6 +73,7 @@ class Editor extends PureComponent {
 		this.editor.graph.line.shapes["default"].checkNewLine = this.checkNewLine;
 		this.editor.schema.setInitData(testdata);
 		this.addEditorEvent();
+		window.mm = this.editor;
 	}
 
 	setData = data => {

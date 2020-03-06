@@ -15,6 +15,7 @@ class Controller extends Event {
 		 * @type {number}
 		 */
 		this.scaleRatio = 0.01;
+		this.scale = 1;
 		this.listenEvents();
 	}
 
@@ -25,28 +26,28 @@ class Controller extends Event {
 		const width = this.editor.dom.node.clientWidth;
 		const height = this.editor.dom.node.clientHeight;
 		const bbox = this.paper.getBBox();
-		let ratio = 1;
-		if (bbox.width > width) {
-			ratio = (2 * bbox.width) / width;
-		}
-		let svgWidth = bbox.width / ratio;
-		let svgHeight = bbox.height / ratio;
-		const matrix = Snap.matrix();
-		matrix.translate(width / 2 - bbox.x, height /2 - bbox.y);
-		matrix.scale(1 / ratio, 1 / ratio);
+		const transform = this.paper.transform();
+		const matrix = transform.localMatrix;
+		const { scalex } = matrix.split();
+		matrix.translate(((width - bbox.width) / 2 - bbox.x) / scalex, ((height - bbox.height) / 2 - bbox.y) / scalex);
 		const transformString = matrix.toTransformString();
+		this.paper.node.style.transition = 'transform 200ms ease-out';
 		this.paper.transform(transformString);
+		setTimeout(() => {
+			this.paper.node.style.transition = null;
+		}, 200)
 	}
 
 	listenEvents() {
 		this.svg.mousedown(this.panStart);
 		this.svg.mouseup(this.panStop);
-		this.svg.mouseout(this.panStop);
+		this.svg.node.addEventListener('mouseleave', this.panStop);
 		this.svg.node.addEventListener("wheel", this.onWheel);
 	}
 
 	clear() {
 		this.svg.unmousedown(this.panStart);
+		this.svg.node.removeEventListener('mouseleave', this.panStop);
 		this.svg.node.removeEventListener("wheel", this.onWheel);
 	}
 
@@ -63,18 +64,27 @@ class Controller extends Event {
 	disablePan() {
 		this.svg.unmousedown(this.panStart);
 	}
-
+	/**
+	 * 移动到指定位置
+	 * @param  {} x
+	 * @param  {} y
+	 */
 	pan(x, y) {
-		this.paper.transform(`translate(${x}px,${y}px)`);
+		const transform = this.paper.transform();
+		const { scalex } = transform.localMatrix.split();
+		transform.localMatrix.translate(x / scalex, y / scalex);
+		const transformString = transform.localMatrix.toTransformString();
+		this.paper.transform(transformString)
 	}
 
 	onWheel = e => {
 		e.preventDefault();
-		if (e.deltaY > 0) {
-			this.zoomIn(Math.abs(e.deltaY));
+		if (e.ctrlKey) {// 双指
+			this.zoom(e.deltaY, e.offsetX, e.offsetY)
 		} else {
-			this.zoomOut(Math.abs(e.deltaY));
+			this.pan(-e.deltaX, -e.deltaY)
 		}
+
 	};
 
 	panStart = ev => {
@@ -92,23 +102,16 @@ class Controller extends Event {
 		// this.svg.unmouseup(this.panStop);
 		this.dispatch("panEnd", { event: ev });
 	};
-
-	zoomIn = () => {
+	/**
+	 * 缩放
+	 * @param  {} delta zoom 缩放多少
+	 * @param  {} cx=0 zoom 缩放中心点x
+	 * @param  {} cy=0 zoom 缩放中心点y
+	 */
+	zoom = (delta, cx = 0, cy = 0) => {
 		const transform = this.paper.transform();
-		const scale = transform.localMatrix.split();
-		const { dx, dy, scalex } = scale;
-		let newScale = 1 + (1 / scalex) * this.scaleRatio;
-		transform.localMatrix.scale(newScale, newScale, dx, dy);
-		const transformString = transform.localMatrix.toTransformString();
-		this.paper.transform(transformString);
-	};
-
-	zoomOut = () => {
-		const transform = this.paper.transform();
-		const scale = transform.localMatrix.split();
-		const { dx, dy, scalex } = scale;
-		let newScale = 1 - Math.pow(scalex, 2) * this.scaleRatio;
-		transform.localMatrix.scale(newScale, newScale, dx, dy);
+		let newScale = (1 - delta * this.scaleRatio);
+		transform.localMatrix.scale(newScale, newScale, cx, cy);
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);
 	};
@@ -121,7 +124,8 @@ class Controller extends Event {
 
 		const deltaP = [p2.x - p1.x, p2.y - p1.y];
 		const transform = this.paper.transform();
-		transform.localMatrix.translate(-deltaP[0], -deltaP[1]);
+		const { scalex } = transform.localMatrix.split();
+		transform.localMatrix.translate(-deltaP[0] / scalex, -deltaP[1] / scalex);
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);
 		this.startPosition = p1;

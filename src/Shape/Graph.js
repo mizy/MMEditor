@@ -13,7 +13,6 @@ class Graph extends Event {
 		this.node = new Node(this);
 		this.line = new Line(this);
 		this.node.linkPointsG.before(this.line.lineG);
-		window.editor = editor;
 		this.animation = Animation;
 		this.listenEvents();
 	}
