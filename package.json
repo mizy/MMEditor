@@ -31,7 +31,6 @@
 		"babel-runtime": "^6.9.2",
 		"classnames": "^2.2.5",
 		"core-js": "^2.5.1",
-		"snapsvg": "^0.5.1",
 		"uuid": "^3.3.2"
 	},
 	"devDependencies": {
