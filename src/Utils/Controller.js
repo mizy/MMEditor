@@ -110,6 +110,7 @@ class Controller extends Event {
 	 */
 	zoom = (delta, cx = 0, cy = 0) => {
 		const transform = this.paper.transform();
+		const { dx, dy, scalex } = transform.localMatrix.split();
 		let newScale = (1 - delta * this.scaleRatio);
 		transform.localMatrix.scale(newScale, newScale, cx, cy);
 		const transformString = transform.localMatrix.toTransformString();
