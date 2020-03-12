@@ -147,6 +147,18 @@ class Editor extends PureComponent {
 		this.editor.graph.node.registeNode(
 			"iconNodeInput",
 			{
+				render: (data, snapPaper) => {
+					const node = snapPaper.circle(25, 25, 25);
+					const text = snapPaper.text(25, 50, data.name);
+					node.attr({
+						fill: "#ca808b",
+
+					});
+					text.attr({
+						fill: "#fff"
+					})
+					return snapPaper.group(node, text);
+				},
 				linkPoints: [{ x: 0.5, y: 1 }]
 			},
 			"iconNode"
