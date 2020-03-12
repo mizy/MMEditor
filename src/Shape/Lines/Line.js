@@ -58,33 +58,39 @@ const DefaultLine = {
 		let edgeY = fromY;
 		let endX = toX;
 		let endY = toY;
+		const arrowStartSpace = 1; // 顶部距离node节点的距离
+		const arrEndSpace = 8; // 地步距离node节点的距离
 		if (fromPointNode.data.y === 1) {
-			edgeY += 15;
+			edgeY += arrowStartSpace;
 		} else if (fromPointNode.data.y === 0) {
-			edgeY -= 15;
+			edgeY -= arrowStartSpace;
 		} else if (fromPointNode.data.x === 0) {
-			edgeX -= 15;
+			edgeX -= arrowStartSpace;
 		} else if (fromPointNode.data.x === 1) {
-			edgeX += 15;
+			edgeX += arrowStartSpace;
 		}
 		if (toPointNode.data.y === 1) {
-			endY += 15;
+			endY += arrEndSpace;
 			toY += 5;
 		} else if (toPointNode.data.y === 0) {
-			endY -= 15;
+			endY -= arrEndSpace;
 			toY -= 5;
 		} else if (toPointNode.data.x === 0) {
-			endX -= 15;
+			endX -= arrEndSpace;
 			toX -= 5;
 		} else if (toPointNode.data.x === 1) {
-			endX += 15;
+			endX += arrEndSpace;
 			toX += 5;
 		}
 		let pathString = `M${fromX} ${fromY} T ${edgeX} ${edgeY}`;
-		let bezierPoint1 = `${edgeX} ${edgeY +
-			(fromPointNode.data.y === 1 ? 1 : -1) * Math.abs((edgeY - endY) / 2)}`;
-		let bezierPoint2 = `${endX} ${endY +
-			(toPointNode.data.y === 1 ? 1 : -1) * Math.abs((edgeY - endY) / 2)}`;
+		let bezierPoint1 = `${edgeX} ${edgeY + Math.max(
+			(fromPointNode.data.y === 1 ? 1 : -1) * Math.abs((edgeY - endY) / 2),
+			50
+		)}`;
+		let bezierPoint2 = `${endX} ${endY + Math.min(
+			(toPointNode.data.y === 1 ? 1 : -1) * Math.abs((edgeY - endY) / 2),
+			-50
+		)}`;
 		let toPointString = `${endX} ${endY} T ${toX} ${toY} `;
 		const path = `${pathString}C${bezierPoint1} ${bezierPoint2} ${toPointString}`;
 		return path;
