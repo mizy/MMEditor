@@ -12,28 +12,14 @@
 				"srcDbName": "test",
 				"tableName": "user",
 				"isPartition": 0,
-				"dstFields": [
-					{
-						"id": 53217,
-						"name": "id",
-						"dataType": "string",
-						"detail": "id",
-						"srcField": "id"
-					}
-				]
+				"dstFields": []
 			},
-			"output": [
-				{
-					"id": 53217,
-					"name": "id",
-					"dataType": "string",
-					"detail": "id",
-					"srcField": "id"
-				}
-			],
+			"output": [],
 			"x": 265,
 			"y": 176,
-			"uuid": "04026110-c7df-11e9-8e77-b1834b6279dc"
+			"uuid": "04026110-c7df-11e9-8e77-b1834b6279dc",
+			"indexDepth": 0,
+			"fromLines": []
 		},
 		{
 			"component": "read",
@@ -76,14 +62,16 @@
 					"name": "id",
 					"dataType": "string",
 					"detail": "id",
-					"srcField": "id"
+					"srcField": "id",
+					"dstField": "id"
 				},
 				{
 					"id": 53217,
 					"name": "name",
 					"dataType": "string",
 					"detail": "names",
-					"srcField": "name"
+					"srcField": "name",
+					"dstField": "name"
 				},
 				{
 					"id": 53217,
@@ -93,69 +81,34 @@
 					"srcField": "school"
 				}
 			],
-			"x": 0,
-			"y": 0,
-			"uuid": "0559b3b0-c7df-11e9-8e77-b1834b6279dc"
-		},
-		{
-			"component": "select",
-			"type": "iconNode",
-			"iconPath": "./jobTypes/数据转换@2x.png",
-			"name": "过程组件-3",
-			"help": "这是一个使用MMEditor的基础例子",
-			"operatorGroup": "transform",
-			"config": {
-				"name": "过程组件-3",
-				"dstFields": [
-					{
-						"id": 53217,
-						"name": "id",
-						"dataType": "string",
-						"detail": "id",
-						"srcField": "id"
-					},
-					{
-						"id": 53217,
-						"name": "name",
-						"dataType": "string",
-						"detail": "names",
-						"srcField": "name"
-					}
-				]
-			},
-			"output": [
+			"x": 254,
+			"y": 37,
+			"uuid": "0559b3b0-c7df-11e9-8e77-b1834b6279dc",
+			"indexDepth": 0,
+			"fromLines": [
 				{
-					"id": 53217,
-					"name": "id",
-					"dataType": "string",
-					"detail": "id",
-					"srcField": "id"
-				},
-				{
-					"id": 53217,
-					"name": "name",
-					"dataType": "string",
-					"detail": "names",
-					"srcField": "name"
+					"to": "06d1d4c0-c7df-11e9-8e77-b1834b6279dc",
+					"toPoint": "0",
+					"from": "0559b3b0-c7df-11e9-8e77-b1834b6279dc",
+					"fromPoint": 0,
+					"uuid": "0559b3b0-c7df-11e9-8e77-b1834b6279dc.0=>06d1d4c0-c7df-11e9-8e77-b1834b6279dc.0"
 				}
-			],
-			"x": 265,
-			"y": 113,
-			"uuid": "06d1d4c0-c7df-11e9-8e77-b1834b6279dc"
+			]
 		}
 	],
 	"lines": [
+		
 		{
-			"to": "06d1d4c0-c7df-11e9-8e77-b1834b6279dc",
-			"toPoint": "0",
-			"from": "0559b3b0-c7df-11e9-8e77-b1834b6279dc",
-			"fromPoint": 0
-		},
-		{
+			"uuid": "0559b3b0-c7df-11e9-8e77-b1834b6279dc.0=>04026110-c7df-11e9-8e77-b1834b6279dc.0",
 			"to": "04026110-c7df-11e9-8e77-b1834b6279dc",
 			"toPoint": "0",
-			"from": "06d1d4c0-c7df-11e9-8e77-b1834b6279dc",
-			"fromPoint": 1
+			"from": "0559b3b0-c7df-11e9-8e77-b1834b6279dc",
+			"fromPoint": 0,
+			"fromX": 344,
+			"fromY": 69,
+			"toX": 355,
+			"toY": 176
 		}
+		
 	]
 }

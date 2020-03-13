@@ -25,16 +25,7 @@ class Editor extends PureComponent {
 		const { fromPoint, toPoint, from, to } = data;
 		// 通组件输入输出不能连接
 		if (from === to) return false;
-		// 输出不能连输出，输入不能连输入
-		if (parseInt(toPoint, 10) === 1) {
-			message.error("组件输出不能连接输出");
-			return false;
-		}
-		// 检测组件输入不能连接输入
-		if (nodes[from].data.component !== "read" && parseInt(fromPoint, 10) === 0) {
-			message.error("组件输入不能连接输入");
-			return false;
-		}
+
 		// 检测是否环图
 		const fromIds = [];
 		this.getFromIds(nodes[from], fromIds);
@@ -147,26 +138,15 @@ class Editor extends PureComponent {
 		this.editor.graph.node.registeNode(
 			"iconNodeInput",
 			{
-				render: (data, snapPaper) => {
-					const node = snapPaper.circle(25, 25, 25);
-					const text = snapPaper.text(25, 50, data.name);
-					node.attr({
-						fill: "#ca808b",
 
-					});
-					text.attr({
-						fill: "#fff"
-					})
-					return snapPaper.group(node, text);
-				},
-				linkPoints: [{ x: 0.5, y: 1 }]
+				linkPoints: [{ x: 0.5, y: 1 }, { x: 1, y: 0.5 }, { x: 0, y: 0.5 }]
 			},
 			"iconNode"
 		);
 		this.editor.graph.node.registeNode(
 			"iconNodeOutput",
 			{
-				linkPoints: [{ x: 0.5, y: 0 }]
+				linkPoints: [{ x: 0.5, y: 0 }, { x: 1, y: 0.5 }, { x: 0, y: 0.5 }]
 			},
 			"iconNode"
 		);
