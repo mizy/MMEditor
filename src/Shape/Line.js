@@ -398,7 +398,7 @@ class Line {
 			(e) => {
 				this.checkNewLine(e);
 				this.tempLine.remove();
-				this.graph.fire("line:drop");
+				this.graph.fire("line:drop", { event: e });
 			}
 		);
 	};

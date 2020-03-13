@@ -1,4 +1,5 @@
 /**
+ * 历史记录堆栈管理类
  * @class
  */
 class History {

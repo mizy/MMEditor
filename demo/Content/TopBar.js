@@ -57,7 +57,7 @@ class TopBar extends PureComponent {
 		g.setGraph({
 			nodesep: 90
 		});
-		g.setDefaultEdgeLabel(function() {
+		g.setDefaultEdgeLabel(function () {
 			return {};
 		});
 		data.nodes.map(item => {
@@ -69,7 +69,7 @@ class TopBar extends PureComponent {
 		dagre.layout(g);
 		const oldData = JSON.stringify(schema.data);
 
-		g.nodes().forEach(function(key) {
+		g.nodes().forEach(function (key) {
 			const nodeData = g.node(key);
 			node.updateNode(nodeData);
 			schema.data.nodesMap[key] = nodeData;
@@ -81,8 +81,10 @@ class TopBar extends PureComponent {
 		const newData = JSON.stringify(schema.data);
 		if (oldData !== newData) {
 			schema.history.push(JSON.parse(oldData));
-			this.props.editor.controller.autoFit();
 		};
+		setTimeout(() => {
+			this.props.editor.controller.autoFit();
+		}, 300)
 	};
 
 	run = () => {
@@ -252,7 +254,7 @@ class TopBar extends PureComponent {
 		}
 	}
 
-	stop = () => {};
+	stop = () => { };
 
 	redo = () => {
 		this.props.editor.schema.redo();
@@ -295,10 +297,10 @@ class TopBar extends PureComponent {
 						<Icon onClick={this.run} type="play-circle" />
 					</Tooltip>
 				) : (
-					<Tooltip title="终止">
-						<Icon onClick={this.stop} type="poweroff" />
-					</Tooltip>
-				)}
+						<Tooltip title="终止">
+							<Icon onClick={this.stop} type="poweroff" />
+						</Tooltip>
+					)}
 				<Tooltip title="格式化">
 					<Icon onClick={this.format} type="smile" />
 				</Tooltip>

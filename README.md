@@ -17,7 +17,7 @@ npm i MMEditor --save
 
 # Usage
 ```javascript
-	import MMEditor from "MMEditor";
+	import MMEditor from "mmeditor";
 	
 	let index = 0;
 	const editor =  new MMEditor({ dom: document.getElementById("root")});
@@ -66,6 +66,7 @@ npm i MMEditor --save
 	} 
 	// registe file-node
 	editor.graph.node.registeNode("file-node", {
+		// link point position
 		linkPoints: [{ x: 0, y: 0.5 }, { x: 1, y: 0.5 }],
 		render: (data, snapPaper) => {
 			const node = snapPaper.rect(0, 0, 180, 30);
