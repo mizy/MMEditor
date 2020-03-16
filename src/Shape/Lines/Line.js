@@ -197,12 +197,11 @@ const DefaultLine = {
 		}
 		let rect = labelGroup[0];
 		let text = labelGroup[1];
-
 		text.attr({
 			text:label || "",
 			fill:style.fill,
 			fontSize:style.fontSize,
-			textAnchor:"center",
+			"textAnchor":"middle",
 			x: xPoint+(refX||0),
 			y: yPoint+(refY||0),
 		})
