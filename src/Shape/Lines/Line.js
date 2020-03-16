@@ -58,7 +58,7 @@ const DefaultLine = {
 		let edgeY = fromY;
 		let endX = toX;
 		let endY = toY;
-		const arrowStartSpace = 1; // 顶部距离node节点的距离
+		const arrowStartSpace = 0; // 顶部距离node节点的距离
 		const arrEndSpace = 8; // 底部距离node节点的距离
 		const arrowEndSpace = 5;// 箭头占用的空间
 		// 根据连接点位置生成控制点
@@ -159,6 +159,52 @@ const DefaultLine = {
 		});
 		path.angle = angle;
 		return path;
+	},
+
+	// render label
+	renderLabel(data, allNodesMap, lineShapePath, labelGroup) {
+		const { labelCfg } = data;
+		let { label } = data;
+		// label 样式
+		const {
+			refX=0,
+			refY=0,
+			showNum=20,
+			style = {
+				fill:"#333",
+				stroke:"#fff"
+			}
+		} = labelCfg || {};
+		// 获取旋转角度 暂时不支持
+		const totalLen = lineShapePath.getTotalLength();
+		const pointLen = lineShapePath.getPointAtLength(totalLen/2);
+		const { alpha, x:xPoint, y:yPoint } = pointLen||{};
+		if(label && label.length>showNum && showNum){
+			label = label.slice(0,showNum)+"..."
+		}
+		if(!labelGroup){
+			let textCreate = this.paper.text(0,0,label);
+			let rectCreate = this.paper.rect();
+			labelGroup = this.paper.group(rectCreate,textCreate);
+		}
+		let rect = labelGroup[0];
+		let text = labelGroup[1];
+		text.attr({
+			text:label || "",
+			fill:style.fill,
+			x: xPoint+(refX||0),
+			y: yPoint+(refY||0),
+		})
+		const { width, height, x, y } =  text.getBBox();
+		rect.attr({
+			fill: style.stroke,
+			width, 
+			height, 
+			x, 
+			y
+		});
+		return labelGroup;
+		return null
 	},
 
 	/**

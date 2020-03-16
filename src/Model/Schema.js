@@ -46,7 +46,10 @@ class Schema {
 		this.editor.graph.on(
 			"line:change",
 			({ line }) => {
-				this.data.linesMap[line.data.uuid] = line.data;
+				this.data.linesMap[line.data.uuid] = {
+					...line.data,
+					...line.label
+				};
 				this.history.push(this.data);
 			},
 			9999
@@ -54,7 +57,10 @@ class Schema {
 		this.editor.graph.on(
 			"line:add",
 			({ line }) => {
-				this.data.linesMap[line.data.uuid] = line.data;
+				this.data.linesMap[line.data.uuid] = {
+					...line.data,
+					...line.label
+				};
 				this.history.push(this.data);
 			},
 			9999
