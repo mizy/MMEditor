@@ -2,6 +2,7 @@ import Node from "./Node";
 import Line from "./Line";
 import Event from "../Utils/Event";
 import Animation from "./Animation";
+import AchorLine from './AchorLine';
 /**
  * @class
  * @extends Event
@@ -12,6 +13,8 @@ class Graph extends Event {
 		this.editor = editor;
 		this.node = new Node(this);
 		this.line = new Line(this);
+		this.achorLine = new AchorLine(this);
+
 		this.node.linkPointsG.before(this.line.lineG);
 		this.animation = Animation;
 		this.listenEvents();
@@ -61,6 +64,9 @@ class Graph extends Event {
 					});
 				});
 			}
+		});
+		this.on("node:move", ({ node }) => {
+			this.achorLine.draw(node)
 		});
 	}
 

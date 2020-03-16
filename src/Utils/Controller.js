@@ -16,6 +16,10 @@ class Controller extends Event {
 		 */
 		this.scaleRatio = 0.01;
 		this.scale = 1;
+		/**
+		 * 所有吸附节点
+		 */
+		this.achors = [];
 		this.listenEvents();
 	}
 
@@ -37,6 +41,7 @@ class Controller extends Event {
 			this.paper.node.style.transition = null;
 		}, 200)
 	}
+
 
 	listenEvents() {
 		this.svg.mousedown(this.panStart);
@@ -80,7 +85,8 @@ class Controller extends Event {
 	onWheel = e => {
 		e.preventDefault();
 		if (e.ctrlKey) {// 双指
-			this.zoom(e.deltaY, e.offsetX, e.offsetY)
+			const newScale = (1 - e.deltaY * this.scaleRatio);
+			this.zoom(newScale, e.offsetX, e.offsetY)
 		} else {
 			this.pan(-e.deltaX, -e.deltaY)
 		}
@@ -103,14 +109,12 @@ class Controller extends Event {
 	};
 	/**
 	 * 缩放
-	 * @param  {} delta zoom 缩放多少
+	 * @param  {} scale 当前基础上 缩放多少
 	 * @param  {} cx=0 zoom 缩放中心点x
 	 * @param  {} cy=0 zoom 缩放中心点y
 	 */
-	zoom = (delta, cx = 0, cy = 0) => {
+	zoom = (newScale, cx = 0, cy = 0) => {
 		const transform = this.paper.transform();
-		const { dx, dy, scalex } = transform.localMatrix.split();
-		let newScale = (1 - delta * this.scaleRatio);
 		transform.localMatrix.scale(newScale, newScale, cx, cy);
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);

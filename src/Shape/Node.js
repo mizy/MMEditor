@@ -189,6 +189,17 @@ class Node {
 		);
 	}
 
+	panNode(node, x, y) {
+		node.data.x = x;
+		node.data.y = y;
+		node.linkPoints.forEach(circle => {
+			this.shapes[node.data.type || "default"].updateLinkPoint(node, circle);
+		});
+		node.attr({
+			transform: `translate(${x} ,${y})`
+		});
+	}
+
 	/**
 	 * 给节点添加事件
 	 * @param {*} node
@@ -198,19 +209,21 @@ class Node {
 			(dx, dy) => {
 				const transform = this.paper.transform();
 				const info = transform.globalMatrix.split();
-				const x = (node.startX || 0) + dx / info.scalex;
-				const y = (node.startY || 0) + dy / info.scalex;
-				node.data.x = x;
-				node.data.y = y;
-				node.linkPoints.forEach(circle => {
-					this.shapes[node.data.type || "default"].updateLinkPoint(node, circle);
-				});
-				node.attr({
-					transform: `translate(${x} ,${y})`
-				});
+				let x = (node.startX || 0) + dx / info.scalex;
+				let y = (node.startY || 0) + dy / info.scalex;
+				const newXY = this.graph.achorLine.check(x, y);
+				if (newXY) {
+					x = newXY.x;
+					y = newXY.y;
+				}
+				this.panNode(node, x, y);
 				this.graph.fire("node:move", { node });
+
 			},
 			() => {
+				this.graph.achorLine.makeAllAnchors(node);
+				// 提前获得bbox避免重绘
+				node.bbox = node.getBBox();
 				node.startX = node.data.x;
 				node.startY = node.data.y;
 			},

@@ -97,16 +97,6 @@ const DefaultLine = {
 		let pathString = `M${fromX} ${fromY} T ${edgeX} ${edgeY}`;
 
 
-		let bezierPoint1 = `${edgeX} ${edgeY + Math.max(
-			(fromPointNode.data.y === 1 ? 1 : -1) * Math.abs((edgeY - endY) / 2),
-			50
-		)}`;
-
-		let bezierPoint2 = `${endX} ${endY + Math.min(
-			(toPointNode.data.y === 1 ? 1 : -1) * Math.abs((edgeY - endY) / 2),
-			-50
-		)}`;
-
 		let toPointString = `${endX} ${endY} T ${toX} ${toY} `;
 		const path = `${pathString}C${startControlPoint[0]} ${startControlPoint[1]} ${endControlPoint[0]} ${endControlPoint[1]} ${toPointString}`;
 		return path;
@@ -197,12 +187,11 @@ const DefaultLine = {
 		}
 		let rect = labelGroup[0];
 		let text = labelGroup[1];
-
 		text.attr({
 			text: label || "",
 			fill: style.fill,
 			fontSize: style.fontSize,
-			textAnchor: "center",
+			"textAnchor": "middle",
 			x: xPoint + (refX || 0),
 			y: yPoint + (refY || 0),
 		})
@@ -223,7 +212,7 @@ const DefaultLine = {
 				alpha += 180;
 			}
 			labelGroup.attr({
-				transform: `rotate(${alpha},${Math.abs(xPoint + (refX || 0))},${Math.abs(yPoint + (refY || 0))})`
+				transform: `rotate(${alpha},${xPoint + (refX || 0)},${yPoint + (refY || 0)})`
 			})
 		}
 		return labelGroup;
