@@ -204,7 +204,6 @@ const DefaultLine = {
 			y
 		});
 		return labelGroup;
-		return null
 	},
 
 	/**

@@ -50,11 +50,17 @@ const IconNode = {
 		};
 		return circle;
 	},
+
 	/**
 	 * @param  {} node
 	 * @param  {} linkPoint
 	 */
-	updateLinkPoint: (node, linkPoint) => {
+	updateLinkPoint: (node, linkPoint, refresh) => {
+		if (refresh) {
+			const box = node.shape.getBBox();
+			linkPoint.local.x = linkPoint.x * box.w;
+			linkPoint.local.y = linkPoint.y * box.h;
+		}
 		const { local } = linkPoint;
 		const x = local.x + node.data.x;
 		const y = local.y + node.data.y;

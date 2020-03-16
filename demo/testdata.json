@@ -106,7 +106,18 @@
 			"fromX": 344,
 			"fromY": 69,
 			"toX": 355,
-			"toY": 176
+			"toY": 176,
+			"label":"测试",
+			"labelCfg":{
+				"refX": 0,
+				"refY": 0,
+				"showNum":10,
+				"style":{
+				  "fontSize":"12px",
+				  "fill":"#333",
+				  "stroke":"#fff"
+				}
+			}
 		}
 		
 	]
