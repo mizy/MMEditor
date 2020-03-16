@@ -168,25 +168,27 @@ const DefaultLine = {
 	 * @param  {} labelGroup 是否已有文字对象
 	 */
 	renderLabel(data, allNodesMap, lineShapePath, labelGroup) {
-		const { labelCfg } = data;
+		const { fromX, toX, labelCfg } = data;
 		let { label } = data;
 		if (!label) return null;
 		// label 样式
 		const {
-			refX = 0,
-			refY = 0,
-			showNum = 20,
+			refX=0,
+			refY=0,
+			autoRotate,
+			showNum=20,
 			style = {
-				fill: "#333",
-				stroke: "#fff"
+				fill:"#333",
+				stroke:"#fff",
+				fontSize:"12px"
 			}
 		} = labelCfg || {};
 		// 获取旋转角度 暂时不支持
 		const totalLen = lineShapePath.getTotalLength();
-		const pointLen = lineShapePath.getPointAtLength(totalLen / 2);
-		const { alpha, x: xPoint, y: yPoint } = pointLen || {};
-		if (label && label.length > showNum && showNum) {
-			label = label.slice(0, showNum) + "..."
+		const pointLen = lineShapePath.getPointAtLength(totalLen/2);
+		let { alpha, x:xPoint, y:yPoint } = pointLen||{};
+		if(label && label.length>showNum && showNum){
+			label = label.slice(0,showNum)+"..."
 		}
 		if (!labelGroup) {
 			let textCreate = this.paper.text(0, 0, label);
@@ -195,11 +197,14 @@ const DefaultLine = {
 		}
 		let rect = labelGroup[0];
 		let text = labelGroup[1];
+
 		text.attr({
-			text: label || "",
-			fill: style.fill,
-			x: xPoint + (refX || 0),
-			y: yPoint + (refY || 0),
+			text:label || "",
+			fill:style.fill,
+			fontSize:style.fontSize,
+			textAnchor:"center",
+			x: xPoint+(refX||0),
+			y: yPoint+(refY||0),
 		})
 		const { width, height, x, y } = text.getBBox();
 		rect.attr({
@@ -212,6 +217,15 @@ const DefaultLine = {
 		labelGroup.attr({
 			class: "mm-line-label"
 		})
+		if(autoRotate){
+			// 文字顺序方向
+			if (fromX < toX || fromX === toX) {
+				alpha += 180;
+			}
+			labelGroup.attr({
+				transform:`rotate(${alpha},${Math.abs(xPoint+(refX||0))},${Math.abs(yPoint+(refY||0))})`
+			})
+		}
 		return labelGroup;
 	},
 
