@@ -84,7 +84,6 @@ class Controller extends Event {
 		} else {
 			this.pan(-e.deltaX, -e.deltaY)
 		}
-
 	};
 
 	panStart = ev => {
