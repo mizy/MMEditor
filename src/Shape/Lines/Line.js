@@ -161,48 +161,57 @@ const DefaultLine = {
 		return path;
 	},
 
-	// render label
+	/** 是否渲染文字
+	 * @param  {} data
+	 * @param  {} allNodesMap
+	 * @param  {} lineShapePath
+	 * @param  {} labelGroup 是否已有文字对象
+	 */
 	renderLabel(data, allNodesMap, lineShapePath, labelGroup) {
 		const { labelCfg } = data;
 		let { label } = data;
+		if (!label) return null;
 		// label 样式
 		const {
-			refX=0,
-			refY=0,
-			showNum=20,
+			refX = 0,
+			refY = 0,
+			showNum = 20,
 			style = {
-				fill:"#333",
-				stroke:"#fff"
+				fill: "#333",
+				stroke: "#fff"
 			}
 		} = labelCfg || {};
 		// 获取旋转角度 暂时不支持
 		const totalLen = lineShapePath.getTotalLength();
-		const pointLen = lineShapePath.getPointAtLength(totalLen/2);
-		const { alpha, x:xPoint, y:yPoint } = pointLen||{};
-		if(label && label.length>showNum && showNum){
-			label = label.slice(0,showNum)+"..."
+		const pointLen = lineShapePath.getPointAtLength(totalLen / 2);
+		const { alpha, x: xPoint, y: yPoint } = pointLen || {};
+		if (label && label.length > showNum && showNum) {
+			label = label.slice(0, showNum) + "..."
 		}
-		if(!labelGroup){
-			let textCreate = this.paper.text(0,0,label);
+		if (!labelGroup) {
+			let textCreate = this.paper.text(0, 0, label);
 			let rectCreate = this.paper.rect();
-			labelGroup = this.paper.group(rectCreate,textCreate);
+			labelGroup = this.paper.group(rectCreate, textCreate);
 		}
 		let rect = labelGroup[0];
 		let text = labelGroup[1];
 		text.attr({
-			text:label || "",
-			fill:style.fill,
-			x: xPoint+(refX||0),
-			y: yPoint+(refY||0),
+			text: label || "",
+			fill: style.fill,
+			x: xPoint + (refX || 0),
+			y: yPoint + (refY || 0),
 		})
-		const { width, height, x, y } =  text.getBBox();
+		const { width, height, x, y } = text.getBBox();
 		rect.attr({
 			fill: style.stroke,
-			width, 
-			height, 
-			x, 
+			width,
+			height,
+			x,
 			y
 		});
+		labelGroup.attr({
+			class: "mm-line-label"
+		})
 		return labelGroup;
 	},
 

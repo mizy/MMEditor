@@ -52,14 +52,16 @@ const IconNode = {
 	},
 
 	/**
+	 * 更新渲染点
 	 * @param  {} node
 	 * @param  {} linkPoint
+	 * @param  {} refreshSize
 	 */
-	updateLinkPoint: (node, linkPoint, refresh) => {
-		if (refresh) {
+	updateLinkPoint: (node, linkPoint, refreshSize) => {
+		if (refreshSize) {
 			const box = node.shape.getBBox();
-			linkPoint.local.x = linkPoint.x * box.w;
-			linkPoint.local.y = linkPoint.y * box.h;
+			linkPoint.local.x = linkPoint.data.x * box.w;
+			linkPoint.local.y = linkPoint.data.y * box.h;
 		}
 		const { local } = linkPoint;
 		const x = local.x + node.data.x;

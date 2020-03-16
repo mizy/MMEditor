@@ -7370,7 +7370,7 @@ exports = module.exports = __webpack_require__(252)(false);
 
 
 // module
-exports.push([module.i, "@keyframes dashing {\n  from {\n    stroke-dashoffset: 200;\n  }\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.mm-editor {\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n.mm-editor > .mm-editor-svg {\n  cursor: grab;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor > .mm-editor-svg svg {\n  outline: none;\n}\n.mm-editor > .mm-editor-svg * {\n  transition: x, y, transform, cx, cy, width, stroke, height, fill 400ms;\n}\n.mm-editor > .mm-editor-svg .mm-node {\n  cursor: move;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:hover > .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.active > .icon-node {\n  transition: stroke 400ms;\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.success .icon-node {\n  stroke: green;\n  fill: #fff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.error .icon-node {\n  stroke: red;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.running .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.running .mm-line-shape {\n  stroke-dasharray: 5 !important;\n  animation: dashing 5s linear infinite;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-shape {\n  cursor: pointer;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-arrow {\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points:hover,\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points.hover {\n  fill: #4c79ff;\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-html {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n", ""]);
+exports.push([module.i, "@keyframes dashing {\n  from {\n    stroke-dashoffset: 200;\n  }\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.mm-editor {\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n.mm-editor > .mm-editor-svg {\n  cursor: grab;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor > .mm-editor-svg svg {\n  outline: none;\n}\n.mm-editor > .mm-editor-svg * {\n  transition: x, y, transform, cx, cy, width, stroke, height, fill 400ms;\n}\n.mm-editor > .mm-editor-svg .mm-node {\n  cursor: move;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:hover > .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.active > .icon-node {\n  transition: stroke 400ms;\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.success .icon-node {\n  stroke: green;\n  fill: #fff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.error .icon-node {\n  stroke: red;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.running .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.running .mm-line-shape {\n  stroke-dasharray: 5 !important;\n  animation: dashing 5s linear infinite;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-shape {\n  cursor: pointer;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-arrow {\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-label text {\n  text-anchor: middle;\n}\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points:hover,\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points.hover {\n  fill: #4c79ff;\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-html {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n", ""]);
 
 // exports
 
@@ -8083,9 +8083,18 @@ var DefaultNode = {
   },
 
   /**
-   * 更新渲染点 (node, linkPoint)
+   * 更新渲染点
+   * @param  {} node
+   * @param  {} linkPoint
+   * @param  {} refreshSize
    */
-  updateLinkPoint: function updateLinkPoint(node, linkPoint) {
+  updateLinkPoint: function updateLinkPoint(node, linkPoint, refreshSize) {
+    if (refreshSize) {
+      var box = node.shape.getBBox();
+      linkPoint.local.x = linkPoint.data.x * box.w;
+      linkPoint.local.y = linkPoint.data.y * box.h;
+    }
+
     var local = linkPoint.local;
     var x = local.x + node.data.x;
     var y = local.y + node.data.y;
@@ -8164,10 +8173,18 @@ var IconNode = {
   },
 
   /**
+   * 更新渲染点
    * @param  {} node
    * @param  {} linkPoint
+   * @param  {} refreshSize
    */
-  updateLinkPoint: function updateLinkPoint(node, linkPoint) {
+  updateLinkPoint: function updateLinkPoint(node, linkPoint, refreshSize) {
+    if (refreshSize) {
+      var box = node.shape.getBBox();
+      linkPoint.local.x = linkPoint.data.x * box.w;
+      linkPoint.local.y = linkPoint.data.y * box.h;
+    }
+
     var local = linkPoint.local;
     var x = local.x + node.data.x;
     var y = local.y + node.data.y;
@@ -8742,10 +8759,17 @@ var DefaultLine = {
     path.angle = angle;
     return path;
   },
-  // render label
+
+  /** 是否渲染文字
+   * @param  {} data
+   * @param  {} allNodesMap
+   * @param  {} lineShapePath
+   * @param  {} labelGroup 是否已有文字对象
+   */
   renderLabel: function renderLabel(data, allNodesMap, lineShapePath, labelGroup) {
     var labelCfg = data.labelCfg;
-    var label = data.label; // label 样式
+    var label = data.label;
+    if (!label) return null; // label 样式
 
     var _ref = labelCfg || {},
         _ref$refX = _ref.refX,
@@ -8801,8 +8825,10 @@ var DefaultLine = {
       x: x,
       y: y
     });
+    labelGroup.attr({
+      "class": "mm-line-label"
+    });
     return labelGroup;
-    return null;
   },
 
   /**
