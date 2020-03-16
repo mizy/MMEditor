@@ -221,7 +221,6 @@ class Line {
 			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass("hover")
 			this.graph.hoverLinkPoint = undefined;
 		}
-
 	};
 
 	/**
@@ -405,9 +404,16 @@ class Line {
 				this.graph.fire("line:drag");
 			},
 			(e) => {
+				const { hoverLinkPoint } = this.graph;
+				let toNode = null;
+				if (hoverLinkPoint) {
+					const toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
+					const toNodeId = toElement.getAttribute("data-node-id");
+					toNode = this.node.nodes[toNodeId];
+				}
 				this.checkNewLine(e);
 				this.tempLine.remove();
-				this.graph.fire("line:drop", { event: e });
+				this.graph.fire("line:drop", { fromNode:node, toNode, event: e });
 			}
 		);
 	};
