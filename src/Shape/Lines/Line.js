@@ -222,7 +222,7 @@ const DefaultLine = {
 				alpha += 180;
 			}
 			labelGroup.attr({
-				transform:`rotate(${alpha},${Math.abs(xPoint+(refX||0))},${Math.abs(yPoint+(refY||0))})`
+				transform:`rotate(${alpha},${xPoint+(refX||0)},${yPoint+(refY||0)})`
 			})
 		}
 		return labelGroup;
