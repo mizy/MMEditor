@@ -9788,12 +9788,9 @@ function (_Event) {
             });
           });
         }
-      });
-      this.on("node:move", function (_ref2) {
-        var node = _ref2.node;
-
-        _this2.achorLine.draw(node);
-      });
+      }); // this.on("node:move", ({ node }) => {
+      // 	this.achorLine.draw(node)
+      // });
     }
     /**
      * 添加链接点事件
