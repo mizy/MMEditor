@@ -12,7 +12,7 @@ import "./index.less";
 class MMEditor extends Event {
 	constructor(config) {
 		super();
-		this.config = config;
+		this.config = Object.assign({ hideAchor: true }, config);
 		if (!config.dom) return;
 		this.dom = this.initDom(config.dom);
 		this.svg = Snap(this.dom.select("svg"));

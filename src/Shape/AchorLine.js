@@ -16,6 +16,7 @@ class AchorLine {
 	 * 生成所有的吸附线位置
 	 */
 	makeAllAnchors(origin) {
+		if (this.hide) return;
 		this.node = origin;
 		const achors = [];
 		const { nodes } = this.graph.node;
@@ -45,6 +46,7 @@ class AchorLine {
 	 * @param {*} node 
 	 */
 	check(x, y) {
+		if (this.hide) return { x, y }
 		const { bbox } = this.node;
 		const { width, height } = bbox;
 		const tl = { x, y };
