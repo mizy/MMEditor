@@ -112,7 +112,7 @@
 				"refX": 0,
 				"refY": 0,
 				"showNum":10,
-				"autoRotate":true,
+				"autoRotate":false,
 				"style":{
 				  "fontSize":"12px",
 				  "fill":"#333",

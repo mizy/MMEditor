@@ -65,9 +65,9 @@ class Graph extends Event {
 				});
 			}
 		});
-		this.on("node:move", ({ node }) => {
-			this.achorLine.draw(node)
-		});
+		// this.on("node:move", ({ node }) => {
+		// 	this.achorLine.draw(node)
+		// });
 	}
 
 	/**
