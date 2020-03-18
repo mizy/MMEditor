@@ -8787,8 +8787,8 @@ var DefaultLine = {
     var fromX = data.fromX,
         toX = data.toX,
         labelCfg = data.labelCfg;
-    var label = data.label;
-    if (!label) return null; // label 样式
+    var label = data.label; // if (!label) return null;
+    // label 样式
 
     var _ref = labelCfg || {},
         _ref$refX = _ref.refX,

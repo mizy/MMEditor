@@ -1,6 +1,6 @@
 {
 	"name": "@tntd/mm-editor",
-	"version": "1.2.3",
+	"version": "1.2.4",
 	"description": "svg flow editor",
 	"main": "./dist/MMEditor.js",
 	"scripts": {
