@@ -145,7 +145,7 @@ const DefaultLine = {
 			class: "mm-line-arrow",
 			d: pathString,
 			fill: "rgba(178,190,205,0.7)",
-			transform: matrix.toTransformString()
+			transform: matrix.toString()
 		});
 		path.angle = angle;
 		return path;
@@ -170,7 +170,7 @@ const DefaultLine = {
 			style = {
 				fill: "#333",
 				stroke: "#fff",
-				fontSize: "12px"
+				fontSize: "12px",
 			}
 		} = labelCfg || {};
 		// 获取旋转角度 暂时不支持
@@ -187,21 +187,29 @@ const DefaultLine = {
 		}
 		let rect = labelGroup[0];
 		let text = labelGroup[1];
+		const x = xPoint + (refX || 0);
+		const y = yPoint + (refY || 0);
 		text.attr({
 			text: label || "",
 			fill: style.fill,
 			fontSize: style.fontSize,
-			"textAnchor": "middle",
-			x: xPoint + (refX || 0),
-			y: yPoint + (refY || 0),
+			textAnchor: "middle",
+			dominantBaseline: "middle",
+			x,
+			y,
 		})
-		const { width, height, x, y } = text.getBBox();
+		if (!text.bbox || text.oldText !== label) {
+			text.oldText = label;
+			text.bbox = text.getBBox();
+		}
+		// 性能优化
+		const { width, height } = text.bbox;
 		rect.attr({
 			fill: style.stroke,
 			width,
 			height,
-			x,
-			y
+			x: x - width * 0.5,
+			y: y - height * 0.5
 		});
 		labelGroup.attr({
 			class: "mm-line-label"

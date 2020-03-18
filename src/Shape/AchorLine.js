@@ -3,8 +3,8 @@ class AchorLine {
 		this.graph = graph;
 		this.achorLines = {};
 		this.paper = graph.editor.paper;
-		this.achorDistance = graph.editor.config.achorDistance || 10;
-		this.hide = graph.editor.config.hideAchor || true;
+		this.achorDistance = graph.editor.config.achorDistance || 5;
+		this.hideAchor = graph.editor.config.hideAchor;
 		this.achors = [];
 		this.path = this.paper.path();
 		this.path.attr({
@@ -16,14 +16,15 @@ class AchorLine {
 	 * 生成所有的吸附线位置
 	 */
 	makeAllAnchors(origin) {
-		if (this.hide) return;
+		if (this.hideAchor) return;
 		this.node = origin;
 		const achors = [];
 		const { nodes } = this.graph.node;
 		for (let key in nodes) {
 			if (origin.data.uuid === key) continue;
 			const node = nodes[key];
-			const bbox = node.getBBox();
+			const bbox = node.getBBox();// 缓存bbox
+			node.bbox = bbox;
 			const { x, y, width, height } = bbox;
 			achors.push({
 				x, y
@@ -46,7 +47,7 @@ class AchorLine {
 	 * @param {*} node 
 	 */
 	check(x, y) {
-		if (this.hide) return { x, y }
+		if (this.hideAchor) return { x, y }
 		const { bbox } = this.node;
 		const { width, height } = bbox;
 		const tl = { x, y };
@@ -74,7 +75,7 @@ class AchorLine {
 		})
 		if (!achor) {
 			this.path.attr({
-				style: "display: 'none'"
+				style: "display: none"
 			})
 			return null
 		}
@@ -82,10 +83,16 @@ class AchorLine {
 		!final.x ? final.x = cc.x : final.y = cc.y;
 		const path = `M${final.x},${final.y} L${achor.x},${achor.y}`;
 		this.path.attr({
-			path,
-			style: "display: 'auto'"
+			d: path,
+			style: "display: block"
 		});
 		return newXY;
+	}
+
+	hidePath() {
+		this.path.attr({
+			style: "display: none"
+		})
 	}
 }
 export default AchorLine;

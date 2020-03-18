@@ -195,9 +195,7 @@ class Node {
 		node.linkPoints.forEach(circle => {
 			this.shapes[node.data.type || "default"].updateLinkPoint(node, circle);
 		});
-		node.attr({
-			transform: `translate(${x} ,${y})`
-		});
+		node.node.setAttribute("transform", `translate(${x} ,${y})`);
 	}
 
 	/**
@@ -220,27 +218,32 @@ class Node {
 				this.graph.fire("node:move", { node });
 
 			},
-			() => {
+			(x, y, e) => {
 				this.graph.achorLine.makeAllAnchors(node);
-				// 提前获得bbox避免重绘
 				node.bbox = node.getBBox();
+				node.clientX = e.clientX;
+				node.clientY = e.clientY;
+				// 提前获得bbox避免重绘
 				node.startX = node.data.x;
 				node.startY = node.data.y;
 			},
-			() => {
+			(e) => {
 				if (node.startX === node.data.x && node.startY === node.data.y) {
 					return false;
 				}
+				this.graph.achorLine.hidePath();
 				this.graph.fire("node:change", { node });
 			}
 		);
 
 		node.shape.click(event => {
-			if (this.activeNode) {
-				this.unActiveNode();
+			if (Math.abs(event.clientX - node.clientX) < 2 && Math.abs(event.clientY - node.clientY) < 2) {
+				if (this.activeNode) {
+					this.unActiveNode();
+				}
+				this.setActiveNode(node);
+				this.graph.fire("node:click", { node, event });
 			}
-			this.setActiveNode(node);
-			this.graph.fire("node:click", { node, event });
 		});
 		node.hover(
 			() => {
