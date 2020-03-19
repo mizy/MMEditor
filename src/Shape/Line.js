@@ -413,7 +413,7 @@ class Line {
 				}
 				this.checkNewLine(e);
 				this.tempLine.remove();
-				this.graph.fire("line:drop", { fromNode:node, toNode, event: e });
+				this.graph.fire("line:drop", { fromNode: node, toNode, event: e });
 			}
 		);
 	};
