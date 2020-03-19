@@ -17,6 +17,10 @@ class Graph extends Event {
 
 		this.node.linkPointsG.before(this.line.lineG);
 		this.animation = Animation;
+
+		// 模式：操作、查看模式
+		this.mode = editor.config.mode;
+
 		this.listenEvents();
 	}
 
@@ -37,12 +41,17 @@ class Graph extends Event {
 		this.editor.svg.node.addEventListener("blur", e => {
 			this.focus = false;
 		});
-		document.addEventListener("keyup", e => {
-			if (this.focus && e.key === "Backspace") {
-				this.node.activeNode && this.node.deleteNode(this.node.activeNode);
-				this.line.activeLine && this.line.deleteLine(this.line.activeLine);
-			}
-		});
+
+		// 查看模式不能删除节点、线条；如果存在部分可操作则自己在业务中监听处理相关逻辑
+		if(this.mode !== "view"){
+			document.addEventListener("keyup", e => {
+				if (this.focus && e.key === "Backspace") {
+					this.node.activeNode && this.node.deleteNode(this.node.activeNode);
+					this.line.activeLine && this.line.deleteLine(this.line.activeLine);
+				}
+			});
+		}
+		
 		this.on("line:drag", () => {
 			this.linkStatus = "lineing";
 			for (let key in this.node.nodes) {
