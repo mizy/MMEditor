@@ -14,6 +14,7 @@ class Node {
 		this.linkPointsG.addClass("link-points-g");
 		this.initDefs();
 		this.listenEvent();
+		this.actives = {};
 		this.shapes = {
 			default: defaultNode,
 			iconNode: iconNode
@@ -27,10 +28,23 @@ class Node {
 	// 监听事件
 	listenEvent() {
 		this.graph.on("paper:click", () => {
-			this.unActiveNode();
+			this.unActive();
 		});
 		this.graph.on("line:click", () => {
-			this.unActiveNode();
+			this.unActive();
+		});
+		this.graph.on("copy", () => {
+			this.copyNode = { ...this.actives };
+		});
+		this.graph.on("paste", () => {
+			for (let key in this.copyNode) {
+				const node = this.copyNode[key];
+				let newData = { ...node.data };
+				newData.x += 20 + Math.random() * 20;
+				newData.y += 20 + Math.random() * 20;
+				delete newData.uuid;
+				this.addNode(newData)
+			}
 		});
 	}
 
@@ -66,14 +80,14 @@ class Node {
 	 * 删除节点
 	 *  @param {object} data 
 	 */
-	deleteNode = (node, ifEvent) => {
+	deleteNode = (node, ignoreEvent) => {
 		let uuid = node;
 		if (node.data) {
 			uuid = node.data.uuid;
 		}
 		const deleteNode = this.nodes[uuid];
 		delete this.nodes[uuid];
-		!ifEvent && this.graph.fire("node:remove", { node: deleteNode, uuid });
+		!ignoreEvent && this.graph.fire("node:remove", { node: deleteNode, uuid });
 		deleteNode.linkPoints.forEach(point => {
 			point.undrag();
 			point.unhover();
@@ -81,16 +95,15 @@ class Node {
 			point = null;
 		});
 		deleteNode.fromLines.forEach(lineId => {
-			this.graph.line.deleteLine(lineId, false, true);
+			this.graph.line.deleteLine(lineId, true, true);
 		});
 		deleteNode.toLines.forEach(lineId => {
-			this.graph.line.deleteLine(lineId, false, true);
+			this.graph.line.deleteLine(lineId, true, true);
 		});
 		deleteNode.undrag();
 		deleteNode.unhover();
 		deleteNode.unclick();
 		deleteNode.remove();
-		this.activeNode = null;
 	};
 
 	/**
@@ -228,20 +241,28 @@ class Node {
 				node.startY = node.data.y;
 			},
 			(e) => {
+				this.graph.achorLine.hidePath();
 				if (node.startX === node.data.x && node.startY === node.data.y) {
 					return false;
 				}
-				this.graph.achorLine.hidePath();
 				this.graph.fire("node:change", { node });
 			}
 		);
 
 		node.shape.click(event => {
 			if (Math.abs(event.clientX - node.clientX) < 2 && Math.abs(event.clientY - node.clientY) < 2) {
-				if (this.activeNode) {
-					this.unActiveNode();
+				if (event.shiftKey) {
+					if (this.actives[node.data.uuid]) {
+						this.unActive(node);
+					} else {
+						this.setActive(node);
+					}
+				} else {
+					if (this.actives[node.data.uuid]) {
+						this.unActive();
+					}
+					this.setActive(node);
 				}
-				this.setActiveNode(node);
 				this.graph.fire("node:click", { node, event });
 			}
 		});
@@ -270,35 +291,53 @@ class Node {
 
 	/**
 	 * 
+	 * @param {*} node node为空时全选
 	 */
-	unActiveNode() {
-		if (!this.activeNode) return false;
-		this.activeNode.shape.removeClass("active");
-		this.activeNode.shape.attr({
-			filter: null
-		});
-		this.activeNode.linkPoints.forEach(point => {
-			point.attr({
-				display: "none"
+	setActive(node) {
+		const nodes = node ? {
+			[node.data.uuid]: node
+		} : this.nodes;
+
+		for (let key in nodes) {
+			node = nodes[key]
+			node.shape.addClass("active");
+			node.shape.attr({
+				filter: this.shadow
 			});
-		});
-		this.graph.fire("node:unactive", { node: this.activeNode });
-		this.activeNode = null;
+			this.actives[node.data.uuid] = node;
+			node.linkPoints.forEach(point => {
+				point.attr({
+					display: "block"
+				});
+			});
+		}
 	}
 
 	/**
 	 * 
-	 * @param {*} node 
+	 * @param {*} node 传node就取消选中这个node,没有就全部取消选中
 	 */
-	setActiveNode(node) {
-		node.shape.addClass("active");
+	unActive(node) {
+		if (node) {
+			delete this.actives[node.data.uuid];
+			this.unActiveNode(node);
+		} else {
+			for (let key in this.actives) {
+				this.unActiveNode(this.actives[key])
+			}
+			this.actives = {}
+		}
+		this.graph.fire("node:unactive", { node: this.activeNode });
+	}
+
+	unActiveNode(node) {
+		node.shape.removeClass("active");
 		node.shape.attr({
-			filter: this.shadow
+			filter: null
 		});
-		this.activeNode = node;
-		this.activeNode.linkPoints.forEach(point => {
+		node.linkPoints.forEach(point => {
 			point.attr({
-				display: "block"
+				display: "none"
 			});
 		});
 	}

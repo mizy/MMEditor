@@ -233,7 +233,7 @@ class Line {
 	}
 
 	/**
-	 * 
+	 * 渲染
 	 * @param {*} lines 
 	 */
 	render(lines = []) {

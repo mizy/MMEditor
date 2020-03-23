@@ -17,60 +17,34 @@ class Schema {
 	}
 
 	listenEvents() {
-		// 节点移动了
-		this.editor.graph.on(
-			"node:change",
-			({ node }) => {
-				this.data.nodesMap[node.data.uuid] = node.data;
-				this.history.push(this.data);
-			},
-			9999
-		);
-		this.editor.graph.on(
-			"node:add",
-			({ node }) => {
-				this.data.nodesMap[node.data.uuid] = node.data;
-				this.history.push(this.data);
-			},
-			9999
-		);
-		this.editor.graph.on(
-			"node:remove",
-			({ uuid }) => {
-				delete this.data.nodesMap[uuid];
-				this.history.push(this.data);
-			},
-			9999
-		);
-		// 线移动了
-		this.editor.graph.on(
-			"line:change",
-			({ line }) => {
-				this.data.linesMap[line.data.uuid] = {
-					...line.data
-				};
-				this.history.push(this.data);
-			},
-			9999
-		);
-		this.editor.graph.on(
-			"line:add",
-			({ line }) => {
-				this.data.linesMap[line.data.uuid] = {
-					...line.data
-				};
-				this.history.push(this.data);
-			},
-			9999
-		);
-		this.editor.graph.on(
-			"line:remove",
-			({ uuid }) => {
-				delete this.data.linesMap[uuid];
-				this.history.push(this.data);
-			},
-			9999
-		);
+		const historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete"]
+		historyChangeEvents.forEach(event => {
+			this.editor.graph.on(
+				event,
+				() => {
+					this.history.push(this.getNowDataMap());
+				},
+				9999
+			);
+		})
+	}
+
+	getNowDataMap() {
+		const nodes = this.editor.graph.node.nodes;
+		const lines = this.editor.graph.line.lines;
+		let nodesMap = {};
+		let linesMap = {};
+		for (let uuid in nodes) {
+			nodesMap[uuid] = nodes[uuid].data;
+		}
+		for (let uuid in lines) {
+			linesMap[uuid] = lines[uuid].data;
+		}
+		this.data = {
+			nodesMap,
+			linesMap
+		};
+		return this.data;
 	}
 
 
