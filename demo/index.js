@@ -75,6 +75,7 @@ class Editor extends PureComponent {
 	addEditorEvent() {
 		// 选中
 		this.editor.graph.on("node:click", ({ node }) => {
+			console.log(node)
 			const fromLines = node.fromLines;
 			const fromNodes = [];
 			const nodes = this.editor.graph.node.nodes;

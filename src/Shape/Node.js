@@ -72,6 +72,11 @@ class Node {
 		if (typeof data.uuid === "undefined") {
 			data.uuid = uuid();
 		}
+		if(data.uuid && data.uuid.indexOf("-")>-1){
+			console.log(data.uuid)
+			data.uuid = data.uuid.replace(/-/g, "");
+		}
+		console.log(data.uuid)
 		const node = this.renderNode(data);
 		this.graph.fire("node:change", { node });
 	};
