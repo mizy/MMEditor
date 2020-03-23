@@ -18,6 +18,7 @@ class MMEditor extends Event {
 		this.svg = Snap(this.dom.select("svg"));
 		this.paper = this.svg.g();
 		this.paper.addClass("mm-editor-paper");
+		this.container = this.dom.select(".mm-editor");
 		this.resize();
 		this.graph = new Graph(this);
 		this.controller = new Controller(this);
@@ -26,6 +27,7 @@ class MMEditor extends Event {
 
 	initDom(dom) {
 		dom.innerHTML = `<div class="mm-editor" >
+				<div class="mm-editor-back" ></div>
 				<div class="mm-editor-svg" >
 					<svg  />
 				</div>

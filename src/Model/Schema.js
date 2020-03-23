@@ -47,8 +47,7 @@ class Schema {
 			"line:change",
 			({ line }) => {
 				this.data.linesMap[line.data.uuid] = {
-					...line.data,
-					...line.label
+					...line.data
 				};
 				this.history.push(this.data);
 			},
@@ -58,8 +57,7 @@ class Schema {
 			"line:add",
 			({ line }) => {
 				this.data.linesMap[line.data.uuid] = {
-					...line.data,
-					...line.label
+					...line.data
 				};
 				this.history.push(this.data);
 			},

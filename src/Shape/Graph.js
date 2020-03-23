@@ -14,7 +14,6 @@ class Graph extends Event {
 		this.node = new Node(this);
 		this.line = new Line(this);
 		this.achorLine = new AchorLine(this);
-
 		this.node.linkPointsG.before(this.line.lineG);
 		this.animation = Animation;
 		this.listenEvents();
