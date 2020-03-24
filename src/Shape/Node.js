@@ -72,7 +72,7 @@ class Node {
 		if (typeof data.uuid === "undefined") {
 			data.uuid = uuid();
 		}
-		if(data.uuid && data.uuid.indexOf("-")>-1){
+		if (data.uuid && data.uuid.indexOf("-") > -1) {
 			console.log(data.uuid)
 			data.uuid = data.uuid.replace(/-/g, "");
 		}

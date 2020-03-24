@@ -19,6 +19,7 @@ class History {
 		this.index++;
 		this.schema.editor.fire("change");
 	}
+
 	/**
 	 * @param  {} index
 	 * @param  {} data

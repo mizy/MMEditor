@@ -3,6 +3,7 @@ import Line from "./Line";
 import Event from "../Utils/Event";
 import Animation from "./Animation";
 import AchorLine from './AchorLine';
+const backSvg = require("../back.svg");
 /**
  * @class
  * @extends Event
@@ -21,6 +22,11 @@ class Graph extends Event {
 		this.mode = editor.config.mode;
 
 		this.listenEvents();
+		this.addBack();
+	}
+
+	addBack() {
+		this.editor.container.select(".mm-editor-back").node.style.backgroundImage = `url(${backSvg})`
 	}
 
 	listenEvents() {
