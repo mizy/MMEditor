@@ -263,9 +263,7 @@ class Node {
 						this.setActive(node);
 					}
 				} else {
-					if (this.actives[node.data.uuid]) {
-						this.unActive();
-					}
+					this.unActive();
 					this.setActive(node);
 				}
 				this.graph.fire("node:click", { node, event });

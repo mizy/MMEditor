@@ -26,7 +26,7 @@ class Schema {
 				},
 				9999
 			);
-		})
+		});
 	}
 
 	getNowDataMap() {

@@ -49,28 +49,7 @@ class Graph extends Event {
 
 		// 查看模式不能删除节点、线条；如果存在部分可操作则自己在业务中监听处理相关逻辑
 		if (this.mode !== "view") {
-			document.addEventListener("keydown", e => {
-				if (!this.focus) return;
-				if (e.key === "Backspace") {
-					const deleteKeys = [];
-					for (let key in this.node.actives) {
-						// 不触发事件
-						this.node.deleteNode(this.node.actives[key], true);
-						delete this.node.actives[key];
-						deleteKeys.push(key);
-					}
-					this.line.activeLine && this.line.deleteLine(this.line.activeLine);
-					this.fire("delete", { event: e, deleteKeys })
-				}
-				if (e.keyCode === "C".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-					this.fire("copy", { event: e })
-				}
-				if (e.keyCode === "V".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-					this.fire("paste", { event: e })
-				}
-				e.preventDefault();
-				return false;
-			});
+			document.addEventListener("keydown", this.onKeyDown);
 		}
 
 		this.on("line:drag", () => {
@@ -96,6 +75,35 @@ class Graph extends Event {
 			}
 		});
 
+	}
+
+	onKeyDown = (e) => {
+		if (!this.focus) return;
+		if (e.key === "Backspace") {
+			const deleteKeys = [];
+			for (let key in this.node.actives) {
+				// 不触发事件
+				this.node.deleteNode(this.node.actives[key], true);
+				delete this.node.actives[key];
+				deleteKeys.push(key);
+			}
+			this.line.activeLine && this.line.deleteLine(this.line.activeLine);
+			this.fire("delete", { event: e, deleteKeys })
+		}
+		if (e.keyCode === "C".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+			this.fire("copy", { event: e })
+		}
+		if (e.keyCode === "V".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+			this.fire("paste", { event: e })
+		}
+		if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
+			this.editor.schema.undo();
+		}
+		if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && e.shiftKey) {
+			this.editor.schema.redo();
+		}
+		e.preventDefault();
+		return false;
 	}
 
 	/**
@@ -144,6 +152,7 @@ class Graph extends Event {
 	clearGraph() {
 		this.line.clear();
 		this.node.clear();
+		document.removeEventListener("keydown", this.onKeyDown)
 	}
 }
 export default Graph;
