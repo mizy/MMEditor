@@ -49,14 +49,13 @@ class AchorLine {
 		if (x5 < 2.5) {
 			x = Math.floor(x / 5) * 5;
 		} else {
-			x = Math.ceir(x / 5) * 5;
+			x = Math.ceil(x / 5) * 5;
 		}
 		if (y5 < 2.5) {
 			y = Math.floor(y / 5) * 5;
 		} else {
-			y = Math.ceir(y / 5) * 5;
+			y = Math.ceil(y / 5) * 5;
 		}
-		console.log()
 		return { x, y };
 	}
 
@@ -105,6 +104,7 @@ class AchorLine {
 				d: path,
 				style: "display: block"
 			});
+			if (!this.hideAchor) return this.checkAchor(newXY.x, newXY.y)
 			return newXY;
 		}
 		if (!this.hideAchor) return this.checkAchor(x, y)
