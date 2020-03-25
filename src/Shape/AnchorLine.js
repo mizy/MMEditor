@@ -1,15 +1,17 @@
 class AchorLine {
 	constructor(graph) {
 		this.graph = graph;
-		this.achorLines = {};
+		this.anchorLines = {};
 		this.paper = graph.editor.paper;
-		this.achorDistance = graph.editor.config.achorDistance || 5;
+		this.anchorDistance = graph.editor.config.anchorDistance || 5;
+		this.anchorXLength = graph.editor.config.anchorXLength || 10;
+		this.anchorYLength = graph.editor.config.anchorYLength || 10;
 		this.hideAchorLine = graph.editor.config.hideAchorLine;
 		this.hideAchor = graph.editor.config.hideAchor;
-		this.achors = [];
+		this.anchors = [];
 		this.path = this.paper.path();
 		this.path.attr({
-			class: "achor-line"
+			class: "anchor-line"
 		})
 	}
 
@@ -19,7 +21,7 @@ class AchorLine {
 	makeAllAnchors(origin) {
 		if (this.hideAchorLine) return;
 		this.node = origin;
-		const achors = [];
+		const anchors = [];
 		const { nodes } = this.graph.node;
 		for (let key in nodes) {
 			if (origin.data.uuid === key) continue;
@@ -27,7 +29,7 @@ class AchorLine {
 			const bbox = node.getBBox();// 缓存bbox
 			node.bbox = bbox;
 			const { x, y, width, height } = bbox;
-			achors.push({
+			anchors.push({
 				x, y
 			}, {
 				x: x + width, y
@@ -40,21 +42,22 @@ class AchorLine {
 			})
 		}
 
-		this.achors = achors;
+		this.anchors = anchors;
 	}
 
 	checkAchor(x, y) {
-		const x5 = x % 5;
-		const y5 = y % 5;
-		if (x5 < 2.5) {
-			x = Math.floor(x / 5) * 5;
+		const { anchorXLength, anchorYLength } = this;
+		const x5 = x % anchorXLength;
+		const y5 = y % anchorYLength;
+		if (x5 < anchorXLength / 2) {
+			x = Math.floor(x / anchorXLength) * anchorXLength;
 		} else {
-			x = Math.ceil(x / 5) * 5;
+			x = Math.ceil(x / anchorXLength) * anchorXLength;
 		}
-		if (y5 < 2.5) {
-			y = Math.floor(y / 5) * 5;
+		if (y5 < anchorYLength / 2) {
+			y = Math.floor(y / anchorYLength) * anchorYLength;
 		} else {
-			y = Math.ceil(y / 5) * 5;
+			y = Math.ceil(y / anchorYLength) * anchorYLength;
 		}
 		return { x, y };
 	}
@@ -73,38 +76,40 @@ class AchorLine {
 			const bl = { x, y: y + height };
 			const cc = { x: x + width / 2, y: y + height / 2 };
 			const nowPoints = [tl, tr, br, bl, cc];
-			let final = {}, newXY = { x, y };
-			const achor = this.achors.find(achor => {
+			let final = {}, newXY = { x, y }, coordFlag = '';
+			const anchor = this.anchors.find(anchor => {
 				return nowPoints.find((point, index) => {
-					const deltaY = achor.y - point.y;
-					const deltaX = achor.x - point.x;
-					if (Math.abs(deltaX) < this.achorDistance) {
-						final.x = achor.x;
-						newXY.x += deltaX
+					const deltaY = anchor.y - point.y;
+					const deltaX = anchor.x - point.x;
+					if (Math.abs(deltaX) < this.anchorDistance) {
+						final.x = anchor.x;
+						newXY.x += deltaX;
+						coordFlag = 'x';
 						return true;
 					}
-					if (Math.abs(deltaY) < this.achorDistance) {
-						final.y = achor.y;
+					if (Math.abs(deltaY) < this.anchorDistance) {
+						final.y = anchor.y;
 						newXY.y += deltaY;
+						coordFlag = 'y';
 						return true
 					}
 				})
 			})
-			if (!achor) {
-				this.path.attr({
-					style: "display: none"
-				})
+			if (!anchor) {
+				this.path.node.style.display = "none";
 				if (!this.hideAchor) return this.checkAchor(x, y)
 				return { x, y }
 			}
 			// 中心点坐标补齐
 			!final.x ? final.x = cc.x : final.y = cc.y;
-			const path = `M${final.x},${final.y} L${achor.x},${achor.y}`;
-			this.path.attr({
-				d: path,
-				style: "display: block"
-			});
-			if (!this.hideAchor) return this.checkAchor(newXY.x, newXY.y)
+			const path = `M${final.x},${final.y} L${anchor.x},${anchor.y}`;
+			this.path.node.setAttribute("d", path);
+			this.path.node.style.display = "block";
+			if (!this.hideAchor) {
+				const anchorXY = this.checkAchor(newXY.x, newXY.y);
+				anchorXY[coordFlag] = newXY[coordFlag];
+				return anchorXY;
+			}
 			return newXY;
 		}
 		if (!this.hideAchor) return this.checkAchor(x, y)

@@ -76,7 +76,6 @@ class Node {
 			console.log(data.uuid)
 			data.uuid = data.uuid.replace(/-/g, "");
 		}
-		console.log(data.uuid)
 		const node = this.renderNode(data);
 		this.graph.fire("node:change", { node });
 	};
@@ -125,11 +124,9 @@ class Node {
 			class: "mm-node-shape"
 		});
 		this.nodes[item.uuid] = node;
-		node.attr({
-			class: "mm-node",
-			"data-id": key,
-			transform: `translate(${item.x || 0},${item.y || 0})`
-		});
+		node.node.setAttribute("class", "mm-node");
+		node.node.setAttribute("data-id", key);
+		node.node.setAttribute("transform", `translate(${item.x || 0},${item.y || 0})`);
 		node.toLines = new Set();
 		node.fromLines = new Set();
 		node.data = item;
@@ -227,7 +224,7 @@ class Node {
 				const info = transform.globalMatrix.split();
 				let x = (node.startX || 0) + dx / info.scalex;
 				let y = (node.startY || 0) + dy / info.scalex;
-				const newXY = this.graph.achorLine.check(x, y);
+				const newXY = this.graph.anchorLine.check(x, y);
 				if (newXY) {
 					x = newXY.x;
 					y = newXY.y;
@@ -237,7 +234,7 @@ class Node {
 
 			},
 			(x, y, e) => {
-				this.graph.achorLine.makeAllAnchors(node);
+				this.graph.anchorLine.makeAllAnchors(node);
 				node.bbox = node.getBBox();
 				node.clientX = e.clientX;
 				node.clientY = e.clientY;
@@ -246,7 +243,7 @@ class Node {
 				node.startY = node.data.y;
 			},
 			(e) => {
-				this.graph.achorLine.hidePath();
+				this.graph.anchorLine.hidePath();
 				if (node.startX === node.data.x && node.startY === node.data.y) {
 					return false;
 				}
@@ -273,9 +270,7 @@ class Node {
 			() => {
 				if (this.graph.linkStatus === "lineing") return false;
 				node.linkPoints.forEach(point => {
-					point.attr({
-						display: "block"
-					});
+					point.node.style.display = "block";
 				});
 			},
 			() => {
@@ -284,9 +279,7 @@ class Node {
 					return false;
 				}
 				node.linkPoints.forEach(point => {
-					point.attr({
-						display: "none"
-					});
+					point.node.style.display = "none";
 				});
 			}
 		);

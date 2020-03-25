@@ -160,7 +160,7 @@ const DefaultLine = {
 	renderLabel(data, allNodesMap, lineShapePath, labelGroup) {
 		const { fromX, toX, labelCfg } = data;
 		let { label } = data;
-		// if (!label) return null;
+		if (!label) return null;
 		// label 样式
 		const {
 			refX = 0,

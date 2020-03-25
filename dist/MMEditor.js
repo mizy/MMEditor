@@ -8581,9 +8581,7 @@ function () {
               _this7.setActive(node);
             }
           } else {
-            if (_this7.actives[node.data.uuid]) {
-              _this7.unActive();
-            }
+            _this7.unActive();
 
             _this7.setActive(node);
           }
@@ -9870,6 +9868,52 @@ function (_Event) {
 
     _this = possibleConstructorReturn_default()(this, getPrototypeOf_default()(Graph).call(this));
 
+    _this.onKeyDown = function (e) {
+      if (!_this.focus) return;
+
+      if (e.key === "Backspace") {
+        var deleteKeys = [];
+
+        for (var key in _this.node.actives) {
+          // 不触发事件
+          _this.node.deleteNode(_this.node.actives[key], true);
+
+          delete _this.node.actives[key];
+          deleteKeys.push(key);
+        }
+
+        _this.line.activeLine && _this.line.deleteLine(_this.line.activeLine);
+
+        _this.fire("delete", {
+          event: e,
+          deleteKeys: deleteKeys
+        });
+      }
+
+      if (e.keyCode === "C".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+        _this.fire("copy", {
+          event: e
+        });
+      }
+
+      if (e.keyCode === "V".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+        _this.fire("paste", {
+          event: e
+        });
+      }
+
+      if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
+        _this.editor.schema.undo();
+      }
+
+      if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && e.shiftKey) {
+        _this.editor.schema.redo();
+      }
+
+      e.preventDefault();
+      return false;
+    };
+
     _this.onLinkPointHover = function (ele) {
       _this.hoverLinkPoint = ele;
     };
@@ -9928,43 +9972,7 @@ function (_Event) {
       }); // 查看模式不能删除节点、线条；如果存在部分可操作则自己在业务中监听处理相关逻辑
 
       if (this.mode !== "view") {
-        document.addEventListener("keydown", function (e) {
-          if (!_this2.focus) return;
-
-          if (e.key === "Backspace") {
-            var deleteKeys = [];
-
-            for (var key in _this2.node.actives) {
-              // 不触发事件
-              _this2.node.deleteNode(_this2.node.actives[key], true);
-
-              delete _this2.node.actives[key];
-              deleteKeys.push(key);
-            }
-
-            _this2.line.activeLine && _this2.line.deleteLine(_this2.line.activeLine);
-
-            _this2.fire("delete", {
-              event: e,
-              deleteKeys: deleteKeys
-            });
-          }
-
-          if (e.keyCode === "C".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-            _this2.fire("copy", {
-              event: e
-            });
-          }
-
-          if (e.keyCode === "V".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-            _this2.fire("paste", {
-              event: e
-            });
-          }
-
-          e.preventDefault();
-          return false;
-        });
+        document.addEventListener("keydown", this.onKeyDown);
       }
 
       this.on("line:drag", function () {
@@ -9992,12 +10000,12 @@ function (_Event) {
         }
       });
     }
+  }, {
+    key: "addLinkHoverEvent",
+
     /**
      * 添加链接点事件
      */
-
-  }, {
-    key: "addLinkHoverEvent",
     value: function addLinkHoverEvent() {
       var _this3 = this;
 
@@ -10044,6 +10052,7 @@ function (_Event) {
     value: function clearGraph() {
       this.line.clear();
       this.node.clear();
+      document.removeEventListener("keydown", this.onKeyDown);
     }
   }]);
 

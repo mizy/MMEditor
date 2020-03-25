@@ -83,8 +83,8 @@ class Line {
 			data: { type }
 		} = line;
 		const { data } = this.shapes[type || "default"].render(line.data, nodes, line.shape);
-		this.shapes[type || "default"].renderArrow(line.data, nodes, line.arrow);
-		this.shapes[type || "default"].renderLabel(line.data, nodes, line.shape, line.label);
+		line.arrow = this.shapes[type || "default"].renderArrow(line.data, nodes, line.arrow);
+		line.label = this.shapes[type || "default"].renderLabel(line.data, nodes, line.shape, line.label);
 		line.data = Object.assign({}, line.data, data);
 	}
 

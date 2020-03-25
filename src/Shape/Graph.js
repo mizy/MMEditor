@@ -2,7 +2,7 @@ import Node from "./Node";
 import Line from "./Line";
 import Event from "../Utils/Event";
 import Animation from "./Animation";
-import AchorLine from './AchorLine';
+import AnchorLine from './AnchorLine';
 const backSvg = require("../back.svg");
 /**
  * @class
@@ -14,7 +14,7 @@ class Graph extends Event {
 		this.editor = editor;
 		this.node = new Node(this);
 		this.line = new Line(this);
-		this.achorLine = new AchorLine(this);
+		this.anchorLine = new AnchorLine(this);
 		this.node.linkPointsG.before(this.line.lineG);
 		this.animation = Animation;
 
@@ -22,7 +22,8 @@ class Graph extends Event {
 		this.mode = editor.config.mode;
 
 		this.listenEvents();
-		this.addBack();
+		if (this.editor.config.showBackGrid)
+			this.addBack();
 	}
 
 	addBack() {
