@@ -3,6 +3,7 @@ import Snap, { eve, mina } from "./Snap/snap.svg.js";
 import Event from "./Utils/Event";
 import Controller from "./Utils/Controller";
 import Schema from "./Model/Schema";
+import Minimap from './Plugins/Minimap';
 import "./index.less";
 
 /**
@@ -17,6 +18,7 @@ class MMEditor extends Event {
 			hideAchorLine: false,
 			anchorDistance: 5,
 			showBackGrid: true,
+			showMiniMap: true
 		}, config);
 		if (!config.dom) return;
 		this.dom = this.initDom(config.dom);
@@ -28,6 +30,10 @@ class MMEditor extends Event {
 		this.graph = new Graph(this);
 		this.controller = new Controller(this);
 		this.schema = new Schema(this);
+		if (this.config.showMiniMap) {
+			this.minimap = new Minimap(this);
+			this.minimap.init();
+		}
 	}
 
 	initDom(dom) {

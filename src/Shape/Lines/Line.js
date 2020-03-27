@@ -208,6 +208,7 @@ const DefaultLine = {
 			fill: style.stroke,
 			width,
 			height,
+			stroke: "transparent",
 			x: x - width * 0.5,
 			y: y - height * 0.5
 		});

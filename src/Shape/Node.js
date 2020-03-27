@@ -275,7 +275,7 @@ class Node {
 			},
 			() => {
 				if (this.graph.linkStatus === "lineing") return false;
-				if (this.activeNode && this.activeNode.data.uuid === node.data.uuid) {
+				if (this.actives[node.data.uuid]  ) {
 					return false;
 				}
 				node.linkPoints.forEach(point => {
@@ -302,9 +302,7 @@ class Node {
 			});
 			this.actives[node.data.uuid] = node;
 			node.linkPoints.forEach(point => {
-				point.attr({
-					display: "block"
-				});
+				point.node.style.display = "block";
 			});
 		}
 	}
@@ -332,9 +330,7 @@ class Node {
 			filter: null
 		});
 		node.linkPoints.forEach(point => {
-			point.attr({
-				display: "none"
-			});
+			point.node.style.display = "none";
 		});
 	}
 

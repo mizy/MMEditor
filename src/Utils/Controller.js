@@ -82,6 +82,15 @@ class Controller extends Event {
 		this.paper.transform(transformString)
 	}
 
+	moveTo(x,y){
+		const transform = this.paper.transform();
+		const { scalex } = transform.localMatrix.split();
+		const m = new Snap.Matrix();
+		m.scale(scalex);
+		m.translate(x,y);
+		this.paper.transform(m.toString())
+	}
+
 	onWheel = e => {
 		e.preventDefault();
 		if (e.ctrlKey) {// 双指
@@ -118,6 +127,22 @@ class Controller extends Event {
 		transform.localMatrix.scale(newScale, newScale, cx, cy);
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);
+	};
+
+	zoomTo = (newScale, cx = 0, cy = 0) => {
+		const transform = this.paper.transform();
+		const { dx,dy } = transform.localMatrix.split();
+		const m = new Snap.Matrix();
+		m.translate(dx,dy);
+		m.scale(newScale,newScale,cx,cy);
+		this.paper.transform(m.toString())
+	};
+
+	transform = (newScale, x = 0, y = 0) => {
+		const m = new Snap.Matrix();
+		m.scale(newScale);
+		m.translate(x,y);
+		this.paper.transform(m.toString())
 	};
 
 	panning = ev => {

@@ -103,8 +103,8 @@ class Schema {
 	redo() {
 		this.editor.clearGraph();
 		this.history.redo();
-		this.editor.fire("redo");
 		this.renderData(this.data);
+		this.editor.fire("redo");
 	}
 
 	/**
@@ -113,8 +113,8 @@ class Schema {
 	undo() {
 		this.editor.clearGraph();
 		this.history.undo();
-		this.editor.fire("undo");
 		this.renderData(this.data);
+		this.editor.fire("undo");
 	}
 
 	/**
