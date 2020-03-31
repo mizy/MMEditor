@@ -37,13 +37,15 @@ class Node {
 			this.copyNode = { ...this.actives };
 		});
 		this.graph.on("paste", () => {
+			this.unActive();
 			for (let key in this.copyNode) {
 				const node = this.copyNode[key];
 				let newData = { ...node.data };
 				newData.x += 20 + Math.random() * 20;
 				newData.y += 20 + Math.random() * 20;
 				delete newData.uuid;
-				this.addNode(newData)
+				const newNode = this.addNode(newData);
+				this.setActive(newNode)
 			}
 		});
 	}
@@ -78,6 +80,7 @@ class Node {
 		}
 		const node = this.renderNode(data);
 		this.graph.fire("node:change", { node });
+		return node;
 	};
 
 	/**
@@ -204,7 +207,14 @@ class Node {
 		);
 	}
 
-	panNode(node, x, y) {
+	panNode(node,info,dx,dy) {
+		let x = (node.startX || 0) + dx / info.scalex;
+		let y = (node.startY || 0) + dy / info.scalex;
+		const newXY = this.graph.anchorLine.check(x, y);
+		if (newXY) {
+			x = newXY.x;
+			y = newXY.y;
+		}
 		node.data.x = x;
 		node.data.y = y;
 		node.linkPoints.forEach(circle => {
@@ -212,6 +222,8 @@ class Node {
 		});
 		node.node.setAttribute("transform", `translate(${x} ,${y})`);
 	}
+
+
 
 	/**
 	 * 给节点添加事件
@@ -222,18 +234,23 @@ class Node {
 			(dx, dy) => {
 				const transform = this.paper.transform();
 				const info = transform.globalMatrix.split();
-				let x = (node.startX || 0) + dx / info.scalex;
-				let y = (node.startY || 0) + dy / info.scalex;
-				const newXY = this.graph.anchorLine.check(x, y);
-				if (newXY) {
-					x = newXY.x;
-					y = newXY.y;
+				for(let key in this.actives){
+					if(key !== node.data.uuid){
+						this.panNode(this.actives[key],info,dx,dy);
+						this.graph.line.updateByNode(this.actives[key])
+					}
 				}
-				this.panNode(node, x, y);
+				this.panNode(node,info,dx,dy);
+				
 				this.graph.fire("node:move", { node });
 
 			},
 			(x, y, e) => {
+				// 拖动时是否有选中其他
+				for(let key in this.actives){
+					this.actives[key].startX = this.actives[key].data.x;
+					this.actives[key].startY = this.actives[key].data.y;
+				}
 				this.graph.anchorLine.makeAllAnchors(node);
 				node.bbox = node.getBBox();
 				node.clientX = e.clientX;
