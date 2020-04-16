@@ -16,7 +16,7 @@ class MiniMap {
 	}
 
 	init() {
-		const dom = `<div class="mm-minimap" style="padding:${this.padding}px">
+		const dom = `<div class="mm-minimap" >
 			<canvas width="100%" height="100%"></canvas>
 			<div class="drag-rect" style="left:${this.padding}px;top:${this.padding}px">
 				<div class="drag-point"></div>
@@ -70,8 +70,8 @@ class MiniMap {
 			const top =  style.top ? parseInt(style.top.split("px")[0]) : 0;
 			controller.transform(
 				this.svgBBox.width/(width* this.scale),
-				-(left-20)*this.scale,
-				-(top-20)*this.scale,
+				-(left-this.padding)*this.scale,
+				-(top-this.padding)*this.scale,
 			)
 		}, (x, y, e) => {
 			e.preventDefault();
@@ -79,7 +79,18 @@ class MiniMap {
 			this.dragStartBBox = this.drag.node.getBoundingClientRect();
 			return false;
 		});
-		this.editor.on("change", this.render)
+		this.editor.on("change", this.render);
+		this.editor.on("panning",this.resetDrag);
+		this.editor.on("zoom",this.resetDrag);
+	}
+
+	resetDrag=()=>{
+		const transform = this.editor.paper.transform();
+		const { dx, dy,scalex } = transform.localMatrix.split();
+		const x = dx*scalex;
+		const y = dy*scalex;
+		this.drag.node.style.left = this.padding-x/this.scale;
+		this.drag.node.style.top = this.padding-y/this.scale;
 	}
 
 	render = () => {
@@ -87,13 +98,18 @@ class MiniMap {
 		this.timeout = setTimeout(async () => {
 			const node = this.editor.svg.node;
 			const transform = this.editor.paper.transform();
-			const { scalex, dx, dy } = transform.localMatrix.split();
+			const { dx, dy } = transform.localMatrix.split();
 			const svgBBox = node.getBoundingClientRect();
-			const svg = node.innerHTML;
-			const paperBBox = this.editor.paper.node.getBBox();
+			const images = node.querySelectorAll("image")||[];
+			images.forEach(img=>{
+				img.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+			})
+			const svg = node.innerHTML.replace(/\"mm-editor-paper\" transform=\"matrix\([-\d\,]+\)\"/,`"mm-editor-paper" `)
 			const m = new Snap.Matrix();
+			console.log(svg)
+			m.translate(this.padding,this.padding);
 			m.scale(1 / this.scale);
-			m.translate(dx,dy);
+			// m.translate(this.dx,this.dy);
 
 			this.svgBBox = svgBBox;			
 			this.dragBBox={
@@ -103,8 +119,8 @@ class MiniMap {
 			this.drag.node.style.width = this.dragBBox.width + "px";
 			this.drag.node.style.height = this.dragBBox.height + "px";
 			this.converting = await Canvg.fromString(this.ctx, `<g transform="${m.toString()}" class="minimap-graph">${svg}</g>`,{
-				offsetX:-10,
-				offsetY:-10
+				// offsetX:10,
+				// offsetY:10
 			});
 			this.converting.start();
 		}, 200)
@@ -113,6 +129,8 @@ class MiniMap {
 	destroy() {
 		clearTimeout(this.timeout);
 		this.editor.off("change", this.render);
+		this.editor.off("panning",this.render);
+		this.editor.off("zoom",this.render);
 		this.drag.unDrag();
 		this.dragPoint.unDrag();
 	}

@@ -79,7 +79,8 @@ class Controller extends Event {
 		const { scalex } = transform.localMatrix.split();
 		transform.localMatrix.translate(x / scalex, y / scalex);
 		const transformString = transform.localMatrix.toTransformString();
-		this.paper.transform(transformString)
+		this.paper.transform(transformString);
+		this.editor.fire("panning")
 	}
 
 	moveTo(x,y){
@@ -95,7 +96,8 @@ class Controller extends Event {
 		e.preventDefault();
 		if (e.ctrlKey) {// 双指
 			const newScale = (1 - e.deltaY * this.scaleRatio);
-			this.zoom(newScale, e.offsetX, e.offsetY)
+			this.zoom(newScale, e.offsetX, e.offsetY);
+
 		} else {
 			this.pan(-e.deltaX, -e.deltaY)
 		}
@@ -114,7 +116,7 @@ class Controller extends Event {
 		ev.preventDefault();
 		this.svg.unmousemove(this.panning);
 		// this.svg.unmouseup(this.panStop);
-		this.dispatch("panEnd", { event: ev });
+		this.editor.fire("panEnd", { event: ev });
 	};
 	/**
 	 * 缩放
@@ -127,6 +129,8 @@ class Controller extends Event {
 		transform.localMatrix.scale(newScale, newScale, cx, cy);
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);
+		this.editor.fire("zoom", { scale:newScale });
+
 	};
 
 	zoomTo = (newScale, cx = 0, cy = 0) => {
@@ -158,6 +162,7 @@ class Controller extends Event {
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);
 		this.startPosition = p1;
+		this.editor.fire("panning",{event:ev})
 	};
 }
 export default Controller;
