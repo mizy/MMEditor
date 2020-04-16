@@ -106,7 +106,6 @@ class MiniMap {
 			})
 			const svg = node.innerHTML.replace(/\"mm-editor-paper\" transform=\"matrix\([-\d\,]+\)\"/,`"mm-editor-paper" `)
 			const m = new Snap.Matrix();
-			console.log(svg)
 			m.translate(this.padding,this.padding);
 			m.scale(1 / this.scale);
 			// m.translate(this.dx,this.dy);
