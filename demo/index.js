@@ -139,7 +139,6 @@ class Editor extends PureComponent {
 		this.editor.graph.node.registeNode(
 			"iconNodeInput",
 			{
-
 				linkPoints: [{ x: 0.5, y: 1 }, { x: 1, y: 0.5 }, { x: 0, y: 0.5 }]
 			},
 			"iconNode"
