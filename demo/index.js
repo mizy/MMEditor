@@ -6,11 +6,15 @@ import MMEditor from "../src/MMEditor";
 import LeftBar from "./Content/LeftBar";
 import RightBar from "./Content/RightBar";
 import TopBar from "./Content/TopBar";
-import { message } from "antd";
+import { message, Popover } from "antd";
 import RightMenu from "./Content/RightMenu";
 import testdata from "./testdata";
 class Editor extends PureComponent {
-	state = {};
+	state = {
+		popOverVisible: false,
+		popTitle:null,
+		popContent:null
+	};
 	// 编辑器实例
 	editor = {};
 
@@ -129,6 +133,41 @@ class Editor extends PureComponent {
 				});
 			}
 		});
+
+		// hover
+		this.editor.graph.on("node:mouseenter", ({ node }) => {
+			const popOver = document.getElementById("pop-over");
+			const { width, height, x, y } = node.getBBox();
+			popOver.setAttribute(
+				"style",
+				`top:${y + height + this.editor.dom.node.offsetTop};left:${x + width/2 + this.editor.dom.node.offsetLeft}`
+			)
+			const { title, text } = node.data.popOverData || {};
+			this.setState({
+				popTitle:title,
+				popContent: text
+			},()=>{
+				this.setState({
+					"popOverVisible":true
+				})
+			})
+		});
+		this.editor.graph.on("node:mouseleave", ({ node }) => {
+			const popOver = document.getElementById("pop-over");
+			this.setState({
+				"popOverVisible":false
+			},()=>{
+				this.setState({
+					popTitle:"",
+					popContent: ""
+				})
+				popOver.setAttribute(
+					"style",
+					`top:-9999px;left:-99999px`
+				)
+			})
+		});
+
 		this.setState({
 			init: true
 		});
@@ -175,7 +214,7 @@ class Editor extends PureComponent {
 	};
 
 	render() {
-		const { init, left, top, rightNodeId, fromNodes, activeNode, topbarRef } = this.state;
+		const { init, left, top, rightNodeId, fromNodes, activeNode, topbarRef, popOverVisible, popTitle, popContent } = this.state;
 		return (
 			<div
 				className="job-editor"
@@ -221,6 +260,15 @@ class Editor extends PureComponent {
 						editor={this.editor}
 					/>
 				)}
+
+					<Popover
+						content={popContent}
+						title={popTitle}
+						visible={popOverVisible}
+						placement="bottom"
+					>
+						<span id="pop-over"></span>
+					</Popover>
 			</div>
 		);
 	}

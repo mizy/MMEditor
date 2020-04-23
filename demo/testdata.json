@@ -7,6 +7,10 @@
 			"name": "输出-1",
 			"help": "基于Snap.svg可以方便的进行动画操作",
 			"operatorGroup": "load",
+			"popOverData":{
+				"title":"审批人",
+				"text":"张三 | 李四"
+			},
 			"config": {
 				"name": "输出-1",
 				"srcDbName": "test",
@@ -23,6 +27,10 @@
 		},
 		{
 			"component": "read",
+			"popOverData":{
+				"title":"审批人",
+				"text":"泽飞 | 王老是"
+			},
 			"type": "iconNodeInput",
 			"iconPath": "./jobTypes/数据引入@2x.png",
 			"name": "输入-2",
