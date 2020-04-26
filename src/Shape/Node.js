@@ -34,7 +34,17 @@ class Node {
 			this.unActive();
 		});
 		this.graph.on("copy", () => {
-			this.copyNode = { ...this.actives };
+			const activeNode = {
+				...this.actives
+			};
+			let newActiveNode = {};
+			for(let node in activeNode){
+				newActiveNode[node] = {
+					...activeNode[node],
+					data:JSON.parse(JSON.stringify(activeNode[node].data))
+				}
+			}
+			this.copyNode = newActiveNode;
 		});
 		this.graph.on("paste", () => {
 			this.unActive();
