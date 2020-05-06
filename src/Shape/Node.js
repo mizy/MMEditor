@@ -34,7 +34,17 @@ class Node {
 			this.unActive();
 		});
 		this.graph.on("copy", () => {
-			this.copyNode = { ...this.actives };
+			const activeNode = {
+				...this.actives
+			};
+			let newActiveNode = {};
+			for(let node in activeNode){
+				newActiveNode[node] = {
+					...activeNode[node],
+					data:JSON.parse(JSON.stringify(activeNode[node].data))
+				}
+			}
+			this.copyNode = newActiveNode;
 		});
 		this.graph.on("paste", () => {
 			this.unActive();
@@ -290,6 +300,7 @@ class Node {
 				node.linkPoints.forEach(point => {
 					point.node.style.display = "block";
 				});
+				this.graph.fire("node:mouseenter", { node, event });
 			},
 			() => {
 				if (this.graph.linkStatus === "lineing") return false;
@@ -299,6 +310,7 @@ class Node {
 				node.linkPoints.forEach(point => {
 					point.node.style.display = "none";
 				});
+				this.graph.fire("node:mouseleave", { node, event });
 			}
 		);
 	}

@@ -1,4 +1,5 @@
 import React, { Fragment, PureComponent } from "react";
+import ReactDom from "react-dom";
 import "./index.less";
 // import MMEditor from "MMEditor";
 // import MMEditor from "../dist/MMEditor";
@@ -6,7 +7,7 @@ import MMEditor from "../src/MMEditor";
 import LeftBar from "./Content/LeftBar";
 import RightBar from "./Content/RightBar";
 import TopBar from "./Content/TopBar";
-import { message } from "antd";
+import { message, Popover } from "antd";
 import RightMenu from "./Content/RightMenu";
 import testdata from "./testdata";
 class Editor extends PureComponent {
@@ -75,7 +76,6 @@ class Editor extends PureComponent {
 	addEditorEvent() {
 		// 选中
 		this.editor.graph.on("node:click", ({ node }) => {
-			console.log(node)
 			const fromLines = node.fromLines;
 			const fromNodes = [];
 			const nodes = this.editor.graph.node.nodes;
@@ -129,6 +129,7 @@ class Editor extends PureComponent {
 				});
 			}
 		});
+
 		this.setState({
 			init: true
 		});
@@ -139,7 +140,42 @@ class Editor extends PureComponent {
 		this.editor.graph.node.registeNode(
 			"iconNodeInput",
 			{
-				linkPoints: [{ x: 0.5, y: 1 }, { x: 1, y: 0.5 }, { x: 0, y: 0.5 }]
+				linkPoints: [{ x: 0.5, y: 1 }, { x: 1, y: 0.5 }, { x: 0, y: 0.5 }],
+				render: (data, snapPaper) => {
+					const node = snapPaper.rect(0, 0, 180, 32);
+					const text = snapPaper.text(40, 21, data.name);
+					const icon = snapPaper.image(data.iconPath, 5, 4, 24, 24);
+					icon.node.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+					node.attr({
+						class: "icon-node",
+						fill: "#EAEEFA",
+						stroke: "#CCD9FD",
+						rx: 17,
+						ry: 17
+					});
+
+					// popOver
+					const { text:textInfo, title:titleInfo } = data.popOverData || {};
+					const obj = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+					ReactDom.render(
+						<Popover
+							title={titleInfo}
+							content={textInfo}
+							placement="bottom"
+						>
+							<div style={{"width":'24px',height:"24px"}}></div>
+						</Popover>
+					,obj);
+					const popOver = Snap(obj);
+					popOver.attr({
+						width: 24,
+						height: 24,
+						x:5,
+						y:4
+					});
+
+					return snapPaper.group(node, text, icon, popOver);
+    			},
 			},
 			"iconNode"
 		);
