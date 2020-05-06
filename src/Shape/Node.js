@@ -205,7 +205,7 @@ class Node {
 			},
 			() => {
 				if (this.graph.linkStatus === "lineing") return false;
-				if (this.activeNode && this.activeNode.data.uuid === node.data.uuid) {
+				if (this.actives[node.data.uuid]) {
 					return false;
 				}
 				node.linkPoints.forEach(point => {
@@ -351,7 +351,7 @@ class Node {
 			}
 			this.actives = {}
 		}
-		this.graph.fire("node:unactive", { node: this.activeNode });
+		this.graph.fire("node:unactive", { node: node});
 	}
 
 	unActiveNode(node) {
