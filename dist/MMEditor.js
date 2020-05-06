@@ -10186,15 +10186,15 @@ function () {
 
         var info = transform.globalMatrix.split();
 
-        for (var key in _this7.actives) {
-          if (key !== node.data.uuid) {
+        if (_this7.actives[node.data.uuid]) {
+          for (var key in _this7.actives) {
             _this7.panNode(_this7.actives[key], info, dx, dy);
 
             _this7.graph.line.updateByNode(_this7.actives[key]);
           }
+        } else {
+          _this7.panNode(node, info, dx, dy);
         }
-
-        _this7.panNode(node, info, dx, dy);
 
         _this7.graph.fire("node:move", {
           node: node
@@ -10473,18 +10473,23 @@ var DefaultLine = {
   },
   //没用了
   getPointDirect: function getPointDirect(pointNode) {
-    var point2center = [pointNode.data.x - 0.5, pointNode.data.y - 0.5];
+    var point2center = [pointNode.data.x, pointNode.data.y];
     var angel = 0;
 
-    if (point2center[0] === 0) {
-      // 底数为0 去y轴角度90或270
-      angel = point2center[1] > 0 ? -Math.PI / 2 : Math.PI / 2;
+    if (point2center[1] === 0) {
+      angel = Math.PI / 2;
+    } else if (point2center[1] === 1) {
+      angel = -Math.PI / 2;
+    } else if (point2center[0] === 0) {
+      angel = Math.PI;
+    } else if (point2center[0] === 1) {
+      angel = -Math.PI;
     } else {
       // arctan求角度
-      angel = Math.atan(point2center[1] / point2center[0]);
+      angel = Math.atan((point2center[1] - 0.5) / (point2center[0] - 0.5)) + (point2center[0] - 0.5 < 0 ? Math.PI : 0);
     }
 
-    return angel;
+    return angel || 0;
   },
 
   /**

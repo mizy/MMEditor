@@ -234,13 +234,14 @@ class Node {
 			(dx, dy) => {
 				const transform = this.paper.transform();
 				const info = transform.globalMatrix.split();
-				for(let key in this.actives){
-					if(key !== node.data.uuid){
+				if(this.actives[node.data.uuid]){
+					for(let key in this.actives){
 						this.panNode(this.actives[key],info,dx,dy);
 						this.graph.line.updateByNode(this.actives[key])
 					}
+				}else{
+					this.panNode(node,info,dx,dy);
 				}
-				this.panNode(node,info,dx,dy);
 				
 				this.graph.fire("node:move", { node });
 
