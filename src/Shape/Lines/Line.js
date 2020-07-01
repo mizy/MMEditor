@@ -58,7 +58,7 @@ const DefaultLine = {
 		let edgeY = fromY;
 		let endX = toX;
 		let endY = toY;
-		const arrowStartSpace = 1; // 顶部距离node节点的距离
+		const arrowStartSpace = 0; // 顶部距离node节点的距离
 		const arrEndSpace = 8; // 底部距离node节点的距离
 		const arrowEndSpace = 5;// 箭头占用的空间
 		// 根据连接点位置生成控制点
@@ -96,16 +96,6 @@ const DefaultLine = {
 		}
 		let pathString = `M${fromX} ${fromY} T ${edgeX} ${edgeY}`;
 
-
-		let bezierPoint1 = `${edgeX} ${edgeY + Math.max(
-			(fromPointNode.data.y === 1 ? 1 : -1) * Math.abs((edgeY - endY) / 2),
-			50
-		)}`;
-
-		let bezierPoint2 = `${endX} ${endY + Math.min(
-			(toPointNode.data.y === 1 ? 1 : -1) * Math.abs((edgeY - endY) / 2),
-			-50
-		)}`;
 
 		let toPointString = `${endX} ${endY} T ${toX} ${toY} `;
 		const path = `${pathString}C${startControlPoint[0]} ${startControlPoint[1]} ${endControlPoint[0]} ${endControlPoint[1]} ${toPointString}`;
@@ -155,10 +145,86 @@ const DefaultLine = {
 			class: "mm-line-arrow",
 			d: pathString,
 			fill: "rgba(178,190,205,0.7)",
-			transform: matrix.toTransformString()
+			transform: matrix.toString()
 		});
 		path.angle = angle;
 		return path;
+	},
+
+	/** 是否渲染文字
+	 * @param  {} data
+	 * @param  {} allNodesMap
+	 * @param  {} lineShapePath
+	 * @param  {} labelGroup 是否已有文字对象
+	 */
+	renderLabel(data, allNodesMap, lineShapePath, labelGroup) {
+		const { fromX, toX, labelCfg } = data;
+		let { label } = data;
+		if (!label) return null;
+		// label 样式
+		const {
+			refX = 0,
+			refY = 0,
+			autoRotate,
+			showNum = 20,
+			style = {
+				fill: "#333",
+				stroke: "#fff",
+				fontSize: "12px",
+			}
+		} = labelCfg || {};
+		// 获取旋转角度 暂时不支持
+		const totalLen = lineShapePath.getTotalLength();
+		const pointLen = lineShapePath.getPointAtLength(totalLen / 2);
+		let { alpha, x: xPoint, y: yPoint } = pointLen || {};
+		if (label && label.length > showNum && showNum) {
+			label = label.slice(0, showNum) + "..."
+		}
+		if (!labelGroup) {
+			let textCreate = this.paper.text(0, 0, label);
+			let rectCreate = this.paper.rect();
+			labelGroup = this.paper.group(rectCreate, textCreate);
+		}
+		let rect = labelGroup[0];
+		let text = labelGroup[1];
+		const x = xPoint + (refX || 0);
+		const y = yPoint + (refY || 0);
+		text.attr({
+			text: label || "",
+			fill: style.fill,
+			fontSize: style.fontSize,
+			textAnchor: "middle",
+			dominantBaseline: "middle",
+			x,
+			y,
+		})
+		if (!text.bbox || text.oldText !== label) {
+			text.oldText = label;
+			text.bbox = text.getBBox();
+		}
+		// 性能优化
+		const { width, height } = text.bbox;
+		rect.attr({
+			fill: style.stroke,
+			width,
+			height,
+			stroke: "transparent",
+			x: x - width * 0.5,
+			y: y - height * 0.5
+		});
+		labelGroup.attr({
+			class: "mm-line-label"
+		})
+		if (autoRotate) {
+			// 文字顺序方向
+			if (fromX < toX || fromX === toX) {
+				alpha += 180;
+			}
+			labelGroup.attr({
+				transform: `rotate(${alpha},${xPoint + (refX || 0)},${yPoint + (refY || 0)})`
+			})
+		}
+		return labelGroup;
 	},
 
 	/**

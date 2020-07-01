@@ -16,6 +16,10 @@ class Controller extends Event {
 		 */
 		this.scaleRatio = 0.01;
 		this.scale = 1;
+		/**
+		 * 所有吸附节点
+		 */
+		this.achors = [];
 		this.listenEvents();
 	}
 
@@ -37,6 +41,7 @@ class Controller extends Event {
 			this.paper.node.style.transition = null;
 		}, 200)
 	}
+
 
 	listenEvents() {
 		this.svg.mousedown(this.panStart);
@@ -74,17 +79,28 @@ class Controller extends Event {
 		const { scalex } = transform.localMatrix.split();
 		transform.localMatrix.translate(x / scalex, y / scalex);
 		const transformString = transform.localMatrix.toTransformString();
-		this.paper.transform(transformString)
+		this.paper.transform(transformString);
+		this.editor.fire("panning")
+	}
+
+	moveTo(x,y){
+		const transform = this.paper.transform();
+		const { scalex } = transform.localMatrix.split();
+		const m = new Snap.Matrix();
+		m.scale(scalex);
+		m.translate(x,y);
+		this.paper.transform(m.toString())
 	}
 
 	onWheel = e => {
 		e.preventDefault();
 		if (e.ctrlKey) {// 双指
-			this.zoom(e.deltaY, e.offsetX, e.offsetY)
+			const newScale = (1 - e.deltaY * this.scaleRatio);
+			this.zoom(newScale, e.offsetX, e.offsetY);
+
 		} else {
 			this.pan(-e.deltaX, -e.deltaY)
 		}
-
 	};
 
 	panStart = ev => {
@@ -100,21 +116,37 @@ class Controller extends Event {
 		ev.preventDefault();
 		this.svg.unmousemove(this.panning);
 		// this.svg.unmouseup(this.panStop);
-		this.dispatch("panEnd", { event: ev });
+		this.editor.fire("panEnd", { event: ev });
 	};
 	/**
 	 * 缩放
-	 * @param  {} delta zoom 缩放多少
+	 * @param  {} scale 当前基础上 缩放多少
 	 * @param  {} cx=0 zoom 缩放中心点x
 	 * @param  {} cy=0 zoom 缩放中心点y
 	 */
-	zoom = (delta, cx = 0, cy = 0) => {
+	zoom = (newScale, cx = 0, cy = 0) => {
 		const transform = this.paper.transform();
-		const { dx, dy, scalex } = transform.localMatrix.split();
-		let newScale = (1 - delta * this.scaleRatio);
 		transform.localMatrix.scale(newScale, newScale, cx, cy);
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);
+		this.editor.fire("zoom", { scale:newScale });
+
+	};
+
+	zoomTo = (newScale, cx = 0, cy = 0) => {
+		const transform = this.paper.transform();
+		const { dx,dy } = transform.localMatrix.split();
+		const m = new Snap.Matrix();
+		m.translate(dx,dy);
+		m.scale(newScale,newScale,cx,cy);
+		this.paper.transform(m.toString())
+	};
+
+	transform = (newScale, x = 0, y = 0) => {
+		const m = new Snap.Matrix();
+		m.scale(newScale);
+		m.translate(x,y);
+		this.paper.transform(m.toString())
 	};
 
 	panning = ev => {
@@ -130,6 +162,7 @@ class Controller extends Event {
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);
 		this.startPosition = p1;
+		this.editor.fire("panning",{event:ev})
 	};
 }
 export default Controller;

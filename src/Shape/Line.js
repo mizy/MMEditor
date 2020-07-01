@@ -83,7 +83,8 @@ class Line {
 			data: { type }
 		} = line;
 		const { data } = this.shapes[type || "default"].render(line.data, nodes, line.shape);
-		this.shapes[type || "default"].renderArrow(line.data, nodes, line.arrow);
+		line.arrow = this.shapes[type || "default"].renderArrow(line.data, nodes, line.arrow);
+		line.label = this.shapes[type || "default"].renderLabel(line.data, nodes, line.shape, line.label);
 		line.data = Object.assign({}, line.data, data);
 	}
 
@@ -98,10 +99,12 @@ class Line {
 		shape.paper = this.paper;
 		const newLine = shape.render(lineData, nodes);
 		const arrow = shape.renderArrow(lineData, nodes);
-
+		const label = shape.renderLabel(lineData, nodes, newLine.path);
 		const g = this.paper.g();
+
 		g.append(newLine.path);
 		g.append(arrow);
+		g.append(label);
 		g.data = Object.assign(
 			{
 				uuid: key
@@ -111,6 +114,7 @@ class Line {
 		);
 		g.shape = newLine.path;
 		g.arrow = arrow;
+		g.label = label;
 		g.attr({
 			class: "mm-line"
 		});
@@ -217,7 +221,6 @@ class Line {
 			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass("hover")
 			this.graph.hoverLinkPoint = undefined;
 		}
-
 	};
 
 	/**
@@ -230,7 +233,7 @@ class Line {
 	}
 
 	/**
-	 * 
+	 * 渲染
 	 * @param {*} lines 
 	 */
 	render(lines = []) {
@@ -301,6 +304,11 @@ class Line {
 			}
 		);
 		g.shape.click(e => {
+			this.setActiveLine(g);
+			this.graph.fire("line:click", { line: g, event: e });
+		});
+		// 点击标签效果与点击线条一样
+		g.label && g.label.click(e => {
 			this.setActiveLine(g);
 			this.graph.fire("line:click", { line: g, event: e });
 		});
@@ -396,9 +404,16 @@ class Line {
 				this.graph.fire("line:drag");
 			},
 			(e) => {
+				const { hoverLinkPoint } = this.graph;
+				let toNode = null;
+				if (hoverLinkPoint) {
+					const toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
+					const toNodeId = toElement.getAttribute("data-node-id");
+					toNode = this.node.nodes[toNodeId];
+				}
 				this.checkNewLine(e);
 				this.tempLine.remove();
-				this.graph.fire("line:drop", { event: e });
+				this.graph.fire("line:drop", { fromNode: node, toNode, event: e });
 			}
 		);
 	};

@@ -1,14 +1,10 @@
-# [MMEditor](https://mizy.github.io/MMEditor/)
+# [MMEditor](https://tnt.tongdun.me/solution/mmEditorSolution)
 * 基于Snap.svg绘图库完成的流程图框架，依赖少，开箱即用，提供dom接口方便对dom进行各种状态操作，demo 提供一个基础的数据流程demo 和 基础的流程项目 设计框架
 * flow editor lib with snap.svg
-* ![](https://mizy.github.io/MMEditor/snapshot.png)
 
 # Demo
 
-[basic demo](https://mizy.github.io/MMEditor/dist/basic.html)
-
-[flow demo](https://mizy.github.io/MMEditor/dist/index.html)
-
+[tnt demo](https://tnt.tongdun.me/solution/mmEditorSolution)
 
 # Install
 ```sh
@@ -17,7 +13,7 @@ npm i MMEditor --save
 
 # Usage
 ```javascript
-	import MMEditor from "mmeditor";
+	import MMEditor from "MMEditor";
 	
 	let index = 0;
 	const editor =  new MMEditor({ dom: document.getElementById("root")});
@@ -66,7 +62,6 @@ npm i MMEditor --save
 	} 
 	// registe file-node
 	editor.graph.node.registeNode("file-node", {
-		// link point position
 		linkPoints: [{ x: 0, y: 0.5 }, { x: 1, y: 0.5 }],
 		render: (data, snapPaper) => {
 			const node = snapPaper.rect(0, 0, 180, 30);
@@ -88,7 +83,7 @@ npm i MMEditor --save
 
 # Documention
 
-[doc](https://mizy.github.io/MMEditor/doc/index.html)
+[司南文档](https://sinan.tongdun.me/book/2035)
 
 
 # Test
@@ -96,9 +91,4 @@ npm i MMEditor --save
 npm i
 npm run start
 ```
-
-# API
-
-![](https://mizy.github.io/MMEditor/MMEditor.png)
-详情见[脑图 API](http://naotu.baidu.com/file/1dd5c0ff16911b44ca80ab25424908d0?token=b0b597b3b04dedb2)
  

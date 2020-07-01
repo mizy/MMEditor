@@ -12,6 +12,7 @@ const IconNode = {
 		const node = snapPaper.rect(0, 0, 180, 32);
 		const text = snapPaper.text(40, 21, data.name);
 		const icon = snapPaper.image(data.iconPath, 5, 4, 24, 24);
+		icon.node.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
 		node.attr({
 			class: "icon-node",
 			fill: "#EAEEFA",
@@ -21,6 +22,7 @@ const IconNode = {
 		});
 		return snapPaper.group(node, text, icon);
 	},
+
 	/**
 	 * @param  {} node
 	 * @param  {} linkPoint
@@ -50,11 +52,19 @@ const IconNode = {
 		};
 		return circle;
 	},
+
 	/**
+	 * 更新渲染点
 	 * @param  {} node
 	 * @param  {} linkPoint
+	 * @param  {} refreshSize
 	 */
-	updateLinkPoint: (node, linkPoint) => {
+	updateLinkPoint: (node, linkPoint, refreshSize) => {
+		if (refreshSize) {
+			const box = node.shape.getBBox();
+			linkPoint.local.x = linkPoint.data.x * box.w;
+			linkPoint.local.y = linkPoint.data.y * box.h;
+		}
 		const { local } = linkPoint;
 		const x = local.x + node.data.x;
 		const y = local.y + node.data.y;

@@ -3,6 +3,7 @@ import Snap, { eve, mina } from "./Snap/snap.svg.js";
 import Event from "./Utils/Event";
 import Controller from "./Utils/Controller";
 import Schema from "./Model/Schema";
+import Minimap from './Plugins/Minimap';
 import "./index.less";
 
 /**
@@ -12,20 +13,32 @@ import "./index.less";
 class MMEditor extends Event {
 	constructor(config) {
 		super();
-		this.config = config;
+		this.config = Object.assign({
+			hideAchor: false,
+			hideAchorLine: false,
+			anchorDistance: 5,
+			showBackGrid: true,
+			showMiniMap: true
+		}, config);
 		if (!config.dom) return;
 		this.dom = this.initDom(config.dom);
 		this.svg = Snap(this.dom.select("svg"));
 		this.paper = this.svg.g();
 		this.paper.addClass("mm-editor-paper");
+		this.container = this.dom.select(".mm-editor");
 		this.resize();
 		this.graph = new Graph(this);
 		this.controller = new Controller(this);
 		this.schema = new Schema(this);
+		if (this.config.showMiniMap) {
+			this.minimap = new Minimap(this);
+			this.minimap.init();
+		}
 	}
 
 	initDom(dom) {
 		dom.innerHTML = `<div class="mm-editor" >
+				<div class="mm-editor-back" ></div>
 				<div class="mm-editor-svg" >
 					<svg  />
 				</div>

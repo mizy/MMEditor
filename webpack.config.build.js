@@ -13,7 +13,10 @@ module.exports = {
 		filename: "MMEditor.js"
 	},
 	externals: {
-		snapsvg: "snapsvg"
+		snapsvg: "snapsvg",
+		canvg: "canvg",
+		uuid:"uuid",
+		classnames:"classnames"
 	},
 	optimization: {
 		minimize: false

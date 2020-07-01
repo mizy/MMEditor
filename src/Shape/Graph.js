@@ -2,6 +2,8 @@ import Node from "./Node";
 import Line from "./Line";
 import Event from "../Utils/Event";
 import Animation from "./Animation";
+import AnchorLine from './AnchorLine';
+const backSvg = require("../back.svg");
 /**
  * @class
  * @extends Event
@@ -12,9 +14,20 @@ class Graph extends Event {
 		this.editor = editor;
 		this.node = new Node(this);
 		this.line = new Line(this);
+		this.anchorLine = new AnchorLine(this);
 		this.node.linkPointsG.before(this.line.lineG);
 		this.animation = Animation;
+
+		// 模式：操作、查看模式
+		this.mode = editor.config.mode;
+
 		this.listenEvents();
+		if (this.editor.config.showBackGrid)
+			this.addBack();
+	}
+
+	addBack() {
+		this.editor.container.select(".mm-editor-back").node.style.backgroundImage = `url(${backSvg})`
 	}
 
 	listenEvents() {
@@ -34,12 +47,12 @@ class Graph extends Event {
 		this.editor.svg.node.addEventListener("blur", e => {
 			this.focus = false;
 		});
-		document.addEventListener("keyup", e => {
-			if (this.focus && e.key === "Backspace") {
-				this.node.activeNode && this.node.deleteNode(this.node.activeNode);
-				this.line.activeLine && this.line.deleteLine(this.line.activeLine);
-			}
-		});
+
+		// 查看模式不能删除节点、线条；如果存在部分可操作则自己在业务中监听处理相关逻辑
+		if (this.mode !== "view") {
+			document.addEventListener("keydown", this.onKeyDown);
+		}
+
 		this.on("line:drag", () => {
 			this.linkStatus = "lineing";
 			for (let key in this.node.nodes) {
@@ -62,6 +75,36 @@ class Graph extends Event {
 				});
 			}
 		});
+
+	}
+
+	onKeyDown = (e) => {
+		if (!this.focus) return;
+		if (e.key === "Backspace") {
+			const deleteKeys = [];
+			for (let key in this.node.actives) {
+				// 不触发事件
+				this.node.deleteNode(this.node.actives[key], true);
+				delete this.node.actives[key];
+				deleteKeys.push(key);
+			}
+			this.line.activeLine && this.line.deleteLine(this.line.activeLine);
+			this.fire("delete", { event: e, deleteKeys })
+		}
+		if (e.keyCode === "C".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+			this.fire("copy", { event: e })
+		}
+		if (e.keyCode === "V".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+			this.fire("paste", { event: e })
+		}
+		if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
+			this.editor.schema.undo();
+		}
+		if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && e.shiftKey) {
+			this.editor.schema.redo();
+		}
+		e.preventDefault();
+		return false;
 	}
 
 	/**
@@ -110,6 +153,7 @@ class Graph extends Event {
 	clearGraph() {
 		this.line.clear();
 		this.node.clear();
+		document.removeEventListener("keydown", this.onKeyDown)
 	}
 }
 export default Graph;
