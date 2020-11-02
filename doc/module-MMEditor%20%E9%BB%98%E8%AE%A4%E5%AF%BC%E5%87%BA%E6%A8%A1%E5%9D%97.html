@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Model/History.js</title>
+    <title>JSDoc: Module: MMEditor 默认导出模块</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,61 +17,59 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Model/History.js</h1>
+    <h1 class="page-title">Module: MMEditor 默认导出模块</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * 历史记录堆栈管理类
- * @class
- */
-class History {
-	index = -1;
+        
+    
+</header>
 
-	schemaList = [];
+<article>
+    <div class="container-overview">
+    
+        
 
-	constructor(schema) {
-		this.schema = schema;
-	}
+        
+    
+    </div>
 
-	/**
-	 * @param  {} data
-	 */
-	push(data) {
-		this.schemaList.push(JSON.stringify(data).trim(" "));
-		this.index++;
-		this.schema.editor.fire("change");
-	}
+    
 
-	/**
-	 * @param  {} index
-	 * @param  {} data
-	 */
-	replace(index, data) {
-		this.schemaList[this.index + index] = data;
-	}
+    
 
-	// 重做
-	redo() {
-		this.schema.data = JSON.parse(this.schemaList[++this.index]);
-		this.schema.editor.fire("change");
-	}
+    
+        <h3 class="subsection-title">Classes</h3>
 
-	// 撤销
-	undo() {
-		this.schema.data = JSON.parse(this.schemaList[--this.index]);
-		this.schema.editor.fire("change");
-	}
-}
-export default History;
-</code></pre>
-        </article>
-    </section>
+        <dl>
+            <dt><a href="module-MMEditor%2520%25E9%25BB%2598%25E8%25AE%25A4%25E5%25AF%25BC%25E5%2587%25BA%25E6%25A8%25A1%25E5%259D%2597-MMEditor.html">MMEditor</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

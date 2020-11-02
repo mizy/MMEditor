@@ -7,10 +7,20 @@ import Minimap from './Plugins/Minimap';
 import "./index.less";
 
 /**
+ * @module MMEditor 默认导出模块
+ */
+/**
  * @class 
  * @extends Event
  */
 class MMEditor extends Event {
+	/**
+	 * @param {Object} [config]
+	 * @param {boolean} config.hideAchor=false  
+	 * @param {boolean} config.hideAchorLine=false  
+	 * @param {boolean} config.showBackGrid=true  是否展示背景网格
+	 * @param {boolean} config.showMiniMap=false 是否展示小地图
+	 */
 	constructor(config) {
 		super();
 		this.config = Object.assign({
@@ -93,5 +103,5 @@ MMEditor.Schema = Schema;
 MMEditor.Snap = Snap;
 MMEditor.Graph = Graph;
 MMEditor.Controller = Controller;
-export default MMEditor;
+export default MMEditor; 
 export { Event, MMEditor, Schema, Snap, Graph, Controller, eve, mina };

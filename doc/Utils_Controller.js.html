@@ -43,6 +43,11 @@ class Controller extends Event {
 		 * @type {number}
 		 */
 		this.scaleRatio = 0.01;
+		this.scale = 1;
+		/**
+		 * 所有吸附节点
+		 */
+		this.achors = [];
 		this.listenEvents();
 	}
 
@@ -53,28 +58,29 @@ class Controller extends Event {
 		const width = this.editor.dom.node.clientWidth;
 		const height = this.editor.dom.node.clientHeight;
 		const bbox = this.paper.getBBox();
-		let ratio = 1;
-		if (bbox.width > width) {
-			ratio = (2 * bbox.width) / width;
-		}
-		let svgWidth = bbox.width / ratio;
-		let svgHeight = bbox.height / ratio;
-		const matrix = Snap.matrix();
-		matrix.translate((width - svgWidth) / 2 - bbox.x, (height - svgHeight) / 2 - bbox.y);
-		matrix.scale(1 / ratio, 1 / ratio);
+		const transform = this.paper.transform();
+		const matrix = transform.localMatrix;
+		const { scalex } = matrix.split();
+		matrix.translate(((width - bbox.width) / 2 - bbox.x) / scalex, ((height - bbox.height) / 2 - bbox.y) / scalex);
 		const transformString = matrix.toTransformString();
+		this.paper.node.style.transition = 'transform 200ms ease-out';
 		this.paper.transform(transformString);
+		setTimeout(() => {
+			this.paper.node.style.transition = null;
+		}, 200)
 	}
+
 
 	listenEvents() {
 		this.svg.mousedown(this.panStart);
 		this.svg.mouseup(this.panStop);
-		this.svg.mouseout(this.panStop);
+		this.svg.node.addEventListener('mouseleave', this.panStop);
 		this.svg.node.addEventListener("wheel", this.onWheel);
 	}
 
 	clear() {
 		this.svg.unmousedown(this.panStart);
+		this.svg.node.removeEventListener('mouseleave', this.panStop);
 		this.svg.node.removeEventListener("wheel", this.onWheel);
 	}
 
@@ -91,17 +97,37 @@ class Controller extends Event {
 	disablePan() {
 		this.svg.unmousedown(this.panStart);
 	}
-
+	/**
+	 * 移动到指定位置
+	 * @param  {} x
+	 * @param  {} y
+	 */
 	pan(x, y) {
-		this.paper.transform(`translate(${x}px,${y}px)`);
+		const transform = this.paper.transform();
+		const { scalex } = transform.localMatrix.split();
+		transform.localMatrix.translate(x / scalex, y / scalex);
+		const transformString = transform.localMatrix.toTransformString();
+		this.paper.transform(transformString);
+		this.editor.fire("panning")
+	}
+
+	moveTo(x,y){
+		const transform = this.paper.transform();
+		const { scalex } = transform.localMatrix.split();
+		const m = new Snap.Matrix();
+		m.scale(scalex);
+		m.translate(x,y);
+		this.paper.transform(m.toString())
 	}
 
 	onWheel = e => {
 		e.preventDefault();
-		if (e.deltaY > 0) {
-			this.zoomIn(Math.abs(e.deltaY));
+		if (e.ctrlKey) {// 双指
+			const newScale = (1 - e.deltaY * this.scaleRatio);
+			this.zoom(newScale, e.offsetX, e.offsetY);
+
 		} else {
-			this.zoomOut(Math.abs(e.deltaY));
+			this.pan(-e.deltaX, -e.deltaY)
 		}
 	};
 
@@ -118,27 +144,37 @@ class Controller extends Event {
 		ev.preventDefault();
 		this.svg.unmousemove(this.panning);
 		// this.svg.unmouseup(this.panStop);
-		this.dispatch("panEnd", { event: ev });
+		this.editor.fire("panEnd", { event: ev });
 	};
-
-	zoomIn = () => {
+	/**
+	 * 缩放
+	 * @param  {} scale 当前基础上 缩放多少
+	 * @param  {} cx=0 zoom 缩放中心点x
+	 * @param  {} cy=0 zoom 缩放中心点y
+	 */
+	zoom = (newScale, cx = 0, cy = 0) => {
 		const transform = this.paper.transform();
-		const scale = transform.localMatrix.split();
-		const { dx, dy, scalex } = scale;
-		let newScale = 1 + (1 / scalex) * this.scaleRatio;
-		transform.localMatrix.scale(newScale, newScale, dx, dy);
+		transform.localMatrix.scale(newScale, newScale, cx, cy);
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);
+		this.editor.fire("zoom", { scale:newScale });
+
 	};
 
-	zoomOut = () => {
+	zoomTo = (newScale, cx = 0, cy = 0) => {
 		const transform = this.paper.transform();
-		const scale = transform.localMatrix.split();
-		const { dx, dy, scalex } = scale;
-		let newScale = 1 - Math.pow(scalex, 2) * this.scaleRatio;
-		transform.localMatrix.scale(newScale, newScale, dx, dy);
-		const transformString = transform.localMatrix.toTransformString();
-		this.paper.transform(transformString);
+		const { dx,dy } = transform.localMatrix.split();
+		const m = new Snap.Matrix();
+		m.translate(dx,dy);
+		m.scale(newScale,newScale,cx,cy);
+		this.paper.transform(m.toString())
+	};
+
+	transform = (newScale, x = 0, y = 0) => {
+		const m = new Snap.Matrix();
+		m.scale(newScale);
+		m.translate(x,y);
+		this.paper.transform(m.toString())
 	};
 
 	panning = ev => {
@@ -149,10 +185,12 @@ class Controller extends Event {
 
 		const deltaP = [p2.x - p1.x, p2.y - p1.y];
 		const transform = this.paper.transform();
-		transform.localMatrix.translate(-deltaP[0], -deltaP[1]);
+		const { scalex } = transform.localMatrix.split();
+		transform.localMatrix.translate(-deltaP[0] / scalex, -deltaP[1] / scalex);
 		const transformString = transform.localMatrix.toTransformString();
 		this.paper.transform(transformString);
 		this.startPosition = p1;
+		this.editor.fire("panning",{event:ev})
 	};
 }
 export default Controller;</code></pre>
@@ -165,13 +203,13 @@ export default Controller;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Controller.html">Controller</a></li><li><a href="Event.html">Event</a></li><li><a href="Graph.html">Graph</a></li><li><a href="History.html">History</a></li><li><a href="Line.html">Line</a></li><li><a href="MMEditor.html">MMEditor</a></li><li><a href="Node.html">Node</a></li><li><a href="Schema.html">Schema</a></li></ul><h3>Interfaces</h3><ul><li><a href="DefaultLine.html">DefaultLine</a></li><li><a href="DefaultNode.html">DefaultNode</a></li><li><a href="IconNode.html">IconNode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-MMEditor%2520%25E9%25BB%2598%25E8%25AE%25A4%25E5%25AF%25BC%25E5%2587%25BA%25E6%25A8%25A1%25E5%259D%2597.html">MMEditor 默认导出模块</a></li></ul><h3>Classes</h3><ul><li><a href="Controller.html">Controller</a></li><li><a href="Event.html">Event</a></li><li><a href="Graph.html">Graph</a></li><li><a href="History.html">History</a></li><li><a href="Line.html">Line</a></li><li><a href="module-MMEditor%2520%25E9%25BB%2598%25E8%25AE%25A4%25E5%25AF%25BC%25E5%2587%25BA%25E6%25A8%25A1%25E5%259D%2597-MMEditor.html">MMEditor</a></li><li><a href="Node.html">Node</a></li><li><a href="Schema.html">Schema</a></li></ul><h3>Interfaces</h3><ul><li><a href="DefaultLine.html">DefaultLine</a></li><li><a href="DefaultNode.html">DefaultNode</a></li><li><a href="IconNode.html">IconNode</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Nov 12 2019 15:23:14 GMT+0800 (GMT+08:00)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Nov 02 2020 13:54:11 GMT+0800 (GMT+08:00)
 </footer>
 
 <script> prettyPrint(); </script>

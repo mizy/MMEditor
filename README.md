@@ -1,11 +1,12 @@
 # [MMEditor](https://mizy.github.io/MMEditor)
-![show](https://mizy.github.io/MMEditor/snapshot.png)
 * 基于Snap.svg绘图库完成的流程图框架，依赖少，开箱即用，提供dom接口方便对dom进行各种状态操作，demo 提供一个基础的数据流程demo 和 基础的流程项目 设计框架
 * flow editor lib with snap.svg
 
 # Demo
 
 [demo](https://mizy.github.io/MMEditor/dist)
+
+[basic demo](https://mizy.github.io/MMEditor/basic)
 
 # Install
 ```sh
@@ -82,10 +83,12 @@ npm i MMEditor --save
 	console.log(editor.schema.getData())
 ```
 
-# API
+# 架构
 
 [百度脑图](https://naotu.baidu.com/file/1dd5c0ff16911b44ca80ab25424908d0)
 
+# API 
+[doc](https://mizy.github.io/MMEditor/doc)
 
 # Test
 ``` sh

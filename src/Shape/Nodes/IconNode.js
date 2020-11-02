@@ -1,4 +1,5 @@
 /**
+ * @extends DefaultNode
  * @interface
  */
 const IconNode = {
