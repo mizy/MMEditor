@@ -18,7 +18,7 @@ class MMEditor extends Event {
 			hideAchorLine: false,
 			anchorDistance: 5,
 			showBackGrid: true,
-			showMiniMap: true
+			showMiniMap: false
 		}, config);
 		if (!config.dom) return;
 		this.dom = this.initDom(config.dom);

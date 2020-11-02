@@ -9995,7 +9995,17 @@ function () {
         _this2.unActive();
       });
       this.graph.on("copy", function () {
-        _this2.copyNode = _objectSpread({}, _this2.actives);
+        var activeNode = _objectSpread({}, _this2.actives);
+
+        var newActiveNode = {};
+
+        for (var node in activeNode) {
+          newActiveNode[node] = _objectSpread({}, activeNode[node], {
+            data: JSON.parse(JSON.stringify(activeNode[node].data))
+          });
+        }
+
+        _this2.copyNode = newActiveNode;
       });
       this.graph.on("paste", function () {
         _this2.unActive();
@@ -10139,7 +10149,7 @@ function () {
       }, function () {
         if (_this5.graph.linkStatus === "lineing") return false;
 
-        if (_this5.activeNode && _this5.activeNode.data.uuid === node.data.uuid) {
+        if (_this5.actives[node.data.uuid]) {
           return false;
         }
 
@@ -10250,6 +10260,11 @@ function () {
         node.linkPoints.forEach(function (point) {
           point.node.style.display = "block";
         });
+
+        _this7.graph.fire("node:mouseenter", {
+          node: node,
+          event: event
+        });
       }, function () {
         if (_this7.graph.linkStatus === "lineing") return false;
 
@@ -10259,6 +10274,11 @@ function () {
 
         node.linkPoints.forEach(function (point) {
           point.node.style.display = "none";
+        });
+
+        _this7.graph.fire("node:mouseleave", {
+          node: node,
+          event: event
         });
       });
     }
@@ -10304,7 +10324,7 @@ function () {
       }
 
       this.graph.fire("node:unactive", {
-        node: this.activeNode
+        node: node
       });
     }
   }, {
@@ -22014,7 +22034,7 @@ function (_Event) {
       hideAchorLine: false,
       anchorDistance: 5,
       showBackGrid: true,
-      showMiniMap: true
+      showMiniMap: false
     }, config);
     if (!config.dom) return possibleConstructorReturn_default()(_this);
     _this.dom = _this.initDom(config.dom);
