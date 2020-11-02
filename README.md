@@ -1,10 +1,11 @@
-# [MMEditor](https://tnt.tongdun.me/solution/mmEditorSolution)
+# [MMEditor](https://mizy.github.io/MMEditor)
+![show](https://mizy.github.io/MMEditor/MMEditor.png)
 * 基于Snap.svg绘图库完成的流程图框架，依赖少，开箱即用，提供dom接口方便对dom进行各种状态操作，demo 提供一个基础的数据流程demo 和 基础的流程项目 设计框架
 * flow editor lib with snap.svg
 
 # Demo
 
-[tnt demo](https://tnt.tongdun.me/solution/mmEditorSolution)
+[demo](https://mizy.github.io/MMEditor/dist)
 
 # Install
 ```sh
@@ -81,9 +82,9 @@ npm i MMEditor --save
 	console.log(editor.schema.getData())
 ```
 
-# Documention
+# API
 
-[司南文档](https://sinan.tongdun.me/book/2035)
+[百度脑图](https://naotu.baidu.com/file/1dd5c0ff16911b44ca80ab25424908d0)
 
 
 # Test
