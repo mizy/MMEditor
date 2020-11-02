@@ -59,7 +59,7 @@ class Editor extends PureComponent {
 
 	// 初始化editor
 	async componentDidMount() {
-		this.editor = new MMEditor({ dom: this.editorRef });
+		this.editor = new MMEditor({ dom: this.editorRef,showMiniMap:true });
 		this.initEditorShape();
 		this.editor.graph.line.shapes["default"].checkNewLine = this.checkNewLine;
 		this.editor.schema.setInitData(testdata);
