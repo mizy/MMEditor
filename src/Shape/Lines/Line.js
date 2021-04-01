@@ -62,7 +62,7 @@ const DefaultLine = {
 		const arrEndSpace = 8; // 底部距离node节点的距离
 		const arrowEndSpace = 5;// 箭头占用的空间
 		// 根据连接点位置生成控制点
-		// 上右下左的控制点分别为 (x,上偏移) (右偏移,y)  (x,下偏移) (左偏移,y) 
+		// 上右下左的控制点分别为 (x,上偏移) (右偏移,y)  (x,下偏移) (左偏移,y)
 		let startControlPoint = [edgeX, edgeY];
 		let endControlPoint = [endX, endY];
 		const startAngel = this.getPointDirect(fromPointNode);
@@ -166,6 +166,7 @@ const DefaultLine = {
 	renderLabel(data, allNodesMap, lineShapePath, labelGroup) {
 		const { fromX, toX, labelCfg } = data;
 		let { label } = data;
+        const totalLabel = label;
 		if (!label) return null;
 		// label 样式
 		const {
@@ -219,7 +220,8 @@ const DefaultLine = {
 			y: y - height * 0.5
 		});
 		labelGroup.attr({
-			class: "mm-line-label"
+			class: "mm-line-label",
+            data: totalLabel
 		})
 		if (autoRotate) {
 			// 文字顺序方向
