@@ -9898,6 +9898,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
+
 /**
  * @class
  */
@@ -9980,7 +9981,7 @@ function () {
   createClass_default()(Node, [{
     key: "initDefs",
     value: function initDefs() {
-      this.shadow = this.paper.filter(window.Snap.filter.shadow(3, 1, 0.3));
+      this.shadow = this.paper.filter(snap_svg.filter.shadow(3, 1, 0.3));
     } // 监听事件
 
   }, {
@@ -10384,6 +10385,7 @@ var es_regexp_to_string = __webpack_require__(61);
  * graph.line.shapes
  * @interface
  */
+
 var DefaultLine = {
   arcRatio: 4,
 
@@ -10448,7 +10450,7 @@ var DefaultLine = {
 
     var arrowEndSpace = 5; // 箭头占用的空间
     // 根据连接点位置生成控制点
-    // 上右下左的控制点分别为 (x,上偏移) (右偏移,y)  (x,下偏移) (左偏移,y) 
+    // 上右下左的控制点分别为 (x,上偏移) (右偏移,y)  (x,下偏移) (左偏移,y)
 
     var startControlPoint = [edgeX, edgeY];
     var endControlPoint = [endX, endY];
@@ -10539,7 +10541,7 @@ var DefaultLine = {
     var pathString = "M".concat(-5, " ", 10, "L", 0, " ", 0, "L", 5, " ", 10, "Z");
     var path = arrow ? arrow : this.paper.path(); // 进行角度的中心变换
 
-    var matrix = new window.Snap.Matrix();
+    var matrix = new snap_svg.Matrix();
     matrix.translate(toX, toY);
     matrix.rotate(angle, 0, 0);
     path.attr({
@@ -10563,6 +10565,7 @@ var DefaultLine = {
         toX = data.toX,
         labelCfg = data.labelCfg;
     var label = data.label;
+    var totalLabel = label;
     if (!label) return null; // label 样式
 
     var _ref = labelCfg || {},
@@ -10631,7 +10634,8 @@ var DefaultLine = {
       y: y - height * 0.5
     });
     labelGroup.attr({
-      "class": "mm-line-label"
+      "class": "mm-line-label",
+      data: totalLabel
     });
 
     if (autoRotate) {
@@ -11302,13 +11306,14 @@ function () {
 /* harmony default export */ var Utils_Event = (Event_Event);
 // CONCATENATED MODULE: ./src/Shape/Animation.js
 
+
 /* harmony default export */ var Shape_Animation = ({
   createRadialGradient: function createRadialGradient() {
     var color = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '#f4c708';
     var color2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '#f7e69a';
     var radialGradient = document.createElementNS('http://www.w3.org/2000/svg', radialGradient);
     radialGradient.innerHTML = "<stop offset=\"0%\" stop-color=\"".concat(color, "\"></stop>\n\t\t\t<stop offset=\"100%\" stop-color=\"").concat(color2, "\"></stop>\n\t\t\t<animate attributeName=\"fy\" dur=\"700ms\" from=\"90%\" to=\"0%\" repeatCount=\"indefinite\" />");
-    var ele = Snap(radialGradient);
+    var ele = snap_svg(radialGradient);
     ele.attr({
       fy: '90%'
     });
@@ -20013,9 +20018,13 @@ snap_svg_Snap.plugin(function (Snap, Element, Paper, glob) {
 
       out += a + "]";
       b[i] = out;
-    }
+    } // return Function("val", "return Snap.path.toString.call([" + b + "])");
+    // return function (val) { return Snap.path.toString.call([eval(b[0])])}
 
-    return Function("val", "return Snap.path.toString.call([" + b + "])");
+
+    return function (val) {
+      return Snap.path.toString.call([new Function("val", "return " + b[0])(val)]);
+    };
   }
 
   function path2array(path) {
@@ -20137,13 +20146,13 @@ snap_svg_Snap.plugin(function (Snap, Element, Paper, glob) {
     }
   });
 }); // Copyright (c) 2013 Adobe Systems Incorporated. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20562,8 +20571,8 @@ snap_svg_Snap.plugin(function (Snap, Element, Paper, glob) {
    - mcontext (object) #optional context for moving handler
    - scontext (object) #optional context for drag start handler
    - econtext (object) #optional context for drag end handler
-   * Additionaly following `drag` events are triggered: `drag.start.<id>` on start, 
-   * `drag.end.<id>` on end and `drag.move.<id>` on every move. When element is dragged over another element 
+   * Additionaly following `drag` events are triggered: `drag.start.<id>` on start,
+   * `drag.end.<id>` on end and `drag.move.<id>` on every move. When element is dragged over another element
    * `drag.over.<id>` fires as well.
    *
    * Start event and start handler are called in specified context or in context of the element with following parameters:
@@ -21293,6 +21302,7 @@ snap_svg_Snap.mina = Snap_mina;
 
 
 
+
 /**
  * 控制器
  * @class
@@ -21375,7 +21385,7 @@ function (_Event) {
           dx = _transform$localMatri.dx,
           dy = _transform$localMatri.dy;
 
-      var m = new Snap.Matrix();
+      var m = new snap_svg.Matrix();
       m.translate(dx, dy);
       m.scale(newScale, newScale, cx, cy);
 
@@ -21385,7 +21395,7 @@ function (_Event) {
     _this.transform = function (newScale) {
       var x = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       var y = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-      var m = new Snap.Matrix();
+      var m = new snap_svg.Matrix();
       m.scale(newScale);
       m.translate(x, y);
 
@@ -21525,7 +21535,7 @@ function (_Event) {
       var _transform$localMatri4 = transform.localMatrix.split(),
           scalex = _transform$localMatri4.scalex;
 
-      var m = new Snap.Matrix();
+      var m = new snap_svg.Matrix();
       m.scale(scalex);
       m.translate(x, y);
       this.paper.transform(m.toString());
@@ -21816,6 +21826,7 @@ var external_canvg_default = /*#__PURE__*/__webpack_require__.n(external_canvg_)
 
 
 
+
  // 使用html
 
 var Minimap_MiniMap =
@@ -21862,7 +21873,7 @@ function () {
                   img.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
                 });
                 svg = node.innerHTML.replace(/\"mm-editor-paper\" transform=\"matrix\([-\d\,]+\)\"/, "\"mm-editor-paper\" ");
-                m = new Snap.Matrix();
+                m = new snap_svg.Matrix();
                 m.translate(_this.padding, _this.padding);
                 m.scale(1 / _this.scale); // m.translate(this.dx,this.dy);
 
@@ -21919,8 +21930,8 @@ function () {
       this.canvas.width = this.width;
       this.canvas.height = this.height;
       this.ctx = this.canvas.getContext("2d");
-      this.drag = Snap(this.container.querySelector(".drag-rect"));
-      this.dragPoint = Snap(this.container.querySelector(".drag-point"));
+      this.drag = snap_svg(this.container.querySelector(".drag-rect"));
+      this.dragPoint = snap_svg(this.container.querySelector(".drag-point"));
       this.initEvent();
     }
   }, {

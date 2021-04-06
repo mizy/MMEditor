@@ -1,6 +1,8 @@
 import uuid from 'uuid/v1';
 import defaultNode from './Nodes/DefaultNodes';
 import iconNode from './Nodes/IconNode';
+import { Snap } from "../MMEditor";
+
 /**
  * @class
  */
@@ -22,7 +24,7 @@ class Node {
 	}
 
 	initDefs() {
-		this.shadow = this.paper.filter(window.Snap.filter.shadow(3, 1, 0.3));
+		this.shadow = this.paper.filter(Snap.filter.shadow(3, 1, 0.3));
 	}
 
 	// 监听事件

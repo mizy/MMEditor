@@ -1,4 +1,5 @@
 import Event from "./Event";
+import { Snap } from "../MMEditor";
 /**
  * 控制器
  * @class

@@ -2,6 +2,8 @@
  * graph.line.shapes
  * @interface
  */
+ import { Snap } from "../../MMEditor";
+
 const DefaultLine = {
 	arcRatio: 4,
 	/**
@@ -144,7 +146,7 @@ const DefaultLine = {
 		const pathString = `M${-5} ${10}L${0} ${0}L${5} ${10}Z`;
 		const path = arrow ? arrow : this.paper.path();
 		// 进行角度的中心变换
-		const matrix = new window.Snap.Matrix();
+		const matrix = new Snap.Matrix();
 		matrix.translate(toX, toY);
 		matrix.rotate(angle, 0, 0);
 		path.attr({

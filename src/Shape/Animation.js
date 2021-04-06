@@ -1,3 +1,4 @@
+import { Snap } from "../MMEditor";
 export default {
 	createRadialGradient(color = '#f4c708', color2 = '#f7e69a') {
 		const radialGradient = document.createElementNS(
