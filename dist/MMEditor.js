@@ -9913,18 +9913,18 @@ function () {
     this.addNode = function () {
       var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      if (typeof data.uuid === "undefined") {
+      if (typeof data.uuid === 'undefined') {
         data.uuid = v1_default()();
       }
 
-      if (data.uuid && data.uuid.indexOf("-") > -1) {
+      if (data.uuid && data.uuid.indexOf('-') > -1) {
         console.log(data.uuid);
-        data.uuid = data.uuid.replace(/-/g, "");
+        data.uuid = data.uuid.replace(/-/g, '');
       }
 
       var node = _this.renderNode(data);
 
-      _this.graph.fire("node:change", {
+      _this.graph.fire('node:change', {
         node: node
       });
 
@@ -9940,7 +9940,7 @@ function () {
 
       var deleteNode = _this.nodes[uuid];
       delete _this.nodes[uuid];
-      !ignoreEvent && _this.graph.fire("node:remove", {
+      !ignoreEvent && _this.graph.fire('node:remove', {
         node: deleteNode,
         uuid: uuid
       });
@@ -9967,7 +9967,7 @@ function () {
     this.paper = graph.editor.paper;
     this.nodeG = this.paper.g();
     this.linkPointsG = this.paper.g();
-    this.linkPointsG.addClass("link-points-g");
+    this.linkPointsG.addClass('link-points-g');
     this.initDefs();
     this.listenEvent();
     this.actives = {};
@@ -9988,13 +9988,13 @@ function () {
     value: function listenEvent() {
       var _this2 = this;
 
-      this.graph.on("paper:click", function () {
+      this.graph.on('paper:click', function () {
         _this2.unActive();
       });
-      this.graph.on("line:click", function () {
+      this.graph.on('line:click', function () {
         _this2.unActive();
       });
-      this.graph.on("copy", function () {
+      this.graph.on('copy', function () {
         var activeNode = _objectSpread({}, _this2.actives);
 
         var newActiveNode = {};
@@ -10007,7 +10007,7 @@ function () {
 
         _this2.copyNode = newActiveNode;
       });
-      this.graph.on("paste", function () {
+      this.graph.on('paste', function () {
         _this2.unActive();
 
         for (var key in _this2.copyNode) {
@@ -10035,7 +10035,7 @@ function () {
   }, {
     key: "registeNode",
     value: function registeNode(type, data) {
-      var extend = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "default";
+      var extend = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'default';
       this.shapes[type] = Object.assign({}, this.shapes[extend], data);
     }
   }, {
@@ -10050,7 +10050,7 @@ function () {
     }
     /**
      * 添加节点
-     * @param {object} data  
+     * @param {object} data
      */
 
   }, {
@@ -10061,18 +10061,18 @@ function () {
      */
     value: function renderNode(item) {
       var key = item.uuid;
-      var shape = this.shapes[item.type || "default"];
+      var shape = this.shapes[item.type || 'default'];
       shape.paper = this.paper;
       var nodeItem = shape.render(item, this.paper);
       var node = this.paper.g(nodeItem);
       node.shape = nodeItem;
       node.shape.attr({
-        "class": "mm-node-shape"
+        "class": 'mm-node-shape'
       });
       this.nodes[item.uuid] = node;
-      node.node.setAttribute("class", "mm-node");
-      node.node.setAttribute("data-id", key);
-      node.node.setAttribute("transform", "translate(".concat(item.x || 0, ",").concat(item.y || 0, ")"));
+      node.node.setAttribute('class', 'mm-node');
+      node.node.setAttribute('data-id', key);
+      node.node.setAttribute('transform', "translate(".concat(item.x || 0, ",").concat(item.y || 0, ")"));
       node.toLines = new Set();
       node.fromLines = new Set();
       node.data = item;
@@ -10091,7 +10091,7 @@ function () {
       var nodeData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var uuid = nodeData.uuid;
       var node = this.nodes[uuid];
-      var shape = this.shapes[nodeData.type || "default"];
+      var shape = this.shapes[nodeData.type || 'default'];
       node.animate({
         transform: "translate(".concat(nodeData.x, " ,").concat(nodeData.y, ")")
       }, 200);
@@ -10122,8 +10122,8 @@ function () {
           var newCircle = shape.renderLinkPoint(node, linkPoint);
           node.linkPoints.push(newCircle);
           newCircle.attr({
-            "data-node-id": node.data.uuid,
-            "data-index": index
+            'data-node-id': node.data.uuid,
+            'data-index': index
           });
 
           _this4.linkPointsG.add(newCircle);
@@ -10140,14 +10140,14 @@ function () {
       var _this5 = this;
 
       point.hover(function () {
-        if (_this5.graph.linkStatus === "lineing") return false;
+        if (_this5.graph.linkStatus === 'lineing') return false;
         node.linkPoints.forEach(function (point) {
           point.attr({
-            display: "block"
+            display: 'block'
           });
         });
       }, function () {
-        if (_this5.graph.linkStatus === "lineing") return false;
+        if (_this5.graph.linkStatus === 'lineing') return false;
 
         if (_this5.actives[node.data.uuid]) {
           return false;
@@ -10155,7 +10155,7 @@ function () {
 
         node.linkPoints.forEach(function (point) {
           point.attr({
-            display: "none"
+            display: 'none'
           });
         });
       });
@@ -10177,9 +10177,9 @@ function () {
       node.data.x = x;
       node.data.y = y;
       node.linkPoints.forEach(function (circle) {
-        _this6.shapes[node.data.type || "default"].updateLinkPoint(node, circle);
+        _this6.shapes[node.data.type || 'default'].updateLinkPoint(node, circle);
       });
-      node.node.setAttribute("transform", "translate(".concat(x, " ,").concat(y, ")"));
+      node.node.setAttribute('transform', "translate(".concat(x, " ,").concat(y, ")"));
     }
     /**
      * 给节点添加事件
@@ -10206,7 +10206,7 @@ function () {
           _this7.panNode(node, info, dx, dy);
         }
 
-        _this7.graph.fire("node:move", {
+        _this7.graph.fire('node:move', {
           node: node
         });
       }, function (x, y, e) {
@@ -10231,7 +10231,7 @@ function () {
           return false;
         }
 
-        _this7.graph.fire("node:change", {
+        _this7.graph.fire('node:change', {
           node: node
         });
       });
@@ -10249,41 +10249,41 @@ function () {
             _this7.setActive(node);
           }
 
-          _this7.graph.fire("node:click", {
+          _this7.graph.fire('node:click', {
             node: node,
             event: event
           });
         }
       });
       node.hover(function () {
-        if (_this7.graph.linkStatus === "lineing") return false;
+        if (_this7.graph.linkStatus === 'lineing') return false;
         node.linkPoints.forEach(function (point) {
-          point.node.style.display = "block";
+          point.node.style.display = 'block';
         });
 
-        _this7.graph.fire("node:mouseenter", {
+        _this7.graph.fire('node:mouseenter', {
           node: node,
           event: event
         });
       }, function () {
-        if (_this7.graph.linkStatus === "lineing") return false;
+        if (_this7.graph.linkStatus === 'lineing') return false;
 
         if (_this7.actives[node.data.uuid]) {
           return false;
         }
 
         node.linkPoints.forEach(function (point) {
-          point.node.style.display = "none";
+          point.node.style.display = 'none';
         });
 
-        _this7.graph.fire("node:mouseleave", {
+        _this7.graph.fire('node:mouseleave', {
           node: node,
           event: event
         });
       });
     }
     /**
-     * 
+     *
      * @param {*} node node为空时全选
      */
 
@@ -10294,18 +10294,18 @@ function () {
 
       for (var key in nodes) {
         node = nodes[key];
-        node.shape.addClass("active");
+        node.shape.addClass('active');
         node.shape.attr({
           filter: this.shadow
         });
         this.actives[node.data.uuid] = node;
         node.linkPoints.forEach(function (point) {
-          point.node.style.display = "block";
+          point.node.style.display = 'block';
         });
       }
     }
     /**
-     * 
+     *
      * @param {*} node 传node就取消选中这个node,没有就全部取消选中
      */
 
@@ -10323,23 +10323,23 @@ function () {
         this.actives = {};
       }
 
-      this.graph.fire("node:unactive", {
+      this.graph.fire('node:unactive', {
         node: node
       });
     }
   }, {
     key: "unActiveNode",
     value: function unActiveNode(node) {
-      node.shape.removeClass("active");
+      node.shape.removeClass('active');
       node.shape.attr({
         filter: null
       });
       node.linkPoints.forEach(function (point) {
-        point.node.style.display = "none";
+        point.node.style.display = 'none';
       });
     }
     /**
-     * 
+     *
      */
 
   }, {
@@ -10701,19 +10701,19 @@ function () {
       if (hoverLinkPoint) {
         var toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
         var beforeData = Object.assign({}, line.data);
-        line.data.to = toElement.getAttribute("data-node-id");
-        line.data.toPoint = parseInt(toElement.getAttribute("data-index"), 10); // 删除节点入口关联的线，给新链接的节点加上入口线
+        line.data.to = toElement.getAttribute('data-node-id');
+        line.data.toPoint = parseInt(toElement.getAttribute('data-index'), 10); // 删除节点入口关联的线，给新链接的节点加上入口线
 
         nodes[to].fromLines["delete"](uuid);
         nodes[line.data.to].fromLines.add(uuid);
 
-        _this.graph.fire("line:change", {
+        _this.graph.fire('line:change', {
           line: line,
-          type: "change",
+          type: 'change',
           before: beforeData
         });
 
-        hoverLinkPoint.removeClass && hoverLinkPoint.removeClass("hover");
+        hoverLinkPoint.removeClass && hoverLinkPoint.removeClass('hover');
       }
 
       _this.updateLine(uuid);
@@ -10724,8 +10724,8 @@ function () {
 
       if (hoverLinkPoint) {
         var toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
-        var toNodeId = toElement.getAttribute("data-node-id");
-        var toPoint = toElement.getAttribute("data-index");
+        var toNodeId = toElement.getAttribute('data-node-id');
+        var toPoint = toElement.getAttribute('data-index');
         var _this$tempLineData = _this.tempLineData,
             from = _this$tempLineData.from,
             _this$tempLineData$fr = _this$tempLineData.fromPoint,
@@ -10737,11 +10737,11 @@ function () {
         }, _this.tempLineData);
         if (_this.lines[data.uuid]) return;
 
-        if (_this.shapes["default"].checkNewLine(data, _this.graph.editor)) {
+        if (_this.shapes['default'].checkNewLine(data, _this.graph.editor)) {
           _this.addLine(data);
         }
 
-        hoverLinkPoint.removeClass && hoverLinkPoint.removeClass("hover");
+        hoverLinkPoint.removeClass && hoverLinkPoint.removeClass('hover');
         _this.graph.hoverLinkPoint = undefined;
       }
     };
@@ -10753,27 +10753,27 @@ function () {
 
       var newXY = _this.allLinkPointsXY.find(function (item) {
         if (Math.abs(x - item[0]) < adsorb[0] && Math.abs(y - item[1]) < adsorb[1]) {
-          _this.graph.hoverLinkPoint && _this.graph.hoverLinkPoint.removeClass && _this.graph.hoverLinkPoint.removeClass("hover");
+          _this.graph.hoverLinkPoint && _this.graph.hoverLinkPoint.removeClass && _this.graph.hoverLinkPoint.removeClass('hover');
           _this.graph.hoverLinkPoint = item[2];
-          item[2].addClass("hover");
+          item[2].addClass('hover');
           return item;
         }
       });
 
       if (!newXY) {
-        _this.graph.hoverLinkPoint && _this.graph.hoverLinkPoint.removeClass("hover");
+        _this.graph.hoverLinkPoint && _this.graph.hoverLinkPoint.removeClass('hover');
       }
 
       return newXY;
     };
 
     this.makeAdsorbPoints = function () {
-      var linkPoints = _this.paper.selectAll(".mm-link-points");
+      var linkPoints = _this.paper.selectAll('.mm-link-points');
 
       _this.allLinkPointsXY = [];
       linkPoints.forEach(function (item) {
-        var x = parseInt(item.attr("cx"));
-        var y = parseInt(item.attr("cy"));
+        var x = parseInt(item.attr('cx'));
+        var y = parseInt(item.attr('cy'));
 
         _this.allLinkPointsXY.push([x, y, item]);
       });
@@ -10818,14 +10818,14 @@ function () {
 
         _this.tempLine = _this.shapes.tempLine.render(_this.paper);
 
-        _this.graph.fire("line:drag");
+        _this.graph.fire('line:drag');
       }, function (e) {
         var hoverLinkPoint = _this.graph.hoverLinkPoint;
         var toNode = null;
 
         if (hoverLinkPoint) {
           var toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
-          var toNodeId = toElement.getAttribute("data-node-id");
+          var toNodeId = toElement.getAttribute('data-node-id');
           toNode = _this.node.nodes[toNodeId];
         }
 
@@ -10833,7 +10833,7 @@ function () {
 
         _this.tempLine.remove();
 
-        _this.graph.fire("line:drop", {
+        _this.graph.fire('line:drop', {
           fromNode: node,
           toNode: toNode,
           event: e
@@ -10853,8 +10853,8 @@ function () {
         render: function render(paper) {
           var path = paper.path();
           path.attr({
-            stroke: "#abc",
-            strokeDasharray: "10 10"
+            stroke: '#abc',
+            strokeDasharray: '10 10'
           });
           return path;
         },
@@ -10878,25 +10878,25 @@ function () {
     value: function listenEvent() {
       var _this2 = this;
 
-      this.graph.on("paper:click", function () {
+      this.graph.on('paper:click', function () {
         _this2.unActiveLine();
       });
-      this.graph.on("node:click", function () {
+      this.graph.on('node:click', function () {
         _this2.unActiveLine();
       });
     }
     /**
      * 添加线
-     * @param {*} data 
+     * @param {*} data
      */
 
   }, {
     key: "addLine",
     value: function addLine(data) {
       var line = this.renderLine(data);
-      this.graph.fire("line:add", {
+      this.graph.fire('line:add', {
         line: line,
-        type: "add"
+        type: 'add'
       });
     }
     /**
@@ -10939,11 +10939,11 @@ function () {
       var nodes = this.graph.node.nodes;
       var type = line.data.type;
 
-      var _this$shapes$render = this.shapes[type || "default"].render(line.data, nodes, line.shape),
+      var _this$shapes$render = this.shapes[type || 'default'].render(line.data, nodes, line.shape),
           data = _this$shapes$render.data;
 
-      line.arrow = this.shapes[type || "default"].renderArrow(line.data, nodes, line.arrow);
-      line.label = this.shapes[type || "default"].renderLabel(line.data, nodes, line.shape, line.label);
+      line.arrow = this.shapes[type || 'default'].renderArrow(line.data, nodes, line.arrow);
+      line.label = this.shapes[type || 'default'].renderLabel(line.data, nodes, line.shape, line.label);
       line.data = Object.assign({}, line.data, data);
     }
     /**
@@ -10956,7 +10956,7 @@ function () {
     value: function renderLine(lineData) {
       var key = this.getLineId(lineData);
       var nodes = this.node.nodes;
-      var shape = this.shapes[lineData.type || "default"];
+      var shape = this.shapes[lineData.type || 'default'];
       shape.paper = this.paper;
       var newLine = shape.render(lineData, nodes);
       var arrow = shape.renderArrow(lineData, nodes);
@@ -10972,10 +10972,10 @@ function () {
       g.arrow = arrow;
       g.label = label;
       g.attr({
-        "class": "mm-line"
+        "class": 'mm-line'
       });
       newLine.path.attr({
-        "class": "mm-line-shape"
+        "class": 'mm-line-shape'
       });
       this.addToNodes(nodes, g);
       this.addLineEvents(g);
@@ -11008,12 +11008,12 @@ function () {
       nodes[from] && nodes[from].toLines["delete"](id);
       nodes[to] && nodes[to].fromLines["delete"](id);
       !notEvent && // 是否由删除节点触发的线删除操作
-      this.graph.fire("line:remove", {
+      this.graph.fire('line:remove', {
         line: line,
         uuid: uuid,
         before: line.data,
         byNode: byNode,
-        type: "remove"
+        type: 'remove'
       });
       line.arrow.remove();
       line.arrow.undrag();
@@ -11045,15 +11045,15 @@ function () {
 
     /**
      * 注册线
-     * @param {*} data 
+     * @param {*} data
      */
     value: function registeLine(data) {
       var type = data.type;
-      this.shapes[type] = Object.assign({}, this.shapes["default"], data);
+      this.shapes[type] = Object.assign({}, this.shapes['default'], data);
     }
     /**
      * 渲染
-     * @param {*} lines 
+     * @param {*} lines
      */
 
   }, {
@@ -11069,9 +11069,9 @@ function () {
       });
     }
     /**
-     * 
-     * @param {*} nodes 
-     * @param {*} g 
+     *
+     * @param {*} nodes
+     * @param {*} g
      */
 
   }, {
@@ -11120,27 +11120,27 @@ function () {
         g.startX = toX;
         g.startY = toY - 2;
         arrow.attr({
-          display: "none"
+          display: 'none'
         });
         shape.attr({
-          strokeDasharray: "5 5"
+          strokeDasharray: '5 5'
         });
 
         _this5.makeAdsorbPoints();
 
         _this5.graph.addLinkHoverEvent();
 
-        data.status = "active";
+        data.status = 'active';
 
-        _this5.graph.fire("line:drag");
+        _this5.graph.fire('line:drag');
       }, function () {
         var arrow = g.arrow,
             shape = g.shape;
         arrow.attr({
-          display: "initial"
+          display: 'initial'
         });
         shape.attr({
-          strokeDasharray: "0"
+          strokeDasharray: '0'
         });
 
         _this5.updateActiveLine(g);
@@ -11150,7 +11150,7 @@ function () {
       g.shape.click(function (e) {
         _this5.setActiveLine(g);
 
-        _this5.graph.fire("line:click", {
+        _this5.graph.fire('line:click', {
           line: g,
           event: e
         });
@@ -11159,15 +11159,15 @@ function () {
       g.label && g.label.click(function (e) {
         _this5.setActiveLine(g);
 
-        _this5.graph.fire("line:click", {
+        _this5.graph.fire('line:click', {
           line: g,
           event: e
         });
       });
     }
     /**
-     * 
-     * @param {*} line 
+     *
+     * @param {*} line
      */
 
   }, {
@@ -11175,7 +11175,7 @@ function () {
     value: function setActiveLine(line) {
       this.unActiveLine();
       this.activeLine = line;
-      this.activeLine.addClass("active");
+      this.activeLine.addClass('active');
     }
     /**
      * 取消激活
@@ -11185,17 +11185,17 @@ function () {
     key: "unActiveLine",
     value: function unActiveLine() {
       if (this.activeLine) {
-        this.activeLine.removeClass("active");
+        this.activeLine.removeClass('active');
       }
 
       this.activeLine = null;
-    } //计算磁吸
+    } // 计算磁吸
 
   }, {
     key: "clear",
 
     /**
-     * 
+     *
      */
     value: function clear() {
       var lines = this.lines;
@@ -11304,13 +11304,13 @@ function () {
 
 /* harmony default export */ var Shape_Animation = ({
   createRadialGradient: function createRadialGradient() {
-    var color = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#f4c708";
-    var color2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "#f7e69a";
-    var radialGradient = document.createElementNS("http://www.w3.org/2000/svg", radialGradient);
+    var color = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '#f4c708';
+    var color2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '#f7e69a';
+    var radialGradient = document.createElementNS('http://www.w3.org/2000/svg', radialGradient);
     radialGradient.innerHTML = "<stop offset=\"0%\" stop-color=\"".concat(color, "\"></stop>\n\t\t\t<stop offset=\"100%\" stop-color=\"").concat(color2, "\"></stop>\n\t\t\t<animate attributeName=\"fy\" dur=\"700ms\" from=\"90%\" to=\"0%\" repeatCount=\"indefinite\" />");
     var ele = Snap(radialGradient);
     ele.attr({
-      fy: "90%"
+      fy: '90%'
     });
     return ele;
   }
@@ -11338,7 +11338,7 @@ function () {
     this.anchors = [];
     this.path = this.paper.path();
     this.path.attr({
-      "class": "anchor-line"
+      "class": 'anchor-line'
     });
   }
   /**
@@ -11411,7 +11411,7 @@ function () {
     }
     /**
      * 画节点
-     * @param {*} node 
+     * @param {*} node
      */
 
   }, {
@@ -11444,12 +11444,12 @@ function () {
           y: y + height / 2
         };
         var nowPoints = [tl, tr, br, bl, cc];
-        var _final = {},
-            newXY = {
+        var _final = {};
+        var newXY = {
           x: x,
           y: y
-        },
-            coordFlag = '';
+        };
+        var coordFlag = '';
         var anchor = this.anchors.find(function (anchor) {
           return nowPoints.find(function (point, index) {
             var deltaY = anchor.y - point.y;
@@ -11472,7 +11472,7 @@ function () {
         });
 
         if (!anchor) {
-          this.path.node.style.display = "none";
+          this.path.node.style.display = 'none';
           if (!this.hideAchor) return this.checkAchor(x, y);
           return {
             x: x,
@@ -11483,8 +11483,8 @@ function () {
 
         !_final.x ? _final.x = cc.x : _final.y = cc.y;
         var path = "M".concat(_final.x, ",").concat(_final.y, " L").concat(anchor.x, ",").concat(anchor.y);
-        this.path.node.setAttribute("d", path);
-        this.path.node.style.display = "block";
+        this.path.node.setAttribute('d', path);
+        this.path.node.style.display = 'block';
 
         if (!this.hideAchor) {
           var anchorXY = this.checkAchor(newXY.x, newXY.y);
@@ -11505,7 +11505,7 @@ function () {
     key: "hidePath",
     value: function hidePath() {
       this.path.attr({
-        style: "display: none"
+        style: 'display: none'
       });
     }
   }]);
@@ -11551,7 +11551,7 @@ function (_Event) {
     _this.onKeyDown = function (e) {
       if (!_this.focus) return;
 
-      if (e.key === "Backspace") {
+      if (e.key === 'Backspace') {
         var deleteKeys = [];
 
         for (var key in _this.node.actives) {
@@ -11564,29 +11564,29 @@ function (_Event) {
 
         _this.line.activeLine && _this.line.deleteLine(_this.line.activeLine);
 
-        _this.fire("delete", {
+        _this.fire('delete', {
           event: e,
           deleteKeys: deleteKeys
         });
       }
 
-      if (e.keyCode === "C".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-        _this.fire("copy", {
+      if (e.keyCode === 'C'.charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+        _this.fire('copy', {
           event: e
         });
       }
 
-      if (e.keyCode === "V".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-        _this.fire("paste", {
+      if (e.keyCode === 'V'.charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+        _this.fire('paste', {
           event: e
         });
       }
 
-      if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
+      if (e.keyCode === 'Z'.charCodeAt(0) && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
         _this.editor.schema.undo();
       }
 
-      if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && e.shiftKey) {
+      if (e.keyCode === 'Z'.charCodeAt(0) && (e.metaKey || e.ctrlKey) && e.shiftKey) {
         _this.editor.schema.redo();
       }
 
@@ -11615,65 +11615,67 @@ function (_Event) {
 
     _this.listenEvents();
 
-    if (_this.editor.config.showBackGrid) _this.addBack();
+    if (_this.editor.config.showBackGrid) {
+      _this.addBack();
+    }
+
     return _this;
   }
 
   createClass_default()(Graph, [{
     key: "addBack",
     value: function addBack() {
-      this.editor.container.select(".mm-editor-back").node.style.backgroundImage = "url(".concat(backSvg, ")");
+      this.editor.container.select('.mm-editor-back').node.style.backgroundImage = "url(".concat(backSvg, ")");
     }
   }, {
     key: "listenEvents",
     value: function listenEvents() {
       var _this2 = this;
 
-      this.on("node:move", function (_ref) {
+      this.on('node:move', function (_ref) {
         var node = _ref.node;
 
         _this2.line.updateByNode(node);
       });
       this.editor.svg.attr({
-        tabindex: "0"
+        tabindex: '0'
       });
       this.editor.svg.click(function (e) {
-        if (e.target.tagName === "svg") {
-          _this2.fire("paper:click", e);
-        }
+        if (e.target.tagName === 'svg') {
+          _this2.fire('paper:click', e);
+        } // this.editor.svg.node.focus();
 
-        _this2.editor.svg.node.focus();
 
         _this2.focus = true;
       });
-      this.editor.svg.node.addEventListener("blur", function (e) {
+      this.editor.svg.node.addEventListener('blur', function (e) {
         _this2.focus = false;
       }); // 查看模式不能删除节点、线条；如果存在部分可操作则自己在业务中监听处理相关逻辑
 
-      if (this.mode !== "view") {
-        document.addEventListener("keydown", this.onKeyDown);
+      if (this.mode !== 'view') {
+        document.addEventListener('keydown', this.onKeyDown);
       }
 
-      this.on("line:drag", function () {
-        _this2.linkStatus = "lineing";
+      this.on('line:drag', function () {
+        _this2.linkStatus = 'lineing';
 
         for (var key in _this2.node.nodes) {
           var node = _this2.node.nodes[key];
           node.linkPoints.forEach(function (point) {
             point.attr({
-              display: "block"
+              display: 'block'
             });
           });
         }
       });
-      this.on("line:drop", function () {
-        _this2.linkStatus = "none";
+      this.on('line:drop', function () {
+        _this2.linkStatus = 'none';
 
         for (var key in _this2.node.nodes) {
           var node = _this2.node.nodes[key];
           node.linkPoints.forEach(function (point) {
             point.attr({
-              display: "none"
+              display: 'none'
             });
           });
         }
@@ -11688,7 +11690,7 @@ function (_Event) {
     value: function addLinkHoverEvent() {
       var _this3 = this;
 
-      var linkPoints = this.editor.paper.selectAll(".mm-link-points");
+      var linkPoints = this.editor.paper.selectAll('.mm-link-points');
       linkPoints.forEach(function (point) {
         point.mouseover(_this3.onLinkPointHover);
         point.mouseout(_this3.onLinkPointOut);
@@ -11703,7 +11705,7 @@ function (_Event) {
     value: function offLinkHoverEvent() {
       var _this4 = this;
 
-      var linkPoints = this.editor.paper.selectAll(".mm-link-points");
+      var linkPoints = this.editor.paper.selectAll('.mm-link-points');
       linkPoints.forEach(function (point) {
         point.unmouseover(_this4.onLinkPointHover);
         point.unmouseout(_this4.onLinkPointOut);
@@ -11711,8 +11713,8 @@ function (_Event) {
       this.hoverLinkPoint = undefined;
     }
     /**
-     * 
-     * @param {*} data 
+     *
+     * @param {*} data
      */
 
   }, {
@@ -11723,7 +11725,7 @@ function (_Event) {
       this.line.render(data.linesMap);
     }
     /**
-     * 
+     *
      */
 
   }, {
@@ -11731,7 +11733,7 @@ function (_Event) {
     value: function clearGraph() {
       this.line.clear();
       this.node.clear();
-      document.removeEventListener("keydown", this.onKeyDown);
+      document.removeEventListener('keydown', this.onKeyDown);
     }
   }]);
 

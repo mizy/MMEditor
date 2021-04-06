@@ -1,15 +1,15 @@
-import React, { Fragment, PureComponent } from "react";
-import ReactDom from "react-dom";
-import "./index.less";
+import React, { Fragment, PureComponent } from 'react';
+import ReactDom from 'react-dom';
+import './index.less';
 // import MMEditor from "MMEditor";
 // import MMEditor from "../dist/MMEditor";
-import MMEditor from "../src/MMEditor";
-import LeftBar from "./Content/LeftBar";
-import RightBar from "./Content/RightBar";
-import TopBar from "./Content/TopBar";
-import { message, Popover } from "antd";
-import RightMenu from "./Content/RightMenu";
-import testdata from "./testdata";
+import MMEditor from '../src/MMEditor';
+import LeftBar from './Content/LeftBar';
+import RightBar from './Content/RightBar';
+import TopBar from './Content/TopBar';
+import { message, Popover } from 'antd';
+import RightMenu from './Content/RightMenu';
+import testdata from './testdata';
 class Editor extends PureComponent {
 	state = {};
 	// 编辑器实例
@@ -31,7 +31,7 @@ class Editor extends PureComponent {
 		const fromIds = [];
 		this.getFromIds(nodes[from], fromIds);
 		if (fromIds.indexOf(to) > -1) {
-			message.error("当前不支持构成环图！");
+			message.error('当前不支持构成环图！');
 			return false;
 		}
 		return true;
@@ -62,7 +62,7 @@ class Editor extends PureComponent {
 	async componentDidMount() {
 		this.editor = new MMEditor({ dom: this.editorRef }); // 只读模式设置 mode:"view"
 		this.initEditorShape();
-		this.editor.graph.line.shapes["default"].checkNewLine = this.checkNewLine;
+		this.editor.graph.line.shapes['default'].checkNewLine = this.checkNewLine;
 		this.editor.schema.setInitData(testdata);
 		this.addEditorEvent();
 		window.mm = this.editor;
@@ -75,7 +75,7 @@ class Editor extends PureComponent {
 	// 初始化编辑器事件
 	addEditorEvent() {
 		// 选中
-		this.editor.graph.on("node:click", ({ node }) => {
+		this.editor.graph.on('node:click', ({ node }) => {
 			const fromLines = node.fromLines;
 			const fromNodes = [];
 			const nodes = this.editor.graph.node.nodes;
@@ -93,7 +93,7 @@ class Editor extends PureComponent {
 			});
 		});
 		// 没有选中
-		this.editor.graph.on("node:unactive", ({ node }) => {
+		this.editor.graph.on('node:unactive', ({ node }) => {
 			this.rightbar.setState({
 				activeNode: {}
 			});
@@ -103,27 +103,27 @@ class Editor extends PureComponent {
 		});
 
 		// 其他右键
-		this.editorRef.addEventListener("contextmenu", e => {
+		this.editorRef.addEventListener('contextmenu', e => {
 			e.preventDefault();
 			this.setState({
 				rightNodeId: null
 			});
 		});
 		// 空白页点击
-		this.editor.graph.on("paper:click", e => {
+		this.editor.graph.on('paper:click', e => {
 			this.setState({
 				rightNodeId: null
 			});
 		});
 		// 右键
-		this.editor.graph.node.nodeG.node.addEventListener("contextmenu", e => {
+		this.editor.graph.node.nodeG.node.addEventListener('contextmenu', e => {
 			const path = e.path || (e.composedPath && e.composedPath());
-			const node = path.find(each => each.getAttribute("class") === "mm-node");
+			const node = path.find(each => each.getAttribute('class') === 'mm-node');
 			if (node) {
 				e.stopPropagation();
 				e.preventDefault();
 				this.setState({
-					rightNodeId: node.getAttribute("data-id"),
+					rightNodeId: node.getAttribute('data-id'),
 					left: e.clientX || 0,
 					top: e.clientY || 0
 				});
@@ -138,57 +138,57 @@ class Editor extends PureComponent {
 	// 注册其他初始化形状
 	initEditorShape() {
 		this.editor.graph.node.registeNode(
-			"iconNodeInput",
+			'iconNodeInput',
 			{
 				linkPoints: [{ x: 0.5, y: 1 }, { x: 1, y: 0.5 }, { x: 0, y: 0.5 }],
 				render: (data, snapPaper) => {
 					const node = snapPaper.rect(0, 0, 180, 32);
 					const text = snapPaper.text(40, 21, data.name);
 					const icon = snapPaper.image(data.iconPath, 5, 4, 24, 24);
-					icon.node.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+					icon.node.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
 					node.attr({
-						class: "icon-node",
-						fill: "#EAEEFA",
-						stroke: "#CCD9FD",
+						class: 'icon-node',
+						fill: '#EAEEFA',
+						stroke: '#CCD9FD',
 						rx: 17,
 						ry: 17
 					});
 
 					// popOver
-					const { text:textInfo, title:titleInfo } = data.popOverData || {};
-					const obj = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+					const { text: textInfo, title: titleInfo } = data.popOverData || {};
+					const obj = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
 					ReactDom.render(
 						<Popover
 							title={titleInfo}
 							content={textInfo}
 							placement="bottom"
 						>
-							<div style={{"width":'24px',height:"24px"}}></div>
+							<div style={{'width': '24px', height: '24px'}}></div>
 						</Popover>
-					,obj);
+					, obj);
 					const popOver = Snap(obj);
 					popOver.attr({
 						width: 24,
 						height: 24,
-						x:5,
-						y:4
+						x: 5,
+						y: 4
 					});
 
 					return snapPaper.group(node, text, icon, popOver);
-    			},
+    			}
 			},
-			"iconNode"
+			'iconNode'
 		);
 		this.editor.graph.node.registeNode(
-			"iconNodeOutput",
+			'iconNodeOutput',
 			{
 				linkPoints: [{ x: 0.5, y: 0 }, { x: 1, y: 0.5 }, { x: 0, y: 0.5 }]
 			},
-			"iconNode"
+			'iconNode'
 		);
 	}
 
-	//生成新节点
+	// 生成新节点
 	onDrop = (item, e) => {
 		const dom = this.editor.dom.node;
 		const name = item.name + `-${++this.index}`;

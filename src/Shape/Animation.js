@@ -1,7 +1,7 @@
 export default {
-	createRadialGradient(color = "#f4c708", color2 = "#f7e69a") {
+	createRadialGradient(color = '#f4c708', color2 = '#f7e69a') {
 		const radialGradient = document.createElementNS(
-			"http://www.w3.org/2000/svg",
+			'http://www.w3.org/2000/svg',
 			radialGradient
 		);
 
@@ -10,7 +10,7 @@ export default {
 			<animate attributeName="fy" dur="700ms" from="90%" to="0%" repeatCount="indefinite" />`;
 		const ele = Snap(radialGradient);
 		ele.attr({
-			fy: "90%"
+			fy: '90%'
 		});
 		return ele;
 	}
