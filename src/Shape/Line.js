@@ -260,6 +260,7 @@ class Line {
 	 * @param {*} g
 	 */
 	addLineEvents(g) {
+		if(this.graph.editor.config.readonly)return true;
 		// 箭头拖拽
 		g.arrow.drag(
 			(dx, dy) => {

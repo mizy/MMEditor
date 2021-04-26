@@ -240,6 +240,7 @@ class Node {
 	 * @param {*} node
 	 */
 	addNodeEvent(node) {
+		if(this.graph.editor.config.readonly)return true;
 		node.shape.drag(
 			(dx, dy) => {
 				const transform = this.paper.transform();

@@ -31,6 +31,7 @@ class Graph extends Event {
 	}
 
 	listenEvents() {
+		if(this.graph.editor.config.readonly)return true;
 		this.on("node:move", ({ node }) => {
 			this.line.updateByNode(node);
 		});
@@ -79,6 +80,7 @@ class Graph extends Event {
 	}
 
 	onKeyDown = (e) => {
+		if(this.graph.editor.config.readonly)return true;
 		if (!this.focus) return;
 		if (e.key === "Backspace") {
 			const deleteKeys = [];

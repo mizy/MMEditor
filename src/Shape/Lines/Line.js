@@ -72,6 +72,7 @@ const DefaultLine = {
 		startControlPoint[1] += -Math.sin(startAngel) * offsetLength;// svg坐标系倒置需要给y坐标加负号
 		endControlPoint[0] += (1 / endAngel < 0 ? -1 : 1) * Math.cos(endAngel) * offsetLength;
 		endControlPoint[1] += -Math.sin(endAngel) * offsetLength;// svg坐标系倒置需要给y坐标加负号
+		
 		if (fromPointNode.data.y === 1) {
 			edgeY += arrowStartSpace;
 		} else if (fromPointNode.data.y === 0) {
