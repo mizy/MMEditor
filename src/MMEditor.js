@@ -48,7 +48,7 @@ class MMEditor extends Event {
 	}
 
 	initDom(dom) {
-		dom.innerHTML = `<div class="mm-editor" >
+		dom.innerHTML = `<div class="mm-editor ${this.config.mode||''}" >
 				<div class="mm-editor-back" ></div>
 				<div class="mm-editor-svg" >
 					<svg  />

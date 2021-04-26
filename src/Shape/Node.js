@@ -175,7 +175,6 @@ class Node {
 	 * @param {node} node
 	 */
 	addNodeLinkPoints(node, shape) {
-		if(this.graph.mode==='view')return;
 		node.linkPoints = [];
 		node.linkPointsTypes = shape.linkPoints;
 		if (!shape.linkPoints) {
@@ -328,7 +327,7 @@ class Node {
 		for (let key in nodes) {
 			node = nodes[key];
 			node.shape.addClass('active');
-			node.shape.attr({
+			node.attr({
 				filter: this.shadow
 			});
 			this.actives[node.data.uuid] = node;

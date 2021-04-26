@@ -1,8 +1,5 @@
 import Event from "./Event";
-<<<<<<< HEAD
-=======
 import { Snap } from "../MMEditor";
->>>>>>> tddevelop
 /**
  * 控制器
  * @class
@@ -169,8 +166,4 @@ class Controller extends Event {
 		this.editor.fire("panning",{event:ev})
 	};
 }
-<<<<<<< HEAD
 export default Controller;
-=======
-export default Controller;
->>>>>>> tddevelop
