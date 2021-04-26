@@ -248,8 +248,4 @@ const DefaultLine = {
 		return true;
 	}
 };
-<<<<<<< HEAD
 export default DefaultLine
-=======
-export default DefaultLine
->>>>>>> tddevelop
