@@ -10,7 +10,11 @@ module.exports = {
 	output: {
 		filename: "index.js"
 	},
-
+	plugins: [
+		new webpack.ProvidePlugin({
+			React: "react"
+		})
+	],
 	devServer: {
 		host: "0.0.0.0",
 		port: "7799",

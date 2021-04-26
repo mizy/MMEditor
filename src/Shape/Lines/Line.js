@@ -2,6 +2,8 @@
  * graph.line.shapes
  * @interface
  */
+ import { Snap } from "../../MMEditor";
+
 const DefaultLine = {
 	arcRatio: 4,
 	/**
@@ -62,7 +64,7 @@ const DefaultLine = {
 		const arrEndSpace = 8; // 底部距离node节点的距离
 		const arrowEndSpace = 5;// 箭头占用的空间
 		// 根据连接点位置生成控制点
-		// 上右下左的控制点分别为 (x,上偏移) (右偏移,y)  (x,下偏移) (左偏移,y) 
+		// 上右下左的控制点分别为 (x,上偏移) (右偏移,y)  (x,下偏移) (左偏移,y)
 		let startControlPoint = [edgeX, edgeY];
 		let endControlPoint = [endX, endY];
 		const startAngel = this.getPointDirect(fromPointNode);
@@ -72,7 +74,6 @@ const DefaultLine = {
 		startControlPoint[1] += -Math.sin(startAngel) * offsetLength;// svg坐标系倒置需要给y坐标加负号
 		endControlPoint[0] += (1 / endAngel < 0 ? -1 : 1) * Math.cos(endAngel) * offsetLength;
 		endControlPoint[1] += -Math.sin(endAngel) * offsetLength;// svg坐标系倒置需要给y坐标加负号
-		
 		if (fromPointNode.data.y === 1) {
 			edgeY += arrowStartSpace;
 		} else if (fromPointNode.data.y === 0) {
@@ -105,15 +106,21 @@ const DefaultLine = {
 
 	//没用了
 	getPointDirect(pointNode) {
-		const point2center = [pointNode.data.x - 0.5, pointNode.data.y - 0.5];
+		const point2center = [pointNode.data.x , pointNode.data.y ];
 		let angel = 0;
-		if (point2center[0] === 0) {// 底数为0 去y轴角度90或270
-			angel = point2center[1] > 0 ? -Math.PI / 2 : Math.PI / 2;
-		} else {
+		if(point2center[1] === 0){
+			angel = Math.PI/2;
+		}else if(point2center[1] === 1){
+			angel = -Math.PI/2;
+		}else if(point2center[0] === 0){
+			angel = Math.PI;
+		}else if(point2center[0] === 1){
+			angel = -Math.PI;
+		} else{
 			// arctan求角度
-			angel = Math.atan(point2center[1] / point2center[0]);
+			angel = Math.atan((point2center[1]-0.5) / (point2center[0]-0.5)) + ((point2center[0]-0.5)<0?Math.PI:0);
 		}
-		return angel;
+		return angel||0;
 	},
 
 	/**
@@ -139,7 +146,7 @@ const DefaultLine = {
 		const pathString = `M${-5} ${10}L${0} ${0}L${5} ${10}Z`;
 		const path = arrow ? arrow : this.paper.path();
 		// 进行角度的中心变换
-		const matrix = new window.Snap.Matrix();
+		const matrix = new Snap.Matrix();
 		matrix.translate(toX, toY);
 		matrix.rotate(angle, 0, 0);
 		path.attr({
@@ -161,6 +168,7 @@ const DefaultLine = {
 	renderLabel(data, allNodesMap, lineShapePath, labelGroup) {
 		const { fromX, toX, labelCfg } = data;
 		let { label } = data;
+        const totalLabel = label;
 		if (!label) return null;
 		// label 样式
 		const {
@@ -214,7 +222,8 @@ const DefaultLine = {
 			y: y - height * 0.5
 		});
 		labelGroup.attr({
-			class: "mm-line-label"
+			class: "mm-line-label",
+            data: totalLabel
 		})
 		if (autoRotate) {
 			// 文字顺序方向
@@ -239,4 +248,8 @@ const DefaultLine = {
 		return true;
 	}
 };
+<<<<<<< HEAD
 export default DefaultLine
+=======
+export default DefaultLine
+>>>>>>> tddevelop

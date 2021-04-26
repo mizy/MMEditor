@@ -29,7 +29,7 @@ class MMEditor extends Event {
 			anchorDistance: 5,
 			showBackGrid: true,
 			showMiniMap: false,
-			readonly:true
+			mode:undefined,
 		}, config);
 		if (!config.dom) return;
 		this.dom = this.initDom(config.dom);
@@ -104,5 +104,5 @@ MMEditor.Schema = Schema;
 MMEditor.Snap = Snap;
 MMEditor.Graph = Graph;
 MMEditor.Controller = Controller;
-export default MMEditor; 
+export default MMEditor;
 export { Event, MMEditor, Schema, Snap, Graph, Controller, eve, mina };

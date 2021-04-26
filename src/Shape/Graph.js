@@ -1,9 +1,9 @@
-import Node from "./Node";
-import Line from "./Line";
-import Event from "../Utils/Event";
-import Animation from "./Animation";
+import Node from './Node';
+import Line from './Line';
+import Event from '../Utils/Event';
+import Animation from './Animation';
 import AnchorLine from './AnchorLine';
-const backSvg = require("../back.svg");
+const backSvg = require('../back.svg');
 /**
  * @class
  * @extends Event
@@ -22,56 +22,55 @@ class Graph extends Event {
 		this.mode = editor.config.mode;
 
 		this.listenEvents();
-		if (this.editor.config.showBackGrid)
-			this.addBack();
+		if (this.editor.config.showBackGrid) {this.addBack();}
 	}
 
 	addBack() {
-		this.editor.container.select(".mm-editor-back").node.style.backgroundImage = `url(${backSvg})`
+		this.editor.container.select('.mm-editor-back').node.style.backgroundImage = `url(${backSvg})`;
 	}
 
 	listenEvents() {
-		if(this.graph.editor.config.readonly)return true;
-		this.on("node:move", ({ node }) => {
+		this.on('node:move', ({ node }) => {
 			this.line.updateByNode(node);
 		});
 		this.editor.svg.attr({
-			tabindex: "0"
+			tabindex: '0'
 		});
 		this.editor.svg.click(e => {
-			if (e.target.tagName === "svg") {
-				this.fire("paper:click", e);
+			if (e.target.tagName === 'svg') {
+				this.fire('paper:click', e);
 			}
-			this.editor.svg.node.focus();
+			// this.editor.svg.node.focus();
 			this.focus = true;
 		});
-		this.editor.svg.node.addEventListener("blur", e => {
+		this.editor.svg.node.addEventListener('blur', e => {
 			this.focus = false;
 		});
 
-		// 查看模式不能删除节点、线条；如果存在部分可操作则自己在业务中监听处理相关逻辑
-		if (this.mode !== "view") {
-			document.addEventListener("keydown", this.onKeyDown);
-		}
+		if(this.mode==='view')return;
 
-		this.on("line:drag", () => {
-			this.linkStatus = "lineing";
+		// 查看模式不能删除节点、线条；如果存在部分可操作则自己在业务中监听处理相关逻辑
+		if (this.mode !== 'view') {
+			document.addEventListener('keydown', this.onKeyDown);
+		}
+		this.on('line:drag', () => {
+			this.linkStatus = 'lineing';
 			for (let key in this.node.nodes) {
 				const node = this.node.nodes[key];
 				node.linkPoints.forEach(point => {
 					point.attr({
-						display: "block"
+						display: 'block'
 					});
 				});
 			}
 		});
-		this.on("line:drop", () => {
-			this.linkStatus = "none";
+		this.on('line:drop', () => {
+			this.linkStatus = 'none';
 			for (let key in this.node.nodes) {
 				const node = this.node.nodes[key];
 				node.linkPoints.forEach(point => {
 					point.attr({
-						display: "none"
+						display: 'none'
 					});
 				});
 			}
@@ -80,9 +79,8 @@ class Graph extends Event {
 	}
 
 	onKeyDown = (e) => {
-		if(this.graph.editor.config.readonly)return true;
 		if (!this.focus) return;
-		if (e.key === "Backspace") {
+		if (e.key === 'Backspace') {
 			const deleteKeys = [];
 			for (let key in this.node.actives) {
 				// 不触发事件
@@ -91,18 +89,18 @@ class Graph extends Event {
 				deleteKeys.push(key);
 			}
 			this.line.activeLine && this.line.deleteLine(this.line.activeLine);
-			this.fire("delete", { event: e, deleteKeys })
+			this.fire('delete', { event: e, deleteKeys });
 		}
-		if (e.keyCode === "C".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-			this.fire("copy", { event: e })
+		if (e.keyCode === 'C'.charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+			this.fire('copy', { event: e });
 		}
-		if (e.keyCode === "V".charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-			this.fire("paste", { event: e })
+		if (e.keyCode === 'V'.charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+			this.fire('paste', { event: e });
 		}
-		if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
+		if (e.keyCode === 'Z'.charCodeAt(0) && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
 			this.editor.schema.undo();
 		}
-		if (e.keyCode === "Z".charCodeAt(0) && (e.metaKey || e.ctrlKey) && e.shiftKey) {
+		if (e.keyCode === 'Z'.charCodeAt(0) && (e.metaKey || e.ctrlKey) && e.shiftKey) {
 			this.editor.schema.redo();
 		}
 		e.preventDefault();
@@ -113,7 +111,7 @@ class Graph extends Event {
 	 * 添加链接点事件
 	 */
 	addLinkHoverEvent() {
-		const linkPoints = this.editor.paper.selectAll(".mm-link-points");
+		const linkPoints = this.editor.paper.selectAll('.mm-link-points');
 		linkPoints.forEach(point => {
 			point.mouseover(this.onLinkPointHover);
 			point.mouseout(this.onLinkPointOut);
@@ -131,7 +129,7 @@ class Graph extends Event {
 	 * 关闭线hover事件
 	 */
 	offLinkHoverEvent() {
-		const linkPoints = this.editor.paper.selectAll(".mm-link-points");
+		const linkPoints = this.editor.paper.selectAll('.mm-link-points');
 		linkPoints.forEach(point => {
 			point.unmouseover(this.onLinkPointHover);
 			point.unmouseout(this.onLinkPointOut);
@@ -140,8 +138,8 @@ class Graph extends Event {
 	}
 
 	/**
-	 * 
-	 * @param {*} data 
+	 *
+	 * @param {*} data
 	 */
 	render(data) {
 		this.data = data;
@@ -150,12 +148,12 @@ class Graph extends Event {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	clearGraph() {
 		this.line.clear();
 		this.node.clear();
-		document.removeEventListener("keydown", this.onKeyDown)
+		document.removeEventListener('keydown', this.onKeyDown);
 	}
 }
 export default Graph;
