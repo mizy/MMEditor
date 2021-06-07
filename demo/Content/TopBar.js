@@ -52,39 +52,9 @@ class TopBar extends PureComponent {
 				graph: { node, line }
 			}
 		} = this.props;
-		const data = schema.getData();
-		const g = new dagre.graphlib.Graph();
-		g.setGraph({
-			nodesep: 90
-		});
-		g.setDefaultEdgeLabel(function () {
-			return {};
-		});
-		data.nodes.map(item => {
-			g.setNode(item.uuid, Object.assign(item, { width: 180, height: 32 }));
-		});
-		data.lines.map(item => {
-			g.setEdge(item.from, item.to);
-		});
-		dagre.layout(g);
-		const oldData = JSON.stringify(schema.data);
-
-		g.nodes().forEach(function (key) {
-			const nodeData = g.node(key);
-			node.updateNode(nodeData);
-			schema.data.nodesMap[key] = nodeData;
-		});
-		Object.keys(line.lines).forEach(key => {
-			line.updateLine(key);
-			schema.data.linesMap[key] = line.lines[key].data;
-		});
-		const newData = JSON.stringify(schema.data);
-		if (oldData !== newData) {
-			schema.history.push(JSON.parse(oldData));
-		};
-		setTimeout(() => {
-			this.props.editor.controller.autoFit();
-		}, 300)
+		schema.format();
+		this.props.editor.controller.autoFit();
+ 
 	};
 
 	run = () => {
@@ -196,7 +166,8 @@ class TopBar extends PureComponent {
 
 	//更新线状态
 	updateRunningLine(line) {
-		let length = line.shape.getTotalLength();
+		const path =  line.shape.path
+		let length = path.getTotalLength();
 		if (!line.hasClass("running")) {
 			this.props.editor.graph.line.updateLine(line.data.uuid);
 			return;
@@ -205,7 +176,7 @@ class TopBar extends PureComponent {
 			0,
 			length,
 			val => {
-				const coord = line.shape.getPointAtLength(val);
+				const coord = path.getPointAtLength(val);
 				const matrix = new window.Snap.Matrix();
 				matrix.translate(coord.x, coord.y);
 				matrix.rotate(coord.alpha + line.arrow.angle + 90, 0, 0);
@@ -240,7 +211,7 @@ class TopBar extends PureComponent {
 			}
 			if (node.indexDepth === 0) {
 				this.rankNodes.push(node);
-				deleteLines = deleteLines.concat(node.fromLines);
+				deleteLines = [...deleteLines,...node.fromLines];
 			} else {
 				others.push(node);
 			}
@@ -271,8 +242,9 @@ class TopBar extends PureComponent {
 				schema: { history }
 			}
 		} = this.props;
-		const { loading, running, canRedo, canUndo } = this.state;
-
+		const { loading, running } = this.state;
+		const canRedo = history.index < history.schemaList.length - 1;
+		const canUndo =  history.index > 0;
 		return (
 			<div className="job-top-bar">
 				<Tooltip title="重做">

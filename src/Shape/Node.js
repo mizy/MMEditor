@@ -1,6 +1,8 @@
-import uuid from "uuid/v1";
-import defaultNode from "./Nodes/DefaultNodes";
-import iconNode from "./Nodes/IconNode";
+import uuid from 'uuid/v1';
+import defaultNode from './Nodes/DefaultNodes';
+import iconNode from './Nodes/IconNode';
+import { Snap } from "../MMEditor";
+
 /**
  * @class
  */
@@ -11,7 +13,7 @@ class Node {
 		this.paper = graph.editor.paper;
 		this.nodeG = this.paper.g();
 		this.linkPointsG = this.paper.g();
-		this.linkPointsG.addClass("link-points-g");
+		this.linkPointsG.addClass('link-points-g');
 		this.initDefs();
 		this.listenEvent();
 		this.actives = {};
@@ -22,31 +24,31 @@ class Node {
 	}
 
 	initDefs() {
-		this.shadow = this.paper.filter(window.Snap.filter.shadow(3, 1, 0.3));
+		this.shadow = this.paper.filter(Snap.filter.shadow(3, 1, 0.3));
 	}
 
 	// 监听事件
 	listenEvent() {
-		this.graph.on("paper:click", () => {
+		this.graph.on('paper:click', () => {
 			this.unActive();
 		});
-		this.graph.on("line:click", () => {
+		this.graph.on('line:click', () => {
 			this.unActive();
 		});
-		this.graph.on("copy", () => {
+		this.graph.on('copy', () => {
 			const activeNode = {
 				...this.actives
 			};
 			let newActiveNode = {};
-			for(let node in activeNode){
+			for (let node in activeNode) {
 				newActiveNode[node] = {
 					...activeNode[node],
-					data:JSON.parse(JSON.stringify(activeNode[node].data))
-				}
+					data: JSON.parse(JSON.stringify(activeNode[node].data))
+				};
 			}
 			this.copyNode = newActiveNode;
 		});
-		this.graph.on("paste", () => {
+		this.graph.on('paste', () => {
 			this.unActive();
 			for (let key in this.copyNode) {
 				const node = this.copyNode[key];
@@ -55,7 +57,7 @@ class Node {
 				newData.y += 20 + Math.random() * 20;
 				delete newData.uuid;
 				const newNode = this.addNode(newData);
-				this.setActive(newNode)
+				this.setActive(newNode);
 			}
 		});
 	}
@@ -66,7 +68,7 @@ class Node {
 	 * @param {object} data 复写的形状方法
 	 * @param {string} extend 继承的形状，默认为default
 	 */
-	registeNode(type, data, extend = "default") {
+	registeNode(type, data, extend = 'default') {
 		this.shapes[type] = Object.assign({}, this.shapes[extend], data);
 	}
 
@@ -78,24 +80,24 @@ class Node {
 
 	/**
 	 * 添加节点
-	 * @param {object} data  
+	 * @param {object} data
 	 */
 	addNode = (data = {}) => {
-		if (typeof data.uuid === "undefined") {
+		if (typeof data.uuid === 'undefined') {
 			data.uuid = uuid();
 		}
-		if (data.uuid && data.uuid.indexOf("-") > -1) {
-			console.log(data.uuid)
-			data.uuid = data.uuid.replace(/-/g, "");
+		if (data.uuid && data.uuid.indexOf('-') > -1) {
+			console.log(data.uuid);
+			data.uuid = data.uuid.replace(/-/g, '');
 		}
 		const node = this.renderNode(data);
-		this.graph.fire("node:change", { node });
+		this.graph.fire('node:change', { node });
 		return node;
 	};
 
 	/**
 	 * 删除节点
-	 *  @param {object} data 
+	 *  @param {object} data
 	 */
 	deleteNode = (node, ignoreEvent) => {
 		let uuid = node;
@@ -104,7 +106,7 @@ class Node {
 		}
 		const deleteNode = this.nodes[uuid];
 		delete this.nodes[uuid];
-		!ignoreEvent && this.graph.fire("node:remove", { node: deleteNode, uuid });
+		!ignoreEvent && this.graph.fire('node:remove', { node: deleteNode, uuid });
 		deleteNode.linkPoints.forEach(point => {
 			point.undrag();
 			point.unhover();
@@ -128,18 +130,18 @@ class Node {
 	 */
 	renderNode(item) {
 		const key = item.uuid;
-		const shape = this.shapes[item.type || "default"];
+		const shape = this.shapes[item.type || 'default'];
 		shape.paper = this.paper;
 		const nodeItem = shape.render(item, this.paper);
 		const node = this.paper.g(nodeItem);
 		node.shape = nodeItem;
 		node.shape.attr({
-			class: "mm-node-shape"
+			class: 'mm-node-shape'
 		});
 		this.nodes[item.uuid] = node;
-		node.node.setAttribute("class", "mm-node");
-		node.node.setAttribute("data-id", key);
-		node.node.setAttribute("transform", `translate(${item.x || 0},${item.y || 0})`);
+		node.node.setAttribute('class', `mm-node ${item.className||''}`);
+		node.node.setAttribute('data-id', key);
+		node.node.setAttribute('transform', `translate(${item.x || 0},${item.y || 0})`);
 		node.toLines = new Set();
 		node.fromLines = new Set();
 		node.data = item;
@@ -155,7 +157,7 @@ class Node {
 	updateNode(nodeData = {}) {
 		const { uuid } = nodeData;
 		const node = this.nodes[uuid];
-		const shape = this.shapes[nodeData.type || "default"];
+		const shape = this.shapes[nodeData.type || 'default'];
 		node.animate(
 			{
 				transform: `translate(${nodeData.x} ,${nodeData.y})`
@@ -183,8 +185,8 @@ class Node {
 				const newCircle = shape.renderLinkPoint(node, linkPoint);
 				node.linkPoints.push(newCircle);
 				newCircle.attr({
-					"data-node-id": node.data.uuid,
-					"data-index": index
+					'data-node-id': node.data.uuid,
+					'data-index': index
 				});
 				this.linkPointsG.add(newCircle);
 				this.graph.line.addLinkPointEvent(newCircle, node, index);
@@ -196,28 +198,28 @@ class Node {
 	addLinkHoverEvent(point, node) {
 		point.hover(
 			() => {
-				if (this.graph.linkStatus === "lineing") return false;
+				if (this.graph.linkStatus === 'lineing') return false;
 				node.linkPoints.forEach(point => {
 					point.attr({
-						display: "block"
+						display: 'block'
 					});
 				});
 			},
 			() => {
-				if (this.graph.linkStatus === "lineing") return false;
+				if (this.graph.linkStatus === 'lineing') return false;
 				if (this.actives[node.data.uuid]) {
 					return false;
 				}
 				node.linkPoints.forEach(point => {
 					point.attr({
-						display: "none"
+						display: 'none'
 					});
 				});
 			}
 		);
 	}
 
-	panNode(node,info,dx,dy) {
+	panNode(node, info, dx, dy) {
 		let x = (node.startX || 0) + dx / info.scalex;
 		let y = (node.startY || 0) + dy / info.scalex;
 		const newXY = this.graph.anchorLine.check(x, y);
@@ -228,38 +230,33 @@ class Node {
 		node.data.x = x;
 		node.data.y = y;
 		node.linkPoints.forEach(circle => {
-			this.shapes[node.data.type || "default"].updateLinkPoint(node, circle);
+			this.shapes[node.data.type || 'default'].updateLinkPoint(node, circle);
 		});
-		node.node.setAttribute("transform", `translate(${x} ,${y})`);
+		node.node.setAttribute('transform', `translate(${x} ,${y})`);
 	}
-
-
 
 	/**
 	 * 给节点添加事件
 	 * @param {*} node
 	 */
 	addNodeEvent(node) {
-		if(this.graph.editor.config.readonly)return true;
 		node.shape.drag(
 			(dx, dy) => {
 				const transform = this.paper.transform();
 				const info = transform.globalMatrix.split();
-				if(this.actives[node.data.uuid]){
-					for(let key in this.actives){
-						this.panNode(this.actives[key],info,dx,dy);
-						this.graph.line.updateByNode(this.actives[key])
+				if (this.actives[node.data.uuid]) {
+					for (let key in this.actives) {
+						this.panNode(this.actives[key], info, dx, dy);
+						this.graph.fire('node:move', { node:this.actives[key] });
 					}
-				}else{
-					this.panNode(node,info,dx,dy);
+				} else {
+					this.panNode(node, info, dx, dy);
+					this.graph.fire('node:move', { node });
 				}
-				
-				this.graph.fire("node:move", { node });
-
 			},
 			(x, y, e) => {
 				// 拖动时是否有选中其他
-				for(let key in this.actives){
+				for (let key in this.actives) {
 					this.actives[key].startX = this.actives[key].data.x;
 					this.actives[key].startY = this.actives[key].data.y;
 				}
@@ -276,7 +273,7 @@ class Node {
 				if (node.startX === node.data.x && node.startY === node.data.y) {
 					return false;
 				}
-				this.graph.fire("node:change", { node });
+				this.graph.fire('node:change', { node });
 			}
 		);
 
@@ -292,54 +289,53 @@ class Node {
 					this.unActive();
 					this.setActive(node);
 				}
-				this.graph.fire("node:click", { node, event });
+				this.graph.fire('node:click', { node, event });
 			}
 		});
 		node.hover(
-			() => {
-				if (this.graph.linkStatus === "lineing") return false;
+			(event) => {
+				this.graph.fire('node:mouseenter', { node, event });
+				if (this.graph.linkStatus === 'lineing') return false;
 				node.linkPoints.forEach(point => {
-					point.node.style.display = "block";
+					point.node.style.display = 'block';
 				});
-				this.graph.fire("node:mouseenter", { node, event });
 			},
-			() => {
-				if (this.graph.linkStatus === "lineing") return false;
-				if (this.actives[node.data.uuid]  ) {
+			(event) => {
+				this.graph.fire('node:mouseleave', { node, event });
+				if (this.graph.linkStatus === 'lineing') return false;
+				if (this.actives[node.data.uuid]) {
 					return false;
 				}
 				node.linkPoints.forEach(point => {
-					point.node.style.display = "none";
+					point.node.style.display = 'none';
 				});
-				this.graph.fire("node:mouseleave", { node, event });
 			}
 		);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param {*} node node为空时全选
 	 */
 	setActive(node) {
 		const nodes = node ? {
 			[node.data.uuid]: node
 		} : this.nodes;
-
 		for (let key in nodes) {
-			node = nodes[key]
-			node.shape.addClass("active");
+			node = nodes[key];
+			node.shape.addClass('active');
 			node.shape.attr({
 				filter: this.shadow
 			});
 			this.actives[node.data.uuid] = node;
 			node.linkPoints.forEach(point => {
-				point.node.style.display = "block";
+				point.node.style.display = 'block';
 			});
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @param {*} node 传node就取消选中这个node,没有就全部取消选中
 	 */
 	unActive(node) {
@@ -348,25 +344,25 @@ class Node {
 			this.unActiveNode(node);
 		} else {
 			for (let key in this.actives) {
-				this.unActiveNode(this.actives[key])
+				this.unActiveNode(this.actives[key]);
 			}
-			this.actives = {}
+			this.actives = {};
 		}
-		this.graph.fire("node:unactive", { node: node});
+		this.graph.fire('node:unactive', { node: node});
 	}
 
 	unActiveNode(node) {
-		node.shape.removeClass("active");
+		node.shape.removeClass('active');
 		node.shape.attr({
 			filter: null
 		});
 		node.linkPoints.forEach(point => {
-			point.node.style.display = "none";
+			point.node.style.display = 'none';
 		});
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	clear() {
 		const { nodes } = this;

@@ -1,4 +1,5 @@
 import History from "./History";
+import dagre from 'dagre'; 
 /**
  * @class
  */
@@ -16,6 +17,62 @@ class Schema {
 		this.listenEvents();
 	}
 
+	format(){
+		const nodes = this.editor.graph.node.nodes;
+		const lines = this.editor.graph.line.lines;
+		const res = {
+			nodes:[],
+			lines:[]
+		}
+		const g = new dagre.graphlib.Graph();
+		const option = Object.assign({
+			nodesep: 50,
+			rankdir: 'TB',
+			ranksep:50,
+			align: 'UL'
+		},this.editor.config.dagreOption)
+		g.setGraph(option);
+		const {center=true} = this.editor.config.dagreOption;
+
+		g.setDefaultEdgeLabel(function() {
+			return {};
+		});
+
+		for(let key in nodes){
+			const node = nodes[key];
+			const data = node.data;
+			if(!data.width||!data.height){
+				const bbox = node.getBBox();
+				data.width = bbox.width;
+				data.height = bbox.height;
+			}
+			g.setNode(key, {...data});
+		}
+		for(let key in lines){
+			const line = lines[key];
+			const data = line.data;
+			g.setEdge(data.from, data.to);
+			res.lines.push(data)
+		} 
+		
+		dagre.layout(g);
+
+		g.nodes().forEach(function(key) {
+			const nodeData = g.node(key);
+			if(center){
+				if(option.rankdir.indexOf('T')<0){// 左右布局
+					nodeData.y -= nodeData.height/2;
+				}else{//上下布局
+					nodeData.x -= nodeData.width/2;
+				}
+			}
+			res.nodes.push(nodeData);
+		});
+		// 触发format事件，保存历史
+		this.setData(res);
+		this.editor.fire("format",{data:res})
+	}
+
 	listenEvents() {
 		const historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete"]
 		historyChangeEvents.forEach(event => {
@@ -27,6 +84,17 @@ class Schema {
 				9999
 			);
 		});
+		this.editor.on("autofit",()=>{
+			this.history.push(this.getNowDataMap());
+		},9999)
+	}
+
+	pushHistory(){
+		this.history.push(this.getNowDataMap());
+	}
+
+	popHistory(){
+		this.history.pop();
 	}
 
 	getNowDataMap() {
@@ -53,7 +121,7 @@ class Schema {
 	 */
 	setData(data) {
 		this.parseData(data); // 解析数据
-		this.editor.clearGraph();
+		this.editor.graph.clearGraph();
 		this.renderData(data);
 		this.editor.fire("load", data);
 	}
@@ -63,8 +131,9 @@ class Schema {
 	 */
 	setInitData(data) {
 		this.parseData(data); // 解析数据
-		this.editor.clearGraph();
+		this.editor.graph.clearGraph();
 		this.renderData(data);
+		this.history.clear();
 		this.history.push(this.data);
 	}
 
@@ -82,7 +151,7 @@ class Schema {
 		});
 		lines.forEach(item => {
 			const { from, to, fromPoint = 0, toPoint = 0 } = item;
-			linesMap[`${from}.${fromPoint}=>${to}.${toPoint}`] = item;
+			linesMap[`${from}.${fromPoint}=${to}.${toPoint}`] = item;
 		});
 		this.data = {
 			nodesMap,
@@ -101,7 +170,7 @@ class Schema {
 	 * 重做
 	 */
 	redo() {
-		this.editor.clearGraph();
+		this.editor.graph.clearGraph();
 		this.history.redo();
 		this.renderData(this.data);
 		this.editor.fire("redo");
@@ -111,7 +180,7 @@ class Schema {
 	 * 撤销
 	 */
 	undo() {
-		this.editor.clearGraph();
+		this.editor.graph.clearGraph();
 		this.history.undo();
 		this.renderData(this.data);
 		this.editor.fire("undo");

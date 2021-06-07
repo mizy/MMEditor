@@ -11,8 +11,8 @@ class AchorLine {
 		this.anchors = [];
 		this.path = this.paper.path();
 		this.path.attr({
-			class: "anchor-line"
-		})
+			class: 'anchor-line'
+		});
 	}
 
 	/**
@@ -39,7 +39,7 @@ class AchorLine {
 				x: x, y: y + height
 			}, {
 				x: x + width / 2, y: y + height / 2
-			})
+			});
 		}
 
 		this.anchors = anchors;
@@ -64,7 +64,7 @@ class AchorLine {
 
 	/**
 	 * 画节点
-	 * @param {*} node 
+	 * @param {*} node
 	 */
 	check(x, y) {
 		if (!this.hideAchorLine) {
@@ -76,7 +76,7 @@ class AchorLine {
 			const bl = { x, y: y + height };
 			const cc = { x: x + width / 2, y: y + height / 2 };
 			const nowPoints = [tl, tr, br, bl, cc];
-			let final = {}, newXY = { x, y }, coordFlag = '';
+			let final = {}; let newXY = { x, y }; let coordFlag = '';
 			const anchor = this.anchors.find(anchor => {
 				return nowPoints.find((point, index) => {
 					const deltaY = anchor.y - point.y;
@@ -91,20 +91,24 @@ class AchorLine {
 						final.y = anchor.y;
 						newXY.y += deltaY;
 						coordFlag = 'y';
-						return true
+						return true;
 					}
-				})
-			})
+				});
+			});
 			if (!anchor) {
-				this.path.node.style.display = "none";
-				if (!this.hideAchor) return this.checkAchor(x, y)
-				return { x, y }
+				this.path.node.style.display = 'none';
+				if (!this.hideAchor) return this.checkAchor(x, y);
+				return { x, y };
 			}
 			// 中心点坐标补齐
-			!final.x ? final.x = cc.x : final.y = cc.y;
+			if(final.x===undefined){
+				final.x = cc.x;
+			}else{
+				final.y = cc.y;
+			}
 			const path = `M${final.x},${final.y} L${anchor.x},${anchor.y}`;
-			this.path.node.setAttribute("d", path);
-			this.path.node.style.display = "block";
+			this.path.node.setAttribute('d', path);
+			this.path.node.style.display = 'block';
 			if (!this.hideAchor) {
 				const anchorXY = this.checkAchor(newXY.x, newXY.y);
 				anchorXY[coordFlag] = newXY[coordFlag];
@@ -112,14 +116,14 @@ class AchorLine {
 			}
 			return newXY;
 		}
-		if (!this.hideAchor) return this.checkAchor(x, y)
-		return { x, y }
+		if (!this.hideAchor) return this.checkAchor(x, y);
+		return { x, y };
 	}
 
 	hidePath() {
 		this.path.attr({
-			style: "display: none"
-		})
+			style: 'display: none'
+		});
 	}
 }
 export default AchorLine;

@@ -1,4 +1,5 @@
 import Canvg from 'canvg';
+import { Snap } from "../MMEditor";
 // 使用html
 class MiniMap {
 	constructor(editor) {
@@ -110,7 +111,7 @@ class MiniMap {
 			m.scale(1 / this.scale);
 			// m.translate(this.dx,this.dy);
 
-			this.svgBBox = svgBBox;			
+			this.svgBBox = svgBBox;
 			this.dragBBox={
 				width:svgBBox.width / this.scale ,
 				height:svgBBox.height / this.scale
@@ -130,8 +131,10 @@ class MiniMap {
 		this.editor.off("change", this.render);
 		this.editor.off("panning",this.render);
 		this.editor.off("zoom",this.render);
-		this.drag.unDrag();
-		this.dragPoint.unDrag();
+		this.drag.undrag();
+		this.dragPoint.undrag();
+		this.drag.remove();
+		this.dragPoint.remove();
 	}
 }
 export default MiniMap;

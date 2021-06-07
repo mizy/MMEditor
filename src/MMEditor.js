@@ -7,20 +7,10 @@ import Minimap from './Plugins/Minimap';
 import "./index.less";
 
 /**
- * @module MMEditor 默认导出模块
- */
-/**
  * @class 
  * @extends Event
  */
 class MMEditor extends Event {
-	/**
-	 * @param {Object} [config]
-	 * @param {boolean} config.hideAchor=false  
-	 * @param {boolean} config.hideAchorLine=false  
-	 * @param {boolean} config.showBackGrid=true  是否展示背景网格
-	 * @param {boolean} config.showMiniMap=false 是否展示小地图
-	 */
 	constructor(config) {
 		super();
 		this.config = Object.assign({
@@ -29,7 +19,7 @@ class MMEditor extends Event {
 			anchorDistance: 5,
 			showBackGrid: true,
 			showMiniMap: false,
-			readonly:true
+			dagreOption:{}
 		}, config);
 		if (!config.dom) return;
 		this.dom = this.initDom(config.dom);
@@ -72,37 +62,30 @@ class MMEditor extends Event {
 	 * 销毁函数
 	 */
 	destroy() {
-		this.clearGraph();
-		this.graph.clear();
-		this.graph = null;
-		this.clear();
+		this.minimap&&this.minimap.destroy();
+		this.graph.destroy();
+		this.graph = undefined;
 		this.svg.remove();
-		this.dom.innerHTML = null;
+		this.dom.innerHTML = undefined;
 		this.controller.clear();
-		this.controller = null;
-		this.schema = null;
+		this.controller = undefined;
+		this.schema = undefined;
+		this.clear();
 	}
 
 	/**
 	 * 重绘 
 	 */
 	repaint() {
-		this.clearGraph();
+		this.graph.clearGraph();
 		this.graph.render(this.schema.data);
 	}
 
-	/**
-	 * 清空画布
-	 */
-	clearGraph() {
-		this.graph.line.clear();
-		this.graph.node.clear();
-	}
 }
 MMEditor.Event = Event;
 MMEditor.Schema = Schema;
 MMEditor.Snap = Snap;
 MMEditor.Graph = Graph;
 MMEditor.Controller = Controller;
-export default MMEditor; 
+export default MMEditor;
 export { Event, MMEditor, Schema, Snap, Graph, Controller, eve, mina };

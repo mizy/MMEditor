@@ -1,4 +1,4 @@
-import DefaultLine from "./Lines/Line";
+import DefaultLine from './Lines/Line';
 /**
  * @class
  */
@@ -16,8 +16,8 @@ class Line {
 				render: paper => {
 					const path = paper.path();
 					path.attr({
-						stroke: "#abc",
-						strokeDasharray: "10 10"
+						stroke: '#abc',
+						strokeDasharray: '10 10'
 					});
 					return path;
 				},
@@ -33,21 +33,22 @@ class Line {
 
 	// 监听事件
 	listenEvent() {
-		this.graph.on("paper:click", () => {
+		this.graph.on('paper:click', () => {
 			this.unActiveLine();
 		});
-		this.graph.on("node:click", () => {
+		this.graph.on('node:click', () => {
 			this.unActiveLine();
 		});
 	}
 
 	/**
 	 * 添加线
-	 * @param {*} data 
+	 * @param {*} data
 	 */
 	addLine(data) {
+		this.graph.fire('line:beforeadd', { data, type: 'add' });
 		const line = this.renderLine(data);
-		this.graph.fire("line:add", { line, type: "add" });
+		this.graph.fire('line:add', { line, type: 'add' });
 	}
 
 	/**
@@ -80,11 +81,17 @@ class Line {
 		const line = this.lines[lineId];
 		const { nodes } = this.graph.node;
 		const {
-			data: { type }
+			data: { type, className = '' }
 		} = line;
-		const { data } = this.shapes[type || "default"].render(line.data, nodes, line.shape);
-		line.arrow = this.shapes[type || "default"].renderArrow(line.data, nodes, line.arrow);
-		line.label = this.shapes[type || "default"].renderLabel(line.data, nodes, line.shape, line.label);
+		const { data } = this.shapes[type || 'default'].render(line.data, nodes, line.shape);
+		line.arrow = this.shapes[type || 'default'].renderArrow(line.data, nodes, line.arrow);
+
+		line.attr({
+			class: `mm-line ${className || ''}`
+		});
+		if (this.activeLine === line) {
+			this.setActiveLine(line)
+		}
 		line.data = Object.assign({}, line.data, data);
 	}
 
@@ -95,31 +102,31 @@ class Line {
 	renderLine(lineData) {
 		const key = this.getLineId(lineData);
 		const { nodes } = this.node;
-		const shape = this.shapes[lineData.type || "default"];
+		const shape = this.shapes[lineData.type || 'default'];
 		shape.paper = this.paper;
 		const newLine = shape.render(lineData, nodes);
 		const arrow = shape.renderArrow(lineData, nodes);
-		const label = shape.renderLabel(lineData, nodes, newLine.path);
+		// const label = shape.renderLabel(lineData, nodes, newLine.path);
 		const g = this.paper.g();
 
 		g.append(newLine.path);
 		g.append(arrow);
-		g.append(label);
+		// g.append(label);
 		g.data = Object.assign(
+			lineData,
 			{
 				uuid: key
 			},
-			lineData,
 			newLine.data
 		);
 		g.shape = newLine.path;
 		g.arrow = arrow;
-		g.label = label;
+		// g.label = label;
 		g.attr({
-			class: "mm-line"
+			class: `mm-line ${lineData.className || ''}`
 		});
 		newLine.path.attr({
-			class: "mm-line-shape"
+			class: 'mm-line-shape'
 		});
 		this.addToNodes(nodes, g);
 		this.addLineEvents(g);
@@ -139,6 +146,7 @@ class Line {
 		}
 		const { nodes } = this.node;
 		const line = this.lines[uuid];
+		if (!line) return;//这里有可能被删除node时的关联删除线了
 		delete this.lines[uuid];
 		// 删除关联线
 		const { from, to } = line.data;
@@ -147,12 +155,12 @@ class Line {
 		nodes[to] && nodes[to].fromLines.delete(id);
 		!notEvent &&
 			// 是否由删除节点触发的线删除操作
-			this.graph.fire("line:remove", {
+			this.graph.fire('line:remove', {
 				line,
 				uuid,
 				before: line.data,
 				byNode,
-				type: "remove"
+				type: 'remove'
 			});
 		line.arrow.remove();
 		line.arrow.undrag();
@@ -164,7 +172,7 @@ class Line {
 
 	getLineId(lineData) {
 		const { from, to, fromPoint = 0, toPoint = 0 } = lineData;
-		return `${from}.${fromPoint}=>${to}.${toPoint}`;
+		return `${from}.${fromPoint}=${to}.${toPoint}`;
 	}
 
 	/**
@@ -178,20 +186,28 @@ class Line {
 			hoverLinkPoint,
 			node: { nodes }
 		} = this.graph;
-		const {
-			data: { to, uuid }
-		} = g;
+		const { data } = g;
+		const { shape = 'default', to: oldTo, toPoint: oldToPoint, uuid } = data;
 		const line = this.lines[uuid];
 		if (hoverLinkPoint) {
 			const toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
 			const beforeData = Object.assign({}, line.data);
-			line.data.to = toElement.getAttribute("data-node-id");
-			line.data.toPoint = parseInt(toElement.getAttribute("data-index"), 10);
-			// 删除节点入口关联的线，给新链接的节点加上入口线
-			nodes[to].fromLines.delete(uuid);
-			nodes[line.data.to].fromLines.add(uuid);
-			this.graph.fire("line:change", { line, type: "change", before: beforeData });
-			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass("hover")
+			const to = toElement.getAttribute('data-node-id');
+			const toPoint = parseInt(toElement.getAttribute('data-index'), 10);
+
+			if (this.shapes[shape].checkNewLine({
+				...data,
+				to, toPoint,
+			}, this.graph.editor)&&!(oldTo == to && toPoint == oldToPoint)) {
+				Object.assign(line.data, { to, toPoint });
+				// 删除节点入口关联的线，给新链接的节点加上入口线
+				nodes[oldTo].fromLines.delete(uuid);
+				nodes[to].fromLines.add(uuid);
+				this.graph.fire('line:change', { line, type: 'change', before: beforeData });
+			}else{
+				this.graph.fire('line:drop', { line:g });
+			}
+			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass('hover');
 		}
 		this.updateLine(uuid);
 	};
@@ -203,38 +219,38 @@ class Line {
 		const { hoverLinkPoint } = this.graph;
 		if (hoverLinkPoint) {
 			const toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
-			const toNodeId = toElement.getAttribute("data-node-id");
-			const toPoint = toElement.getAttribute("data-index");
-			const { from, fromPoint = 0 } = this.tempLineData;
+			const toNodeId = toElement.getAttribute('data-node-id');
+			const toPoint = toElement.getAttribute('data-index');
+			const { from, fromPoint = 0, to } = this.tempLineData;
 			const data = Object.assign(
 				{
-					uuid: `${from}.${fromPoint}=>${toNodeId}.${toPoint}`,
+					uuid: `${from}.${fromPoint}=${toNodeId}.${toPoint}`,
 					to: toNodeId,
 					toPoint
 				},
 				this.tempLineData
 			);
 			if (this.lines[data.uuid]) return;
-			if (this.shapes["default"].checkNewLine(data, this.graph.editor)) {
+			if (this.shapes['default'].checkNewLine(data, this.graph.editor)) {
 				this.addLine(data);
 			}
-			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass("hover")
+			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass('hover');
 			this.graph.hoverLinkPoint = undefined;
 		}
 	};
 
 	/**
 	 * 注册线
-	 * @param {*} data 
+	 * @param {*} data
 	 */
 	registeLine(data) {
 		const { type } = data;
-		this.shapes[type] = Object.assign({}, this.shapes["default"], data);
+		this.shapes[type] = Object.assign({}, this.shapes['default'], data);
 	}
 
 	/**
 	 * 渲染
-	 * @param {*} lines 
+	 * @param {*} lines
 	 */
 	render(lines = []) {
 		Object.keys(lines).map(key => {
@@ -244,9 +260,9 @@ class Line {
 	}
 
 	/**
-	 * 
-	 * @param {*} nodes 
-	 * @param {*} g 
+	 *
+	 * @param {*} nodes
+	 * @param {*} g
 	 */
 	addToNodes(nodes, g) {
 		const { from, to } = g.data;
@@ -260,7 +276,6 @@ class Line {
 	 * @param {*} g
 	 */
 	addLineEvents(g) {
-		if(this.graph.editor.config.readonly)return true;
 		// 箭头拖拽
 		g.arrow.drag(
 			(dx, dy) => {
@@ -272,33 +287,37 @@ class Line {
 				if (newXY) {
 					x = newXY[0]; y = newXY[1];
 				}
-				shape.attr({
+				shape.path.attr({
 					d: `M${data.fromX} ${data.fromY}L${x} ${y}`
 				});
 			},
 			() => {
 				const { arrow, shape, data } = g;
-				const { toX, toY } = data;
+				const { toX, toY, from, fromPoint } = data;
 				g.startX = toX;
 				g.startY = toY - 2;
 				arrow.attr({
-					display: "none"
+					display: 'none'
 				});
 				shape.attr({
-					strokeDasharray: "5 5"
+					strokeDasharray: '5 5'
 				});
+				this.tempLineData = {
+					from,
+					fromPoint,
+				};
 				this.makeAdsorbPoints();
 				this.graph.addLinkHoverEvent();
-				data.status = "active";
-				this.graph.fire("line:drag");
+				data.status = 'active';
+				this.graph.fire('line:drag');
 			},
-			() => {
+			(e) => {
 				const { arrow, shape } = g;
 				arrow.attr({
-					display: "initial"
+					display: 'initial'
 				});
 				shape.attr({
-					strokeDasharray: "0"
+					strokeDasharray: '0'
 				});
 				this.updateActiveLine(g);
 				this.graph.offLinkHoverEvent();
@@ -306,23 +325,27 @@ class Line {
 		);
 		g.shape.click(e => {
 			this.setActiveLine(g);
-			this.graph.fire("line:click", { line: g, event: e });
+			this.graph.fire('line:click', { line: g, event: e });
 		});
-		// 点击标签效果与点击线条一样
-		g.label && g.label.click(e => {
-			this.setActiveLine(g);
-			this.graph.fire("line:click", { line: g, event: e });
-		});
+
+		g.shape.hover(
+			(event) => {
+				this.graph.fire('line:mouseenter', { line: g, event });
+			},
+			(event) => {
+				this.graph.fire('line:mouseleave', { line: g, event });
+			}
+		);
 	}
 
 	/**
-	 * 
-	 * @param {*} line 
+	 *
+	 * @param {*} line
 	 */
 	setActiveLine(line) {
 		this.unActiveLine();
 		this.activeLine = line;
-		this.activeLine.addClass("active");
+		this.activeLine.addClass('active');
 	}
 
 	/**
@@ -330,37 +353,37 @@ class Line {
 	 */
 	unActiveLine() {
 		if (this.activeLine) {
-			this.activeLine.removeClass("active");
+			this.activeLine.removeClass('active');
 		}
 		this.activeLine = null;
 	}
 
-	//计算磁吸
+	// 计算磁吸
 	calcLinkPoint = (x, y, type = 'default') => {
 		const { adsorb = [20, 20] } = this.graph.node.shapes[type];
 		const newXY = this.allLinkPointsXY.find(item => {
 			if (Math.abs(x - item[0]) < adsorb[0] && Math.abs(y - item[1]) < adsorb[1]) {
-				this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass && this.graph.hoverLinkPoint.removeClass("hover");
+				this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass && this.graph.hoverLinkPoint.removeClass('hover');
 				this.graph.hoverLinkPoint = item[2];
-				item[2].addClass("hover");
+				item[2].addClass('hover');
 				return item;
 			}
-		})
+		});
 		if (!newXY) {
-			this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass("hover")
+			this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass('hover');
 		}
-		return newXY
+		return newXY;
 	}
 
 	// 生成磁吸
 	makeAdsorbPoints = () => {
-		const linkPoints = this.paper.selectAll(".mm-link-points");
+		const linkPoints = this.paper.selectAll('.mm-link-points');
 		this.allLinkPointsXY = [];
 		linkPoints.forEach(item => {
-			const x = parseInt(item.attr("cx"));
-			const y = parseInt(item.attr("cy"));
-			this.allLinkPointsXY.push([x, y, item])
-		})
+			const x = parseInt(item.attr('cx'));
+			const y = parseInt(item.attr('cy'));
+			this.allLinkPointsXY.push([x, y, item]);
+		});
 	}
 
 	/**
@@ -402,25 +425,25 @@ class Line {
 				this.makeAdsorbPoints();
 				this.graph.addLinkHoverEvent();
 				this.tempLine = this.shapes.tempLine.render(this.paper);
-				this.graph.fire("line:drag");
+				this.graph.fire('line:drag');
 			},
 			(e) => {
 				const { hoverLinkPoint } = this.graph;
 				let toNode = null;
 				if (hoverLinkPoint) {
 					const toElement = hoverLinkPoint.toElement || hoverLinkPoint.node;
-					const toNodeId = toElement.getAttribute("data-node-id");
+					const toNodeId = toElement.getAttribute('data-node-id');
 					toNode = this.node.nodes[toNodeId];
 				}
 				this.checkNewLine(e);
 				this.tempLine.remove();
-				this.graph.fire("line:drop", { fromNode: node, toNode, event: e });
+				this.graph.fire('line:drop', { fromNode: node, toNode, event: e });
 			}
 		);
 	};
 
 	/**
-	 * 
+	 *
 	 */
 	clear() {
 		const { lines } = this;

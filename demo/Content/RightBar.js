@@ -119,6 +119,7 @@ class RightBar extends PureComponent {
 		} = this.props;
 		const { data } = parentNode;
 		const refresh = refreshs[data.component];
+		if(!refresh)return false;
 		const newData = refresh(
 			{
 				before

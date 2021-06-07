@@ -251,7 +251,7 @@ class Console extends PureComponent {
 	};
 
 	updateRunningLine(line) {
-		let length = line.shape.getTotalLength();
+		let length = line.shape.label.getTotalLength();
 		if (!line.hasClass("running")) {
 			this.props.editor.graph.line.updateLine(line.data.uuid);
 			return;
@@ -260,7 +260,7 @@ class Console extends PureComponent {
 			0,
 			length,
 			val => {
-				const coord = line.shape.getPointAtLength(val);
+				const coord = line.shape.label.getPointAtLength(val);
 				const matrix = new window.Snap.Matrix();
 				matrix.translate(coord.x, coord.y);
 				matrix.rotate(coord.alpha + line.arrow.angle + 90, 0, 0);

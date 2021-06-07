@@ -1,4 +1,5 @@
 import Event from "./Event";
+import { Snap } from "../MMEditor";
 /**
  * 控制器
  * @class
@@ -27,16 +28,28 @@ class Controller extends Event {
 	 * 自适应
 	 */
 	autoFit() {
-		const width = this.editor.dom.node.clientWidth;
-		const height = this.editor.dom.node.clientHeight;
-		const bbox = this.paper.getBBox();
+		const data = this.editor.schema.getData();
+		
 		const transform = this.paper.transform();
 		const matrix = transform.localMatrix;
 		const { scalex } = matrix.split();
-		matrix.translate(((width - bbox.width) / 2 - bbox.x) / scalex, ((height - bbox.height) / 2 - bbox.y) / scalex);
-		const transformString = matrix.toTransformString();
-		this.paper.node.style.transition = 'transform 200ms ease-out';
-		this.paper.transform(transformString);
+		this.paper.transform(`scale(${scalex})`);
+
+		const width = this.editor.dom.node.clientWidth;
+		const height = this.editor.dom.node.clientHeight;
+		const bbox = this.paper.getBBox();
+		const dx = ((width - bbox.width) / 2 - bbox.x)/scalex;
+		const dy = ((height - bbox.height) / 2 - bbox.y)/scalex;
+		data.nodes.forEach(node=>{
+			node.x +=  dx;
+			node.y += dy;
+		});
+		this.editor.schema.setData(data)
+		// matrix.translate(((width - bbox.width) / 2 - bbox.x) / scalex, ((height - bbox.height) / 2 - bbox.y) / scalex);
+		// const transformString = matrix.toTransformString();
+		// this.paper.node.style.transition = 'transform 200ms ease-out';
+		// this.paper.transform(transformString);
+		this.editor.fire("autofit",{data})
 		setTimeout(() => {
 			this.paper.node.style.transition = null;
 		}, 200)

@@ -1,5 +1,4 @@
 /**
- * @extends DefaultNode
  * @interface
  */
 const IconNode = {
@@ -32,8 +31,8 @@ const IconNode = {
 	renderLinkPoint: (node, linkPoint, circle) => {
 		circle = circle || node.paper.circle(0, 0, 5, 5);
 		const box = node.shape.getBBox();
-		const x = linkPoint.x * box.w + parseInt(node.data.x, 10);
-		const y = linkPoint.y * box.h + parseInt(node.data.y, 10);
+		const x = linkPoint.x * box.w + parseInt(node.data.x||0, 10);
+		const y = linkPoint.y * box.h + parseInt(node.data.y||0, 10);
 		circle.attr({
 			cx: x,
 			cy: y,
