@@ -1,5 +1,5 @@
 {
-	"name": "mm-editor",
+	"name": "mmeditor",
 	"version": "2.0.0",
 	"description": "svg flow editor",
 	"main": "./dist/MMEditor.js",
