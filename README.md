@@ -92,8 +92,6 @@ npm i MMEditor --save
 # 架构
 ![](https://mizy.github.io/MMEditor/MMEditor.png)
 
-[百度脑图](https://naotu.baidu.com/file/1dd5c0ff16911b44ca80ab25424908d0)
-
 # API 
 [doc](https://mizy.github.io/MMEditor/doc)
 

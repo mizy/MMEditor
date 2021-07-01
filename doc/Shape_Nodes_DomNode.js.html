@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Shape/Nodes/DefaultNodes.js</title>
+    <title>JSDoc: Source: Shape/Nodes/DomNode.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Shape/Nodes/DefaultNodes.js</h1>
+    <h1 class="page-title">Source: Shape/Nodes/DomNode.js</h1>
 
     
 
@@ -29,23 +29,20 @@
             <pre class="prettyprint source linenums"><code>/**
  * @interface
  */
-const DefaultNode = {
+ const DomNode = {
 	adsorb: [20, 20],//磁吸的范围
-	linkPoints: [{ x: 0.5, y: 0 }, { x: 0.5, y: 1 }],
+	linkPoints: [{ x: 0, y: 0.5 }, { x:1 , y: 0.5 },{ x: 0.5, y: 0 }, { x:0.5 , y: 1 }],
 
-	/**
-	 * 默认渲染函数 data,snapPaper
-	 */
 	render: (data, snapPaper) => {
-		const node = snapPaper.rect(0, 0, 100, 40);
-		const text = snapPaper.text(20, 25, data.name);
-		node.attr({
-			fill: "#fff",
-			stroke: "#000",
-			rx: 5,
-			ry: 5
+		const dom = snapPaper.el('foreignObject', {
+			width: data.width,
+			height: data.height
 		});
-		return snapPaper.group(node, text);
+		dom.node.innerHTML = (`&lt;div style="width:${data.width}px;height:${data.height}" class="mm-node-wrapper">
+			&lt;div class="node-text">${data.name}&lt;/div>
+		&lt;/div>`);
+		const group = snapPaper.group(dom);
+		return group;
 	},
 
 	/**
@@ -99,7 +96,7 @@ const DefaultNode = {
 		linkPoint.y = y;
 	}
 };
-export default DefaultNode;
+export default DomNode;
 </code></pre>
         </article>
     </section>
