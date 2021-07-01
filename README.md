@@ -1,5 +1,7 @@
 # [MMEditor](https://mizy.github.io/MMEditor)
-* 一个可高度自定义的svg流程图框架，依赖少，开箱即用，提供dom接口方便对dom进行各种状态操作，demo 提供一个基础的数据流程demo 和 基础的流程项目 设计框架
+* 一个可高度自定义的svg流程图框架，依赖少，开箱即用
+* 提供dom接口方便对dom进行各种状态操作
+* demo 提供一个基础的数据流程demo 和 基础的流程项目的设计框架
 
 # Demo
 
