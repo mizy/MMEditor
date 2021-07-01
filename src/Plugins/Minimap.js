@@ -41,11 +41,11 @@ class MiniMap {
 		this.drag.drag((dx, dy) => {
 			const dleft = dx + this.dragStart.x;
 			const dtop = dy + this.dragStart.y;
-			const left = Math.min(Math.max(dleft, 0),this.width - this.dragBBox.width + 40);
-			const top = Math.min(Math.max(dtop, 0),this.height - this.dragBBox.height + 40);
+			const left = Math.min(Math.max(dleft, 0),this.width - this.dragBBox.width + this.padding*2);
+			const top = Math.min(Math.max(dtop, 0),this.height - this.dragBBox.height + this.padding*2);
 			this.drag.node.style.left = left + "px";
 			this.drag.node.style.top = top + "px";
-			controller.moveTo(-(left-20)*this.scale,-(top-20)*this.scale)
+			controller.moveTo(-(left-this.padding)*this.scale*controller.scale,-(top-this.padding)*this.scale*controller.scale)
 		}, () => {
 			const { style } = this.drag.node;
 			this.dragStart = {
@@ -58,22 +58,17 @@ class MiniMap {
 			const { style } = this.drag.node;
 			const ratio = this.svgBBox.width/this.svgBBox.height;
 			let width;let height;
-			if(dy*ratio<dx){
-				width =  Math.max(dx + this.dragStartBBox.width, 10);
-				height = width/ratio;
-			}else{
+			// if(dy*ratio<dx){
+			// 	width =  Math.max(dx + this.dragStartBBox.width, 10);
+			// 	height = width/ratio;
+			// }else{
 				height = Math.max(dy + this.dragStartBBox.height, 10);
 				width = height*ratio;
-			}
+			// }
 			this.drag.node.style.width = width;
 			this.drag.node.style.height = height;
-			const left =  style.left ? parseInt(style.left.split("px")[0]) : 0;
-			const top =  style.top ? parseInt(style.top.split("px")[0]) : 0;
-			controller.transform(
-				this.svgBBox.width/(width* this.scale),
-				-(left-this.padding)*this.scale,
-				-(top-this.padding)*this.scale,
-			)
+			controller.scale = this.svgBBox.width/(width* this.scale);
+			controller.update(); 
 		}, (x, y, e) => {
 			e.preventDefault();
 			e.stopPropagation()
@@ -86,20 +81,27 @@ class MiniMap {
 	}
 
 	resetDrag=()=>{
-		const transform = this.editor.paper.transform();
-		const { dx, dy,scalex } = transform.localMatrix.split();
-		const x = dx*scalex;
-		const y = dy*scalex;
-		this.drag.node.style.left = this.padding-x/this.scale;
-		this.drag.node.style.top = this.padding-y/this.scale;
+		const {x,y,scale} = this.editor.controller; 
+		/**
+		 * 这里虽然坐标整体都缩小了10倍，但是用户画布放大的scale倍，在这个坐标系下永远都是1倍，不会随着用户放大而放大，
+		 * 所以这里求得的左上角便宜坐标实际上还是标准倍率吸下的，需要再放大用户的倍率才能得到最终的效果，
+		 * 用户画布=》缩小10倍画布到用户scale*this.sclae=》还原回基准this.scale
+		 */
+		this.drag.node.style.left = this.padding - x/scale/this.scale ;
+		this.drag.node.style.top = this.padding - y/scale/this.scale ;
+		this.dragBBox = {
+			width:this.svgBBox.width / this.scale /scale,
+			height:this.svgBBox.height/ this.scale /scale
+		}
+		this.drag.node.style.width = this.dragBBox.width;
+		this.drag.node.style.height = this.dragBBox.height;
 	}
 
 	render = () => {
 		clearTimeout(this.timeout);
 		this.timeout = setTimeout(async () => {
 			const node = this.editor.svg.node;
-			const transform = this.editor.paper.transform();
-			const { dx, dy } = transform.localMatrix.split();
+			const {controller:{x,y,scale}} = this.editor;
 			const svgBBox = node.getBoundingClientRect();
 			const images = node.querySelectorAll("image")||[];
 			images.forEach(img=>{
@@ -110,7 +112,7 @@ class MiniMap {
 			m.translate(this.padding,this.padding);
 			m.scale(1 / this.scale);
 			// m.translate(this.dx,this.dy);
-
+			console.log(m.toString());
 			this.svgBBox = svgBBox;
 			this.dragBBox={
 				width:svgBBox.width / this.scale ,

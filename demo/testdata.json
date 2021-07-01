@@ -93,28 +93,11 @@
 			"uuid": "0559b3b0-c7df-11e9-8e77-b1834b6279dc",
 			"indexDepth": 0
 			 
-		},
-		{
-			"component": "read",
-			"uuid": "1",
-			"iconPath": "./jobTypes/数据引入@2x.png",
-			"name": "输入-1",
-			"x":0,
-			"y":0
 		}
+		 
 	],
 	"lines": [
-		{
-			"to": "0559b3b0-c7df-11e9-8e77-b1834b6279dc",
-			"toPoint": 0,
-			"from": "1",
-			"className":"error",
-			"fromPoint": 1,
-			"fromX": 344,
-			"fromY": 69,
-			"toX": 355,
-			"toY": 176
-		},
+		
 		{
 			"to": "04026110-c7df-11e9-8e77-b1834b6279dc",
 			"toPoint": "0",
