@@ -4,6 +4,8 @@
 * demo 提供一个基础的数据流程demo 和 基础的流程项目的设计框架
 * 内置dagre支持格式化流程图展示
 
+![](https://mizy.github.io/MMEditor/snapshot.png)
+
 # Demo
 
 [编辑器DEMO](https://mizy.github.io/MMEditor/dist/)
@@ -88,6 +90,7 @@ npm i MMEditor --save
 ```
 
 # 架构
+![](https://mizy.github.io/MMEditor/MMEditor.png)
 
 [百度脑图](https://naotu.baidu.com/file/1dd5c0ff16911b44ca80ab25424908d0)
 
