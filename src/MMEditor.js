@@ -4,6 +4,7 @@ import Event from "./Utils/Event";
 import Controller from "./Utils/Controller";
 import Schema from "./Model/Schema";
 import Minimap from './Plugins/Minimap';
+import Util from './Utils/util'
 import "./index.less";
 
 /**
@@ -19,6 +20,7 @@ class MMEditor extends Event {
 			anchorDistance: 5,
 			showBackGrid: true,
 			showMiniMap: false,
+			mode:undefined,
 			dagreOption:{}
 		}, config);
 		if (!config.dom) return;
@@ -38,7 +40,7 @@ class MMEditor extends Event {
 	}
 
 	initDom(dom) {
-		dom.innerHTML = `<div class="mm-editor" >
+		dom.innerHTML = `<div class="mm-editor ${this.config.mode||''}" >
 				<div class="mm-editor-back" ></div>
 				<div class="mm-editor-svg" >
 					<svg  />
@@ -87,5 +89,6 @@ MMEditor.Schema = Schema;
 MMEditor.Snap = Snap;
 MMEditor.Graph = Graph;
 MMEditor.Controller = Controller;
+MMEditor.Util = Util;
 export default MMEditor;
 export { Event, MMEditor, Schema, Snap, Graph, Controller, eve, mina };

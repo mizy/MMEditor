@@ -6,9 +6,11 @@
 
 # Demo
 
-[demo](https://mizy.github.io/MMEditor/dist/)
+[编辑器DEMO](https://mizy.github.io/MMEditor/dist/)
 
-[basic demo](https://mizy.github.io/MMEditor/dist/basic.html)
+[添加节点](https://mizy.github.io/MMEditor/dist/basic.html)
+
+[格式化DAG图](https://mizy.github.io/MMEditor/public/flowChart.html)
 
 # Install
 ```sh

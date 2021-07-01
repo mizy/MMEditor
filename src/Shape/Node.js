@@ -1,8 +1,9 @@
 import uuid from 'uuid/v1';
 import defaultNode from './Nodes/DefaultNodes';
 import iconNode from './Nodes/IconNode';
+import domNode from './Nodes/DomNode';
 import { Snap } from "../MMEditor";
-
+console.log(domNode)
 /**
  * @class
  */
@@ -19,7 +20,8 @@ class Node {
 		this.actives = {};
 		this.shapes = {
 			default: defaultNode,
-			iconNode: iconNode
+			iconNode: iconNode,
+			domNode
 		};
 	}
 
@@ -158,12 +160,7 @@ class Node {
 		const { uuid } = nodeData;
 		const node = this.nodes[uuid];
 		const shape = this.shapes[nodeData.type || 'default'];
-		node.animate(
-			{
-				transform: `translate(${nodeData.x} ,${nodeData.y})`
-			},
-			200
-		);
+		node.transform(`translate(${nodeData.x} ,${nodeData.y})`)
 		node.data = nodeData;
 		node.linkPointsTypes.forEach((linkPoint, index) => {
 			shape.renderLinkPoint(node, linkPoint, node.linkPoints[index]);
@@ -292,6 +289,7 @@ class Node {
 				this.graph.fire('node:click', { node, event });
 			}
 		});
+		if(this.graph.mode==='view')return;
 		node.hover(
 			(event) => {
 				this.graph.fire('node:mouseenter', { node, event });

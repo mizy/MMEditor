@@ -130,9 +130,7 @@ class Schema {
 	 * @param  {} data
 	 */
 	setInitData(data) {
-		this.parseData(data); // 解析数据
-		this.editor.graph.clearGraph();
-		this.renderData(data);
+		this.setData(data);
 		this.history.clear();
 		this.history.push(this.data);
 	}

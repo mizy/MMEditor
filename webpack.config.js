@@ -15,8 +15,8 @@ module.exports = {
 		host: "0.0.0.0",
 		port: "7799",
 		open: true,
-		openPage: "./index.html",
-		contentBase: "./public",
+		openPage: "./public/index.html",
+		contentBase: "./",
 		hot: true
 	},
 	devtool: "source-map",

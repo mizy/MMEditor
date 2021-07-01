@@ -276,6 +276,7 @@ class Line {
 	 * @param {*} g
 	 */
 	addLineEvents(g) {
+		if(this.graph.mode==='view')return;
 		// 箭头拖拽
 		g.arrow.drag(
 			(dx, dy) => {
@@ -390,6 +391,7 @@ class Line {
 	 * 节点的新增线逻辑
 	 */
 	addLinkPointEvent = (point, node, index) => {
+		if(this.graph.mode==='view')return;
 		point.drag(
 			(dx, dy) => {
 				const {
