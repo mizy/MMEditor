@@ -2,12 +2,13 @@
 * 一个可高度自定义的svg流程图框架，依赖少，开箱即用
 * 提供dom接口方便对dom进行各种状态操作
 * demo 提供一个基础的数据流程demo 和 基础的流程项目的设计框架
+* 内置dagre支持格式化流程图展示
 
 # Demo
 
-[demo](https://mizy.github.io/MMEditor/dist)
+[demo](https://mizy.github.io/MMEditor/dist/)
 
-[basic demo](https://mizy.github.io/MMEditor/basic)
+[basic demo](https://mizy.github.io/MMEditor/dist/basic.html)
 
 # Install
 ```sh
