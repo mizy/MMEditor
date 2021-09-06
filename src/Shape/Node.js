@@ -89,7 +89,6 @@ class Node {
 			data.uuid = uuid();
 		}
 		if (data.uuid && data.uuid.indexOf('-') > -1) {
-			console.log(data.uuid);
 			data.uuid = data.uuid.replace(/-/g, '');
 		}
 		const node = this.renderNode(data);
@@ -154,17 +153,22 @@ class Node {
 	}
 
 	/**
-	 * 根据数据更新节点
+	 * 根据数据更新节点位置
 	 */
-	updateNode(nodeData = {}) {
+	updateNode(nodeData = {},rerenderShape=false) {
 		const { uuid } = nodeData;
 		const node = this.nodes[uuid];
 		const shape = this.shapes[nodeData.type || 'default'];
+        if(rerenderShape){
+            const { data } = shape.render(nodeData, node);
+            node.data = {...nodeData,...data};
+        }
 		node.transform(`translate(${nodeData.x} ,${nodeData.y})`)
 		node.data = nodeData;
 		node.linkPointsTypes.forEach((linkPoint, index) => {
 			shape.renderLinkPoint(node, linkPoint, node.linkPoints[index]);
 		});
+        
 	}
 
 	/**

@@ -82,6 +82,7 @@ class MiniMap {
 
 	resetDrag=()=>{
 		const {x,y,scale} = this.editor.controller; 
+        if(!this.svgBBox)return;
 		/**
 		 * 这里虽然坐标整体都缩小了10倍，但是用户画布放大的scale倍，在这个坐标系下永远都是1倍，不会随着用户放大而放大，
 		 * 所以这里求得的左上角便宜坐标实际上还是标准倍率吸下的，需要再放大用户的倍率才能得到最终的效果，

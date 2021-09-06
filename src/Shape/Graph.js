@@ -71,6 +71,7 @@ class Graph extends Event {
 		});
 	}
 
+    //todo:
 	onKeyDown = (e) => {
 		if (["TEXTAREA", "INPUT"].indexOf(document.activeElement.tagName) > -1 && document.activeElement.getAttribute("contenteditable")!=="false") {
             return;

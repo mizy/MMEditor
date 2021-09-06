@@ -162,7 +162,8 @@ const DefaultLine = {
 			class: "mm-line-arrow",
 			d: pathString,
 			fill: "rgba(178,190,205,0.7)",
-			transform: matrix.toString()
+			transform: matrix.toString(),
+            ...data.arrowStyle
 		});
 		path.angle = angle;
 		return path;
