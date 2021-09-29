@@ -293,10 +293,10 @@ class Node {
 				this.graph.fire('node:click', { node, event });
 			}
 		});
-		if(this.graph.mode==='view')return;
 		node.hover(
 			(event) => {
 				this.graph.fire('node:mouseenter', { node, event });
+		        if(this.graph.mode==='view')return;
 				if (this.graph.linkStatus === 'lineing') return false;
 				node.linkPoints.forEach(point => {
 					point.node.style.display = 'block';
@@ -304,6 +304,7 @@ class Node {
 			},
 			(event) => {
 				this.graph.fire('node:mouseleave', { node, event });
+                if(this.graph.mode==='view')return;
 				if (this.graph.linkStatus === 'lineing') return false;
 				if (this.actives[node.data.uuid]) {
 					return false;

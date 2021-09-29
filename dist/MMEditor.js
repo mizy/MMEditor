@@ -23653,7 +23653,6 @@ function () {
       }
 
       if (data.uuid && data.uuid.indexOf('-') > -1) {
-        console.log(data.uuid);
         data.uuid = data.uuid.replace(/-/g, '');
       }
 
@@ -23818,16 +23817,25 @@ function () {
       return node;
     }
     /**
-     * 根据数据更新节点
+     * 根据数据更新节点位置
      */
 
   }, {
     key: "updateNode",
     value: function updateNode() {
       var nodeData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var rerenderShape = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       var uuid = nodeData.uuid;
       var node = this.nodes[uuid];
       var shape = this.shapes[nodeData.type || 'default'];
+
+      if (rerenderShape) {
+        var _shape$render = shape.render(nodeData, node),
+            data = _shape$render.data;
+
+        node.data = _objectSpread({}, nodeData, {}, data);
+      }
+
       node.transform("translate(".concat(nodeData.x, " ,").concat(nodeData.y, ")"));
       node.data = nodeData;
       node.linkPointsTypes.forEach(function (linkPoint, index) {
@@ -23991,13 +23999,13 @@ function () {
           });
         }
       });
-      if (this.graph.mode === 'view') return;
       node.hover(function (event) {
         _this7.graph.fire('node:mouseenter', {
           node: node,
           event: event
         });
 
+        if (_this7.graph.mode === 'view') return;
         if (_this7.graph.linkStatus === 'lineing') return false;
         node.linkPoints.forEach(function (point) {
           point.node.style.display = 'block';
@@ -24008,6 +24016,7 @@ function () {
           event: event
         });
 
+        if (_this7.graph.mode === 'view') return;
         if (_this7.graph.linkStatus === 'lineing') return false;
 
         if (_this7.actives[node.data.uuid]) {
@@ -24304,12 +24313,12 @@ var DefaultLine = {
     var matrix = new snap_svg.Matrix();
     matrix.translate(toX, toY);
     matrix.rotate(angle, 0, 0);
-    path.attr({
+    path.attr(Line_objectSpread({
       "class": "mm-line-arrow",
       d: pathString,
       fill: "rgba(178,190,205,0.7)",
       transform: matrix.toString()
-    });
+    }, data.arrowStyle));
     path.angle = angle;
     return path;
   },
@@ -25509,7 +25518,8 @@ function (_Event) {
           });
         }
       });
-    }
+    } //todo:
+
   }, {
     key: "addLinkHoverEvent",
 
@@ -35778,6 +35788,7 @@ function () {
           x = _this$editor$controll.x,
           y = _this$editor$controll.y,
           scale = _this$editor$controll.scale;
+      if (!_this.svgBBox) return;
       /**
        * 这里虽然坐标整体都缩小了10倍，但是用户画布放大的scale倍，在这个坐标系下永远都是1倍，不会随着用户放大而放大，
        * 所以这里求得的左上角便宜坐标实际上还是标准倍率吸下的，需要再放大用户的倍率才能得到最终的效果，
