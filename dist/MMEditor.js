@@ -24920,6 +24920,25 @@ function () {
     value: function addLineEvents(g) {
       var _this5 = this;
 
+      g.shape.hover(function (event) {
+        _this5.graph.fire('line:mouseenter', {
+          line: g,
+          event: event
+        });
+      }, function (event) {
+        _this5.graph.fire('line:mouseleave', {
+          line: g,
+          event: event
+        });
+      });
+      g.shape.click(function (e) {
+        _this5.setActiveLine(g);
+
+        _this5.graph.fire('line:click', {
+          line: g,
+          event: e
+        });
+      });
       if (this.graph.mode === 'view') return; // 箭头拖拽
 
       g.arrow.drag(function (dx, dy) {
@@ -24979,25 +24998,6 @@ function () {
         _this5.updateActiveLine(g);
 
         _this5.graph.offLinkHoverEvent();
-      });
-      g.shape.click(function (e) {
-        _this5.setActiveLine(g);
-
-        _this5.graph.fire('line:click', {
-          line: g,
-          event: e
-        });
-      });
-      g.shape.hover(function (event) {
-        _this5.graph.fire('line:mouseenter', {
-          line: g,
-          event: event
-        });
-      }, function (event) {
-        _this5.graph.fire('line:mouseleave', {
-          line: g,
-          event: event
-        });
       });
     }
     /**
