@@ -276,6 +276,18 @@ class Line {
 	 * @param {*} g
 	 */
 	addLineEvents(g) {
+		g.shape.hover(
+			(event) => {
+				this.graph.fire('line:mouseenter', { line: g, event });
+			},
+			(event) => {
+				this.graph.fire('line:mouseleave', { line: g, event });
+			}
+		);
+        g.shape.click(e => {
+			this.setActiveLine(g);
+			this.graph.fire('line:click', { line: g, event: e });
+		});
 		if(this.graph.mode==='view')return;
 		// 箭头拖拽
 		g.arrow.drag(
@@ -324,19 +336,8 @@ class Line {
 				this.graph.offLinkHoverEvent();
 			}
 		);
-		g.shape.click(e => {
-			this.setActiveLine(g);
-			this.graph.fire('line:click', { line: g, event: e });
-		});
+	
 
-		g.shape.hover(
-			(event) => {
-				this.graph.fire('line:mouseenter', { line: g, event });
-			},
-			(event) => {
-				this.graph.fire('line:mouseleave', { line: g, event });
-			}
-		);
 	}
 
 	/**
