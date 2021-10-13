@@ -74,7 +74,7 @@ class Schema {
 	}
 
 	listenEvents() {
-		const historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete"]
+		const historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete","autofit"]
 		historyChangeEvents.forEach(event => {
 			this.editor.graph.on(
 				event,
@@ -84,9 +84,6 @@ class Schema {
 				9999
 			);
 		});
-		this.editor.on("autofit",()=>{
-			this.history.push(this.getNowDataMap());
-		},9999)
 	}
 
 	pushHistory(){
