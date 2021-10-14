@@ -35583,15 +35583,12 @@ function () {
     value: function listenEvents() {
       var _this = this;
 
-      var historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete"];
+      var historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete", "autofit"];
       historyChangeEvents.forEach(function (event) {
         _this.editor.graph.on(event, function () {
           _this.history.push(_this.getNowDataMap());
         }, 9999);
       });
-      this.editor.on("autofit", function () {
-        _this.history.push(_this.getNowDataMap());
-      }, 9999);
     }
   }, {
     key: "pushHistory",
@@ -35795,14 +35792,14 @@ function () {
        * 用户画布=》缩小10倍画布到用户scale*this.sclae=》还原回基准this.scale
        */
 
-      _this.drag.node.style.left = _this.padding - x / scale / _this.scale;
-      _this.drag.node.style.top = _this.padding - y / scale / _this.scale;
+      _this.drag.node.style.left = _this.padding - x / scale / _this.scale + 'px';
+      _this.drag.node.style.top = _this.padding - y / scale / _this.scale + 'px';
       _this.dragBBox = {
         width: _this.svgBBox.width / _this.scale / scale,
         height: _this.svgBBox.height / _this.scale / scale
       };
-      _this.drag.node.style.width = _this.dragBBox.width;
-      _this.drag.node.style.height = _this.dragBBox.height;
+      _this.drag.node.style.width = _this.dragBBox.width + 'px';
+      _this.drag.node.style.height = _this.dragBBox.height + 'px';
     };
 
     this.render = function () {
@@ -35921,8 +35918,8 @@ function () {
         height = Math.max(dy + _this2.dragStartBBox.height, 10);
         width = height * ratio; // }
 
-        _this2.drag.node.style.width = width;
-        _this2.drag.node.style.height = height;
+        _this2.drag.node.style.width = width + 'px';
+        _this2.drag.node.style.height = height + 'px';
         controller.scale = _this2.svgBBox.width / (width * _this2.scale);
         controller.update();
       }, function (x, y, e) {
