@@ -65,8 +65,8 @@ class MiniMap {
 				height = Math.max(dy + this.dragStartBBox.height, 10);
 				width = height*ratio;
 			// }
-			this.drag.node.style.width = width;
-			this.drag.node.style.height = height;
+			this.drag.node.style.width = width+'px';
+			this.drag.node.style.height = height+'px';
 			controller.scale = this.svgBBox.width/(width* this.scale);
 			controller.update(); 
 		}, (x, y, e) => {
@@ -88,14 +88,14 @@ class MiniMap {
 		 * 所以这里求得的左上角便宜坐标实际上还是标准倍率吸下的，需要再放大用户的倍率才能得到最终的效果，
 		 * 用户画布=》缩小10倍画布到用户scale*this.sclae=》还原回基准this.scale
 		 */
-		this.drag.node.style.left = this.padding - x/scale/this.scale ;
-		this.drag.node.style.top = this.padding - y/scale/this.scale ;
+		this.drag.node.style.left = this.padding - x/scale/this.scale +'px';
+		this.drag.node.style.top = this.padding - y/scale/this.scale +'px';
 		this.dragBBox = {
 			width:this.svgBBox.width / this.scale /scale,
 			height:this.svgBBox.height/ this.scale /scale
 		}
-		this.drag.node.style.width = this.dragBBox.width;
-		this.drag.node.style.height = this.dragBBox.height;
+		this.drag.node.style.width = this.dragBBox.width+'px';
+		this.drag.node.style.height = this.dragBBox.height+'px';
 	}
 
 	render = () => {
