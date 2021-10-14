@@ -34069,7 +34069,7 @@ var Schema_Schema = /*#__PURE__*/function () {
     value: function listenEvents() {
       var _this = this;
 
-      var historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete", "autofit"];
+      var historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete"];
       historyChangeEvents.forEach(function (event) {
         _this.editor.graph.on(event, function () {
           _this.history.push(_this.getNowDataMap());

@@ -74,7 +74,7 @@ class Schema {
 	}
 
 	listenEvents() {
-		const historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete","autofit"]
+		const historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete"]
 		historyChangeEvents.forEach(event => {
 			this.editor.graph.on(
 				event,
