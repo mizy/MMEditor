@@ -34313,14 +34313,19 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
                 _this.drag.node.style.width = _this.dragBBox.width + "px";
                 _this.drag.node.style.height = _this.dragBBox.height + "px";
                 _context.next = 16;
-                return external_canvg_default.a.fromString(_this.ctx, "<g transform=\"".concat(m.toString(), "\" class=\"minimap-graph\">").concat(svg, "</g>"), {// offsetX:10,
+                return external_canvg_default.a.fromString(_this.ctx, "<g transform=\"".concat(m.toString(), "\" class=\"minimap-graph\">").concat(svg, "</g>"), {
+                  // offsetX:10,
                   // offsetY:10
+                  // enableRedraw:false,
+                  ignoreMouse: true,
+                  ignoreDimensions: true,
+                  ignoreAnimation: true
                 });
 
               case 16:
                 _this.converting = _context.sent;
 
-                _this.converting.start();
+                _this.converting.render();
 
               case 18:
               case "end":
