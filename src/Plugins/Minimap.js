@@ -124,8 +124,12 @@ class MiniMap {
 			this.converting = await Canvg.fromString(this.ctx, `<g transform="${m.toString()}" class="minimap-graph">${svg}</g>`,{
 				// offsetX:10,
 				// offsetY:10
+                // enableRedraw:false,
+                ignoreMouse:true,
+                ignoreDimensions:true,
+                ignoreAnimation:true
 			});
-			this.converting.start();
+			this.converting.render();
 		}, 200)
 	}
 
