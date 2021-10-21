@@ -76,6 +76,8 @@ class MiniMap {
 			return false;
 		});
 		this.editor.on("change", this.render);
+        this.editor.on("format", this.render);
+        this.editor.on("autofit", this.resetDrag);
 		this.editor.on("panning",this.resetDrag);
 		this.editor.on("zoom",this.resetDrag);
 	}
