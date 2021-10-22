@@ -21125,7 +21125,7 @@ exports = module.exports = __webpack_require__(497)(false);
 
 
 // module
-exports.push([module.i, "@keyframes dashing {\n  from {\n    stroke-dashoffset: 200;\n  }\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.mm-editor {\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n.mm-editor .mm-editor-back {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  z-index: 0;\n  left: 0;\n  top: 0;\n}\n.mm-editor .mm-minimap {\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  background: #fff;\n  border: 1px solid #cecece;\n  border-radius: 5px;\n  overflow: hidden;\n}\n.mm-editor .mm-minimap .drag-rect {\n  position: absolute;\n  left: 0px;\n  box-sizing: content-box;\n  top: 0px;\n  border: 2px solid #08c;\n  cursor: pointer;\n}\n.mm-editor .mm-minimap .drag-point {\n  width: 10px;\n  height: 10px;\n  border-radius: 5px;\n  border: 2px solid #08c;\n  background: #fff;\n  position: absolute;\n  right: -5px;\n  bottom: -5px;\n  cursor: nwse-resize;\n}\n.mm-editor > .mm-editor-svg {\n  cursor: grab;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor > .mm-editor-svg svg {\n  outline: none;\n}\n.mm-editor > .mm-editor-svg * {\n  transition: x, y, transform, cx, cy, width, stroke, height, fill 400ms;\n}\n.mm-editor > .mm-editor-svg .mm-node {\n  cursor: move;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:hover > .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.active > .icon-node {\n  transition: stroke 400ms;\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.success .icon-node {\n  stroke: green;\n  fill: #fff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.error .icon-node {\n  stroke: red;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.running .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.running .mm-line-shape path {\n  stroke-dasharray: 5 !important;\n  animation: dashing 5s linear infinite;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-shape {\n  cursor: pointer;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-arrow {\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-label text {\n  text-anchor: middle;\n}\n.mm-editor > .mm-editor-svg .anchor-line {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points:hover,\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points.hover {\n  fill: #4c79ff;\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-html {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor .anchor-back {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.mm-node-wrapper {\n  border: 1px solid #08c;\n  border-radius: 8px;\n  box-sizing: border-box;\n  display: flex;\n  justify-content: center;\n  background-color: #fff;\n  align-items: center;\n}\n", ""]);
+exports.push([module.i, "@keyframes dashing {\n  from {\n    stroke-dashoffset: 200;\n  }\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.mm-editor {\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n.mm-editor .mm-editor-back {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  z-index: 0;\n  left: 0;\n  top: 0;\n}\n.mm-editor .mm-minimap {\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  background: #fff;\n  border: 1px solid #cecece;\n  border-radius: 5px;\n  overflow: hidden;\n  width: 160px;\n  height: 127px;\n}\n.mm-editor .mm-minimap .drag-rect {\n  position: absolute;\n  left: 0px;\n  box-sizing: content-box;\n  top: 0px;\n  border: 2px solid #08c;\n  cursor: pointer;\n  transition: all 200ms ease;\n}\n.mm-editor .mm-minimap .drag-point {\n  width: 10px;\n  height: 10px;\n  border-radius: 5px;\n  border: 2px solid #08c;\n  background: #fff;\n  position: absolute;\n  right: -5px;\n  bottom: -5px;\n  cursor: nwse-resize;\n}\n.mm-editor > .mm-editor-svg {\n  cursor: grab;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor > .mm-editor-svg svg {\n  outline: none;\n}\n.mm-editor > .mm-editor-svg * {\n  transition: x, y, transform, cx, cy, width, stroke, height, fill 400ms;\n}\n.mm-editor > .mm-editor-svg .mm-node {\n  cursor: move;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:hover > .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.active > .icon-node {\n  transition: stroke 400ms;\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.success .icon-node {\n  stroke: green;\n  fill: #fff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.error .icon-node {\n  stroke: red;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.running .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.running .mm-line-shape path {\n  stroke-dasharray: 5 !important;\n  animation: dashing 5s linear infinite;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-shape {\n  cursor: pointer;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-arrow {\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-label text {\n  text-anchor: middle;\n}\n.mm-editor > .mm-editor-svg .anchor-line {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points:hover,\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points.hover {\n  fill: #4c79ff;\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-html {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor .anchor-back {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.mm-node-wrapper {\n  border: 1px solid #08c;\n  border-radius: 8px;\n  box-sizing: border-box;\n  display: flex;\n  justify-content: center;\n  background-color: #fff;\n  align-items: center;\n}\n", ""]);
 
 // exports
 
@@ -34266,6 +34266,10 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
           x = _this$editor$controll.x,
           y = _this$editor$controll.y,
           scale = _this$editor$controll.scale;
+
+      var paperBBox = _this.editor.paper.node.getBBox();
+
+      var miniPos = _this.miniPos;
       if (!_this.svgBBox) return;
       /**
        * 这里虽然坐标整体都缩小了10倍，但是用户画布放大的scale倍，在这个坐标系下永远都是1倍，不会随着用户放大而放大，
@@ -34273,8 +34277,8 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
        * 用户画布=》缩小10倍画布到用户scale*this.sclae=》还原回基准this.scale
        */
 
-      _this.drag.node.style.left = _this.padding - x / scale / _this.scale + 'px';
-      _this.drag.node.style.top = _this.padding - y / scale / _this.scale + 'px';
+      _this.drag.node.style.left = -x / scale / _this.scale + miniPos.x + 'px';
+      _this.drag.node.style.top = -y / scale / _this.scale + miniPos.y + 'px';
       _this.dragBBox = {
         width: _this.svgBBox.width / _this.scale / scale,
         height: _this.svgBBox.height / _this.scale / scale
@@ -34286,48 +34290,46 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
     defineProperty_default()(this, "render", function () {
       clearTimeout(_this.timeout);
       _this.timeout = setTimeout( /*#__PURE__*/asyncToGenerator_default()( /*#__PURE__*/regenerator_default.a.mark(function _callee() {
-        var node, _this$editor$controll2, x, y, scale, svgBBox, images, svg, m;
-
+        var node, svgBBox, images, svg, paperBBox, x, y, m;
         return regenerator_default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 node = _this.editor.svg.node;
-                _this$editor$controll2 = _this.editor.controller, x = _this$editor$controll2.x, y = _this$editor$controll2.y, scale = _this$editor$controll2.scale;
                 svgBBox = node.getBoundingClientRect();
                 images = node.querySelectorAll("image") || [];
                 images.forEach(function (img) {
                   img.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
                 });
-                svg = node.innerHTML.replace(/\"mm-editor-paper\" transform=\"matrix\([-\d\,]+\)\"/, "\"mm-editor-paper\" ");
-                m = new snap_svg.Matrix();
-                m.translate(_this.padding, _this.padding);
-                m.scale(1 / _this.scale); // m.translate(this.dx,this.dy);
-
-                console.log(m.toString());
-                _this.svgBBox = svgBBox;
-                _this.dragBBox = {
-                  width: svgBBox.width / _this.scale,
-                  height: svgBBox.height / _this.scale
+                svg = node.innerHTML.replace(/\"mm-editor-paper\" transform=\"matrix\([-\d\,]+\)\"/i, "\"mm-editor-paper\" ").replace(/transform=\"matrix\([-\d\,]+\)\" class=\"mm-editor-paper\"/i, "class=\"mm-editor-paper\" ");
+                paperBBox = _this.editor.paper.node.getBBox();
+                _this.scale = Math.max(paperBBox.width / (_this.width - _this.padding * 2), paperBBox.height / (_this.height - _this.padding * 2), 10);
+                x = (_this.width - paperBBox.width / _this.scale) / 2 - paperBBox.x / _this.scale;
+                y = _this.padding - paperBBox.y / _this.scale;
+                _this.miniPos = {
+                  x: x,
+                  y: y
                 };
-                _this.drag.node.style.width = _this.dragBBox.width + "px";
-                _this.drag.node.style.height = _this.dragBBox.height + "px";
-                _context.next = 16;
+                m = new snap_svg.Matrix();
+                m.translate(x, y);
+                m.scale(1 / _this.scale);
+                _this.svgBBox = svgBBox;
+
+                _this.resetDrag();
+
+                _context.next = 17;
                 return external_canvg_default.a.fromString(_this.ctx, "<g transform=\"".concat(m.toString(), "\" class=\"minimap-graph\">").concat(svg, "</g>"), {
-                  // offsetX:10,
-                  // offsetY:10
-                  // enableRedraw:false,
                   ignoreMouse: true,
                   ignoreDimensions: true,
                   ignoreAnimation: true
                 });
 
-              case 16:
+              case 17:
                 _this.converting = _context.sent;
 
                 _this.converting.render();
 
-              case 18:
+              case 19:
               case "end":
                 return _context.stop();
             }
@@ -34360,11 +34362,14 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
       this.container = can.querySelector(".mm-minimap");
       this.editor.container.append(this.container);
       this.canvas = this.container.querySelector("canvas");
-      this.canvas.width = this.width;
-      this.canvas.height = this.height;
       this.ctx = this.canvas.getContext("2d");
       this.drag = snap_svg(this.container.querySelector(".drag-rect"));
       this.dragPoint = snap_svg(this.container.querySelector(".drag-point"));
+      var bbox = this.container.getBoundingClientRect();
+      this.width = bbox.width;
+      this.height = bbox.height;
+      this.canvas.width = this.width;
+      this.canvas.height = this.height;
       this.initEvent();
     }
   }, {
@@ -34373,6 +34378,15 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
       var _this2 = this;
 
       var controller = this.editor.controller;
+      this.canvas.addEventListener('click', function (e) {
+        var left = e.offsetX - _this2.dragBBox.width / 2;
+        var top = e.offsetY - _this2.dragBBox.height / 2;
+        _this2.drag.node.style.left = left + "px";
+        _this2.drag.node.style.top = top + "px";
+        controller.moveTo(-(left - _this2.miniPos.x) * _this2.scale * controller.scale, -(top - _this2.miniPos.y) * _this2.scale * controller.scale);
+
+        _this2.resetDrag();
+      });
       this.drag.drag(function (dx, dy) {
         var dleft = dx + _this2.dragStart.x;
         var dtop = dy + _this2.dragStart.y;
@@ -34380,7 +34394,7 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
         var top = Math.min(Math.max(dtop, 0), _this2.height - _this2.dragBBox.height + _this2.padding * 2);
         _this2.drag.node.style.left = left + "px";
         _this2.drag.node.style.top = top + "px";
-        controller.moveTo(-(left - _this2.padding) * _this2.scale * controller.scale, -(top - _this2.padding) * _this2.scale * controller.scale);
+        controller.moveTo(-(left - _this2.miniPos.x) * _this2.scale * controller.scale, -(top - _this2.miniPos.y) * _this2.scale * controller.scale);
       }, function () {
         var style = _this2.drag.node.style;
         _this2.dragStart = {
@@ -34389,17 +34403,9 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
         };
       });
       this.dragPoint.drag(function (dx, dy) {
-        var style = _this2.drag.node.style;
         var ratio = _this2.svgBBox.width / _this2.svgBBox.height;
-        var width;
-        var height; // if(dy*ratio<dx){
-        // 	width =  Math.max(dx + this.dragStartBBox.width, 10);
-        // 	height = width/ratio;
-        // }else{
-
-        height = Math.max(dy + _this2.dragStartBBox.height, 10);
-        width = height * ratio; // }
-
+        var height = Math.max(dy + _this2.dragStartBBox.height, 10);
+        var width = height * ratio;
         _this2.drag.node.style.width = width + 'px';
         _this2.drag.node.style.height = height + 'px';
         controller.scale = _this2.svgBBox.width / (width * _this2.scale);
@@ -34421,8 +34427,10 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
     value: function destroy() {
       clearTimeout(this.timeout);
       this.editor.off("change", this.render);
-      this.editor.off("panning", this.render);
-      this.editor.off("zoom", this.render);
+      this.editor.off("format", this.render);
+      this.editor.off("autofit", this.resetDrag);
+      this.editor.off("panning", this.resetDrag);
+      this.editor.off("zoom", this.resetDrag);
       this.drag.undrag();
       this.dragPoint.undrag();
       this.drag.remove();
