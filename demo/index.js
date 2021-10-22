@@ -7,7 +7,7 @@ import MMEditor from '../src/MMEditor';
 import LeftBar from './Content/LeftBar';
 import RightBar from './Content/RightBar';
 import TopBar from './Content/TopBar';
-import { message, Popover } from 'antd';
+import { message, Popover,Drawer,Modal } from 'antd';
 import RightMenu from './Content/RightMenu';
 import testdata from './testdata';
 class Editor extends PureComponent {

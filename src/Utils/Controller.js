@@ -50,7 +50,7 @@ class Controller extends Event {
 		// const transformString = matrix.toTransformString();
 		// this.paper.node.style.transition = 'transform 200ms ease-out';
 		// this.paper.transform(transformString);
-		this.editor.fire("autofit",{data})
+		this.editor.fire("autofit",{data});
 		setTimeout(() => {
 			this.paper.node.style.transition = null;
 		}, 200)
