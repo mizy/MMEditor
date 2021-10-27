@@ -69,17 +69,17 @@ class Editor extends PureComponent {
         
 		this.addEditorEvent();
 		window.mm = this.editor;
-        for (let i = 0;i < 1000;i++) {
-			    this.editor.graph.node.addNode(
-			        Object.assign({}, {
-			            type: 'iconNode',
-			            data: {},
-			            name: `test-${i}`,
-			            x: Math.random() * 1000,
-			            y: Math.random() * 1000
-			        })
-			    );
-			}
+        // for (let i = 0;i < 1000;i++) {
+		// 	    this.editor.graph.node.addNode(
+		// 	        Object.assign({}, {
+		// 	            type: 'iconNode',
+		// 	            data: {},
+		// 	            name: `test-${i}`,
+		// 	            x: Math.random() * 1000,
+		// 	            y: Math.random() * 1000
+		// 	        })
+		// 	    );
+		// 	}
 	}
 
 	setData = data => {
