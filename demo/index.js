@@ -63,12 +63,23 @@ class Editor extends PureComponent {
 		this.editor = new MMEditor({ dom: this.editorRef,showMiniMap:true }); // 只读模式设置 mode:"view"
 		this.initEditorShape();
 		this.editor.graph.line.shapes['default'].checkNewLine = this.checkNewLine;
-		this.editor.schema.setInitData(testdata);
+		await this.editor.schema.setInitData(testdata);
 		this.editor.schema.format();
 		this.editor.controller.autoFit();
- 
+        
 		this.addEditorEvent();
 		window.mm = this.editor;
+        for (let i = 0;i < 1000;i++) {
+			    this.editor.graph.node.addNode(
+			        Object.assign({}, {
+			            type: 'iconNode',
+			            data: {},
+			            name: `test-${i}`,
+			            x: Math.random() * 1000,
+			            y: Math.random() * 1000
+			        })
+			    );
+			}
 	}
 
 	setData = data => {

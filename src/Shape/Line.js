@@ -131,7 +131,7 @@ class Line {
 		this.addToNodes(nodes, g);
 		this.addLineEvents(g);
 		this.lines[key] = g;
-		this.lineG.add(g);
+		this.lineG.node.appendChild(g.node);
 		return g;
 	}
 

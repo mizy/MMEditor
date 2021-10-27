@@ -3,7 +3,6 @@ import defaultNode from './Nodes/DefaultNodes';
 import iconNode from './Nodes/IconNode';
 import domNode from './Nodes/DomNode';
 import { Snap } from "../MMEditor";
-console.log(domNode)
 /**
  * @class
  */
@@ -75,9 +74,19 @@ class Node {
 	}
 
 	render(data = {}) {
-		Object.keys(data).map(key => {
-			this.renderNode(data[key]);
-		});
+        return new Promise((resolve,reject)=>{
+            this.tmpLinkPoints = [];//先缓存获取所有节点渲染后触发，避免重绘
+            Object.keys(data).map(key => {
+                this.renderNode(data[key]);
+            });
+            this.timeout = setTimeout(()=>{
+                this.tmpLinkPoints.forEach(({node,shape})=>{
+                    this.addNodeLinkPoints(node,shape)
+                })
+                this.tmpLinkPoints = undefined;
+                resolve();
+            },0);
+        })
 	}
 
 	/**
@@ -108,16 +117,16 @@ class Node {
 		const deleteNode = this.nodes[uuid];
 		delete this.nodes[uuid];
 		!ignoreEvent && this.graph.fire('node:remove', { node: deleteNode, uuid });
-		deleteNode.linkPoints.forEach(point => {
+		deleteNode.linkPoints?.forEach(point => {
 			point.undrag();
 			point.unhover();
 			point.remove();
 			point = null;
 		});
-		deleteNode.fromLines.forEach(lineId => {
+		deleteNode.fromLines?.forEach(lineId => {
 			this.graph.line.deleteLine(lineId, true, true);
 		});
-		deleteNode.toLines.forEach(lineId => {
+		deleteNode.toLines?.forEach(lineId => {
 			this.graph.line.deleteLine(lineId, true, true);
 		});
 		deleteNode.undrag();
@@ -127,7 +136,7 @@ class Node {
 	};
 
 	/**
-	 * 渲染节点
+	 * 渲染新节点
 	 */
 	renderNode(item) {
 		const key = item.uuid;
@@ -146,9 +155,10 @@ class Node {
 		node.toLines = new Set();
 		node.fromLines = new Set();
 		node.data = item;
-		this.addNodeLinkPoints(node, shape);
+        // 是否缓存
+		this.tmpLinkPoints?this.tmpLinkPoints.push({node,shape}):this.addNodeLinkPoints(node, shape);
 		this.addNodeEvent(node);
-		this.nodeG.add(node);
+		this.nodeG.node.appendChild(node.node);
 		return node;
 	}
 
@@ -189,7 +199,7 @@ class Node {
 					'data-node-id': node.data.uuid,
 					'data-index': index
 				});
-				this.linkPointsG.add(newCircle);
+				this.linkPointsG.append(newCircle);
 				this.graph.line.addLinkPointEvent(newCircle, node, index);
 				this.addLinkHoverEvent(newCircle, node, index);
 			}
@@ -369,6 +379,7 @@ class Node {
 	 */
 	clear() {
 		const { nodes } = this;
+        clearTimeout(this.timeout)
 		for (let key in nodes) {
 			this.deleteNode(nodes[key], true);
 		}

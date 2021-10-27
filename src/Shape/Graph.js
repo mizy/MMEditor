@@ -137,12 +137,12 @@ class Graph extends Event {
 	 *
 	 * @param {*} data
 	 */
-	render(data) {
+	async render(data) {
 		this.fire('beforeRender')
 		this.data = data;
-		this.node.render(data.nodesMap);
-		this.line.render(data.linesMap);
-		this.fire('render')
+		await this.node.render(data.nodesMap);
+		await this.line.render(data.linesMap);
+        this.fire('render')
 	}
 
 	/**

@@ -4,6 +4,7 @@
 const IconNode = {
 	adsorb: [20, 20],
 	linkPoints: [{ x: 0.5, y: 0 }, { x: 0.5, y: 1 }],
+    shapeBBox:undefined,
 	/**
 	 * @param  {} data
 	 * @param  {} snapPaper

@@ -8,5 +8,9 @@ export default {
         const rect = div.getBoundingClientRect();
         // document.body.removeChild(div);
         return rect;
+    },
+
+    getSVGBBox(){
+
     }
 }

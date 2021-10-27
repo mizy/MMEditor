@@ -116,18 +116,18 @@ class Schema {
 	/**
 	 * @param  {} data
 	 */
-	setData(data) {
+	async setData(data) {
 		this.parseData(data); // 解析数据
 		this.editor.graph.clearGraph();
-		this.renderData(data);
+		await this.renderData(data);
 		this.editor.fire("load", data);
 	}
 
 	/**
 	 * @param  {} data
 	 */
-	setInitData(data) {
-		this.setData(data);
+	async setInitData(data) {
+		await this.setData(data);
 		this.history.clear();
 		this.history.push(this.data);
 	}
@@ -157,27 +157,27 @@ class Schema {
 	/**
 	 * 渲染数据
 	 */
-	renderData() {
-		this.editor.graph.render(this.data);
+	async renderData() {
+		await this.editor.graph.render(this.data);
 	}
 
 	/**
 	 * 重做
 	 */
-	redo() {
+	async redo() {
 		this.editor.graph.clearGraph();
 		this.history.redo();
-		this.renderData(this.data);
+		await this.renderData(this.data);
 		this.editor.fire("redo");
 	}
 
 	/**
 	 * 撤销
 	 */
-	undo() {
+	async undo() {
 		this.editor.graph.clearGraph();
 		this.history.undo();
-		this.renderData(this.data);
+		await this.renderData(this.data);
 		this.editor.fire("undo");
 	}
 
