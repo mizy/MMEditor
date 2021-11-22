@@ -49,7 +49,7 @@ class Controller extends Event {
 		this.editor.fire("autofit",{data});
 		setTimeout(() => {
 			this.paper.node.style.transition = null;
-		}, 200)
+		}, 200);
 	}
 
 
@@ -100,7 +100,8 @@ class Controller extends Event {
 	onWheel = e => {
 		e.preventDefault();
 		if (e.ctrlKey) {// 双指
-			const newScale = (1 - e.deltaY * this.scaleRatio);
+			const newScale = Math.min((1 - e.deltaY * this.scaleRatio),0.1);
+            
 			this.zoom(newScale, e.offsetX, e.offsetY);
 
 		} else {
