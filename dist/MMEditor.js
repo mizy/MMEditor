@@ -34563,7 +34563,7 @@ var Controller_Controller = /*#__PURE__*/function (_Event) {
     return _this;
   }
   /**
-   * 自适应
+   * 自适应,支持
    */
 
 
@@ -34572,6 +34572,8 @@ var Controller_Controller = /*#__PURE__*/function (_Event) {
     value: function autoFit() {
       var _this2 = this;
 
+      var center = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var vertical = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var data = this.editor.schema.getData();
       this.x = 0;
       this.y = 0;
@@ -34582,14 +34584,10 @@ var Controller_Controller = /*#__PURE__*/function (_Event) {
       var dx = ((width - bbox.width) / 2 - bbox.x) / this.scale;
       var dy = ((height - bbox.height) / 2 - bbox.y) / this.scale;
       data.nodes.forEach(function (node) {
-        node.x += dx;
-        node.y += dy;
+        if (center) node.x += dx;
+        if (vertical) node.y += dy;
       });
-      this.editor.schema.setData(data); // matrix.translate(((width - bbox.width) / 2 - bbox.x) / scalex, ((height - bbox.height) / 2 - bbox.y) / scalex);
-      // const transformString = matrix.toTransformString();
-      // this.paper.node.style.transition = 'transform 200ms ease-out';
-      // this.paper.transform(transformString);
-
+      this.editor.schema.setData(data);
       this.editor.fire("autofit", {
         data: data
       });
@@ -35165,10 +35163,7 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
           x = _this$editor$controll.x,
           y = _this$editor$controll.y,
           scale = _this$editor$controll.scale;
-
-      var paperBBox = _this.editor.paper.node.getBBox();
-
-      var miniPos = _this.miniPos;
+      var padding = _this.padding;
       if (!_this.svgBBox) return;
       /**
        * 这里虽然坐标整体都缩小了10倍，但是用户画布放大的scale倍，在这个坐标系下永远都是1倍，不会随着用户放大而放大，
@@ -35176,8 +35171,8 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
        * 用户画布=》缩小10倍画布到用户scale*this.sclae=》还原回基准this.scale
        */
 
-      _this.drag.node.style.left = -x / scale / _this.scale + miniPos.x + 'px';
-      _this.drag.node.style.top = -y / scale / _this.scale + miniPos.y + 'px';
+      _this.drag.node.style.left = -x / scale / _this.scale + padding + 'px';
+      _this.drag.node.style.top = -y / scale / _this.scale + padding + 'px';
       _this.dragBBox = {
         width: _this.svgBBox.width / _this.scale / scale,
         height: _this.svgBBox.height / _this.scale / scale
@@ -35203,12 +35198,8 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
                 svg = node.innerHTML.replace(/\"mm-editor-paper\" transform=\"matrix\([-\d\,]+\)\"/i, "\"mm-editor-paper\" ").replace(/transform=\"matrix\([-\d\,]+\)\" class=\"mm-editor-paper\"/i, "class=\"mm-editor-paper\" ");
                 paperBBox = _this.editor.paper.node.getBBox();
                 _this.scale = Math.max(paperBBox.width / (_this.width - _this.padding * 2), paperBBox.height / (_this.height - _this.padding * 2), 10);
-                x = (_this.width - paperBBox.width / _this.scale) / 2 - paperBBox.x / _this.scale;
-                y = _this.padding - paperBBox.y / _this.scale;
-                _this.miniPos = {
-                  x: x,
-                  y: y
-                };
+                x = _this.padding;
+                y = _this.padding;
                 m = new snap_svg.Matrix();
                 m.translate(x, y);
                 m.scale(1 / _this.scale);
@@ -35216,19 +35207,19 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
 
                 _this.resetDrag();
 
-                _context.next = 17;
+                _context.next = 16;
                 return external_canvg_default.a.fromString(_this.ctx, "<g transform=\"".concat(m.toString(), "\" class=\"minimap-graph\">").concat(svg, "</g>"), {
                   ignoreMouse: true,
                   ignoreDimensions: true,
                   ignoreAnimation: true
                 });
 
-              case 17:
+              case 16:
                 _this.converting = _context.sent;
 
                 _this.converting.render();
 
-              case 19:
+              case 18:
               case "end":
                 return _context.stop();
             }
@@ -35282,7 +35273,7 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
         var top = e.offsetY - _this2.dragBBox.height / 2;
         _this2.drag.node.style.left = left + "px";
         _this2.drag.node.style.top = top + "px";
-        controller.moveTo(-(left - _this2.miniPos.x) * _this2.scale * controller.scale, -(top - _this2.miniPos.y) * _this2.scale * controller.scale);
+        controller.moveTo(-(left - _this2.padding) * _this2.scale * controller.scale, -(top - _this2.padding) * _this2.scale * controller.scale);
 
         _this2.resetDrag();
       });
@@ -35293,7 +35284,7 @@ var Minimap_MiniMap = /*#__PURE__*/function () {
         var top = Math.min(Math.max(dtop, 0), _this2.height - _this2.dragBBox.height + _this2.padding * 2);
         _this2.drag.node.style.left = left + "px";
         _this2.drag.node.style.top = top + "px";
-        controller.moveTo(-(left - _this2.miniPos.x) * _this2.scale * controller.scale, -(top - _this2.miniPos.y) * _this2.scale * controller.scale);
+        controller.moveTo(-(left - _this2.padding) * _this2.scale * controller.scale, -(top - _this2.padding) * _this2.scale * controller.scale);
       }, function () {
         var style = _this2.drag.node.style;
         _this2.dragStart = {

@@ -47,8 +47,8 @@ class MiniMap {
 			this.drag.node.style.left = left + "px";
 			this.drag.node.style.top = top + "px";
 			controller.moveTo(
-                -(left - this.miniPos.x)*this.scale*controller.scale,
-                -(top - this.miniPos.y)*this.scale*controller.scale
+                -(left - this.padding)*this.scale*controller.scale,
+                -(top - this.padding)*this.scale*controller.scale
             );
             this.resetDrag();
         })
@@ -60,8 +60,8 @@ class MiniMap {
 			this.drag.node.style.left = left + "px";
 			this.drag.node.style.top = top + "px";
 			controller.moveTo(
-                -(left - this.miniPos.x)*this.scale*controller.scale,
-                -(top - this.miniPos.y)*this.scale*controller.scale
+                -(left - this.padding)*this.scale*controller.scale,
+                -(top - this.padding)*this.scale*controller.scale
             )
 		}, () => {
 			const { style } = this.drag.node;
@@ -94,16 +94,15 @@ class MiniMap {
 
 	resetDrag=()=>{
 		const {x,y,scale} = this.editor.controller; 
-        const paperBBox = this.editor.paper.node.getBBox();  
-        const {miniPos} = this;
+        const {padding} = this;
         if(!this.svgBBox)return;
 		/**
 		 * 这里虽然坐标整体都缩小了10倍，但是用户画布放大的scale倍，在这个坐标系下永远都是1倍，不会随着用户放大而放大，
 		 * 所以这里求得的左上角便宜坐标实际上还是标准倍率吸下的，需要再放大用户的倍率才能得到最终的效果，
 		 * 用户画布=》缩小10倍画布到用户scale*this.sclae=》还原回基准this.scale
 		 */
-		this.drag.node.style.left = -x/scale/this.scale + miniPos.x +'px';
-		this.drag.node.style.top = -y/scale/this.scale + miniPos.y +'px';
+		this.drag.node.style.left = -x/scale/this.scale + padding +'px';
+		this.drag.node.style.top = -y/scale/this.scale + padding +'px';
 		this.dragBBox = {
 			width:this.svgBBox.width / this.scale /scale,
 			height:this.svgBBox.height/ this.scale /scale
@@ -126,9 +125,8 @@ class MiniMap {
             );
             const paperBBox = this.editor.paper.node.getBBox();  
             this.scale = Math.max((paperBBox.width)/(this.width-this.padding*2),paperBBox.height/(this.height-this.padding*2),10);
-            const x = (this.width - paperBBox.width/this.scale)/2 - paperBBox.x/this.scale;
-            const y = this.padding - paperBBox.y/this.scale;
-            this.miniPos = {x,y};
+            const x = this.padding;
+            const y = this.padding;
 			const m = new Snap.Matrix();
 			m.translate(x,y);
 			m.scale(1 / this.scale);

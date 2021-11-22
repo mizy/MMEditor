@@ -27,9 +27,9 @@ class Controller extends Event {
 	}
 
 	/**
-	 * 自适应
+	 * 自适应,支持
 	 */
-	autoFit() {
+	autoFit(center=true,vertical=true) {
 		const data = this.editor.schema.getData();
 		
 		this.x = 0;
@@ -42,14 +42,10 @@ class Controller extends Event {
 		const dx = ((width - bbox.width) / 2 - bbox.x)/this.scale;
 		const dy = ((height - bbox.height) / 2 - bbox.y)/this.scale;
 		data.nodes.forEach(node=>{
-			node.x +=  dx;
-			node.y += dy;
+            if(center)node.x +=  dx;
+			if(vertical)node.y += dy;
 		});
-		this.editor.schema.setData(data)
-		// matrix.translate(((width - bbox.width) / 2 - bbox.x) / scalex, ((height - bbox.height) / 2 - bbox.y) / scalex);
-		// const transformString = matrix.toTransformString();
-		// this.paper.node.style.transition = 'transform 200ms ease-out';
-		// this.paper.transform(transformString);
+		this.editor.schema.setData(data);
 		this.editor.fire("autofit",{data});
 		setTimeout(() => {
 			this.paper.node.style.transition = null;
