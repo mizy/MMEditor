@@ -1,3 +1,6 @@
+/**
+ * @class
+ */
 class AchorLine {
 	constructor(graph) {
 		this.graph = graph;
@@ -120,6 +123,9 @@ class AchorLine {
 		return { x, y };
 	}
 
+    /**
+     * 隐藏线
+     */
 	hidePath() {
 		this.path.attr({
 			style: 'display: none'

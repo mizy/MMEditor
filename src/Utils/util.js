@@ -1,4 +1,15 @@
+/**
+ * @namespace Utils
+ */
 export default {
+    /**
+     * 获取最新的domRect
+     * @instance 
+     * @memberof Utils
+     * @param {*} str 
+     * @param {*} callback 
+     * @returns {DOMRect}
+     */
     getDOMRect(str, callback) {
         const div = document.createElement('div');
         div.style.position = 'fixed';

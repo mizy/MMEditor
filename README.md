@@ -1,25 +1,22 @@
-# [MMEditor](https://mizy.github.io/MMEditor)
-* 一个可高度自定义的svg流程图框架，依赖少，开箱即用
-* 提供dom接口方便对dom进行各种状态操作
-* demo 提供一个基础的数据流程demo 和 基础的流程项目的设计框架
-* 内置dagre支持格式化流程图展示
-
 ![](https://mizy.github.io/MMEditor/snapshot.png)
+## [MMEditor](https://mizy.github.io/MMEditor)
 
-# Demo
+MMEditor is a library for building flow graphs. You can custom your node's shape easily by registe your own node types with svg and dom.
 
-[编辑器DEMO](https://mizy.github.io/MMEditor/dist/)
+## Demo
 
-[添加节点](https://mizy.github.io/MMEditor/dist/basic.html)
+[Editor Demo](https://mizy.github.io/MMEditor/dist/)
 
-[格式化DAG图](https://mizy.github.io/MMEditor/public/flowChart.html)
+[Basic Demo](https://mizy.github.io/MMEditor/dist/basic.html)
 
-# Install
+[DAG Flow Chart](https://mizy.github.io/MMEditor/public/flowChart.html)
+
+## Install
 ```sh
 npm i MMEditor --save
 ```
 
-# Usage
+## Quick Start
 ```javascript
 	import MMEditor from "MMEditor";
 	
@@ -51,7 +48,7 @@ npm i MMEditor --save
 	console.log(editor.schema.getData())
 ```
 
-# registe node
+## Registe Node
 
 ```javascript
 	import MMEditor from "MMEditor";
@@ -89,13 +86,23 @@ npm i MMEditor --save
 	console.log(editor.schema.getData())
 ```
 
-# 架构
+## Document
+[中文文档](https://mizy.github.io/MMEditor/doc/index.md)
+
+## Architecture
 ![](https://mizy.github.io/MMEditor/MMEditor.png)
 
-# API 
-[doc](https://mizy.github.io/MMEditor/doc)
+## API 
+[api](https://mizy.github.io/MMEditor/api)
 
-# Test
+## Develop
+```sh
+npm run start # develop
+npm run build # build library
+npm run build:demo # build demo
+```
+
+## Test
 ``` sh
 npm i
 npm run start

@@ -1,5 +1,5 @@
 /**
- * @interface
+ * @interface DefaultNode
  */
 const DefaultNode = {
 	adsorb: [20, 20],//磁吸的范围

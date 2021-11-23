@@ -22883,7 +22883,7 @@ var Node_Node = /*#__PURE__*/function () {
         data.uuid = v1_default()();
       }
 
-      if (data.uuid && data.uuid.indexOf('-') > -1) {
+      if (data.uuid.indexOf && data.uuid.indexOf('-') > -1) {
         data.uuid = data.uuid.replace(/-/g, '');
       }
 
@@ -34450,7 +34450,7 @@ var Controller_Controller = /*#__PURE__*/function (_Event) {
 
       if (e.ctrlKey) {
         // 双指
-        var newScale = 1 - e.deltaY * _this.scaleRatio;
+        var newScale = Math.min(1 - e.deltaY * _this.scaleRatio, 0.1);
 
         _this.zoom(newScale, e.offsetX, e.offsetY);
       } else {

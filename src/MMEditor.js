@@ -12,6 +12,17 @@ import "./index.less";
  * @extends Event
  */
 class MMEditor extends Event {
+    /**
+     * 初始化配置
+     * @param {Object} config - 初始化配置.
+     * @param {boolean} config.hideAchor - 是否隐藏磁吸.
+     * @param {boolean} config.hideAchorLine - 是否隐藏磁吸线
+     * @param {string} config.anchorDistance - 磁吸距离
+     * @param {boolean} config.showBackGrid - 是否展示网格
+     * @param {boolean} config.showMiniMap - 是否隐藏小地图
+     * @param {string} config.mode - 模式是否只读，可选 view
+     * @param {Object} config.dagreOption - dagre的配置
+     */
 	constructor(config) {
 		super();
 		this.config = Object.assign({
@@ -24,16 +35,40 @@ class MMEditor extends Event {
 			dagreOption:{}
 		}, config);
 		if (!config.dom) return;
+         /**
+         * @property {HTMLElement} dom 容器
+         */
 		this.dom = this.initDom(config.dom);
+        /**
+         * @property {Snap.Element} svg
+         */
 		this.svg = Snap(this.dom.select("svg"));
+        /**
+         * @property {Snap.Element} paper
+         */
 		this.paper = this.svg.g();
 		this.paper.addClass("mm-editor-paper");
+        /**
+         * @property {HTMLElement} container 实例dom
+         */
 		this.container = this.dom.select(".mm-editor");
 		this.resize();
+        /**
+         * @property {Graph} graph 画布
+         */
 		this.graph = new Graph(this);
+         /**
+         * @property {Controller} controller 控制器
+         */
 		this.controller = new Controller(this);
+        /**
+         * @property {Schema} schema 数据管理器
+         */
 		this.schema = new Schema(this);
 		if (this.config.showMiniMap) {
+            /**
+             * @property {Minimap?} minimap 小地图
+             */
 			this.minimap = new Minimap(this);
 			this.minimap.init();
 		}

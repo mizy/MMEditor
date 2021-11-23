@@ -1,4 +1,32 @@
-import DefaultLine from './Lines/Line';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Shape/Line.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Shape/Line.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import DefaultLine from './Lines/Line';
 import PolyLine from './Lines/PolyLine';
 /**
  * @class
@@ -159,9 +187,9 @@ class Line {
 		// 删除关联线
 		const { from, to } = line.data;
 		const id = this.getLineId(line.data);
-		nodes[from] && nodes[from].toLines.delete(id);
-		nodes[to] && nodes[to].fromLines.delete(id);
-		!notEvent &&
+		nodes[from] &amp;&amp; nodes[from].toLines.delete(id);
+		nodes[to] &amp;&amp; nodes[to].fromLines.delete(id);
+		!notEvent &amp;&amp;
 			// 是否由删除节点触发的线删除操作
             /**
              * @event Graph#line:remove
@@ -209,7 +237,7 @@ class Line {
 			if (this.shapes[shape].checkNewLine({
 				...data,
 				to, toPoint,
-			}, this.graph.editor)&&!(oldTo == to && toPoint == oldToPoint)) {
+			}, this.graph.editor)&amp;&amp;!(oldTo == to &amp;&amp; toPoint == oldToPoint)) {
 				Object.assign(line.data, { to, toPoint });
 				// 删除节点入口关联的线，给新链接的节点加上入口线
 				nodes[oldTo].fromLines.delete(uuid);
@@ -224,7 +252,7 @@ class Line {
                  */
 				this.graph.fire('line:drop', { line:g });
 			}
-			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass('hover');
+			hoverLinkPoint.removeClass &amp;&amp; hoverLinkPoint.removeClass('hover');
 		}
 		this.updateLine(uuid);
 	};
@@ -251,7 +279,7 @@ class Line {
 			if (this.shapes['default'].checkNewLine(data, this.graph.editor)) {
 				this.addLine(data);
 			}
-			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass('hover');
+			hoverLinkPoint.removeClass &amp;&amp; hoverLinkPoint.removeClass('hover');
 			this.graph.hoverLinkPoint = undefined;
 		}
 	};
@@ -393,15 +421,15 @@ class Line {
 	calcLinkPoint = (x, y, type = 'default') => {
 		const { adsorb = [20, 20] } = this.graph.node.shapes[type];
 		const newXY = this.allLinkPointsXY.find(item => {
-			if (Math.abs(x - item[0]) < adsorb[0] && Math.abs(y - item[1]) < adsorb[1]) {
-				this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass && this.graph.hoverLinkPoint.removeClass('hover');
+			if (Math.abs(x - item[0]) &lt; adsorb[0] &amp;&amp; Math.abs(y - item[1]) &lt; adsorb[1]) {
+				this.graph.hoverLinkPoint &amp;&amp; this.graph.hoverLinkPoint.removeClass &amp;&amp; this.graph.hoverLinkPoint.removeClass('hover');
 				this.graph.hoverLinkPoint = item[2];
 				item[2].addClass('hover');
 				return item;
 			}
 		});
 		if (!newXY) {
-			this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass('hover');
+			this.graph.hoverLinkPoint &amp;&amp; this.graph.hoverLinkPoint.removeClass('hover');
 		}
 		return newXY;
 	}
@@ -489,3 +517,26 @@ class Line {
 	}
 }
 export default Line;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Aniamtion.html">Aniamtion</a></li><li><a href="Utils.html">Utils</a></li></ul><h3>Classes</h3><ul><li><a href="AchorLine.html">AchorLine</a></li><li><a href="Controller.html">Controller</a></li><li><a href="Event.html">Event</a></li><li><a href="Graph.html">Graph</a></li><li><a href="History.html">History</a></li><li><a href="Line.html">Line</a></li><li><a href="MiniMap.html">MiniMap</a></li><li><a href="MMEditor.html">MMEditor</a></li><li><a href="Node.html">Node</a></li><li><a href="Schema.html">Schema</a></li></ul><h3>Interfaces</h3><ul><li><a href="DefaultLine.html">DefaultLine</a></li><li><a href="DefaultNode.html">DefaultNode</a></li><li><a href="DomNode.html">DomNode</a></li><li><a href="IconNode.html">IconNode</a></li><li><a href="PolyLine.html">PolyLine</a></li></ul><h3>Events</h3><ul><li><a href="Graph.html#event:beforeRender%25E6%25B8%25B2%25E6%259F%2593%25E4%25B9%258B%25E5%2589%258D%25E8%25A7%25A6%25E5%258F%2591">beforeRender 渲染之前触发</a></li><li><a href="Graph.html#event:copy">copy</a></li><li><a href="Graph.html#event:delete">delete</a></li><li><a href="Graph.html#event:paste">paste</a></li><li><a href="Graph.html#event:render%25E6%25B8%25B2%25E6%259F%2593%25E5%2590%258E%25E8%25A7%25A6%25E5%258F%2591">render  渲染后触发</a></li><li><a href="Graph.html#event:line:add">line:add</a></li><li><a href="Graph.html#event:line:beforeadd">line:beforeadd</a></li><li><a href="Graph.html#event:line:change">line:change</a></li><li><a href="Graph.html#event:line:click">line:click</a></li><li><a href="Graph.html#event:line:drag">line:drag</a></li><li><a href="Graph.html#event:line:drop">line:drop</a></li><li><a href="Graph.html#event:line:mouseenter">line:mouseenter</a></li><li><a href="Graph.html#event:line:mouseleave">line:mouseleave</a></li><li><a href="Graph.html#event:line:remove">line:remove</a></li><li><a href="Graph.html#event:node:change-%25E8%258A%2582%25E7%2582%25B9%25E5%258F%2598%25E5%258C%2596%25E4%25BA%258B%25E4%25BB%25B6">node:change - 节点变化事件</a></li><li><a href="Graph.html#event:node:click-%25E8%258A%2582%25E7%2582%25B9%25E7%2582%25B9%25E5%2587%25BB%25E4%25BA%258B%25E4%25BB%25B6">node:click - 节点点击事件</a></li><li><a href="Graph.html#event:node:mouseenter-%25E8%258A%2582%25E7%2582%25B9%25E8%25BF%259B%25E5%2585%25A5%25E4%25BA%258B%25E4%25BB%25B6">node:mouseenter - 节点进入事件</a></li><li><a href="Graph.html#event:node:mouseleave">node:mouseleave</a></li><li><a href="Graph.html#event:node:move%25E8%258A%2582%25E7%2582%25B9%25E7%25A7%25BB%25E5%258A%25A8%25E4%25BA%258B%25E4%25BB%25B6">node:move 节点移动事件</a></li><li><a href="Graph.html#event:node:remove-%25E7%25A7%25BB%25E9%2599%25A4%25E8%258A%2582%25E7%2582%25B9%25E4%25BA%258B%25E4%25BB%25B6">node:remove - 移除节点事件</a></li><li><a href="Graph.html#event:node:unactive">node:unactive</a></li><li><a href="MMEditor.html#event:format">format</a></li><li><a href="MMEditor.html#event:load">load</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Tue Nov 23 2021 17:31:52 GMT+0800 (中国标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

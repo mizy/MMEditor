@@ -81,8 +81,8 @@ class Controller extends Event {
 	}
 	/**
 	 * 移动到指定位置
-	 * @param  {} x
-	 * @param  {} y
+	 * @param  {number} x
+	 * @param  {number} y
 	 */
 	pan(x, y) {
 		this.x += x;
@@ -91,6 +91,11 @@ class Controller extends Event {
 		this.editor.fire("panning")
 	}
 
+    /**
+     * 移动到指定位置
+     * @param {*} x 
+     * @param {*} y 
+     */
 	moveTo(x,y){
 		this.x = x;
 		this.y = y;
@@ -127,8 +132,8 @@ class Controller extends Event {
 	/**
 	 * 缩放
 	 * @param  {} scale 当前基础上 缩放多少
-	 * @param  {} cx=0 zoom 缩放中心点x
-	 * @param  {} cy=0 zoom 缩放中心点y
+	 * @param  {number} cx=0 zoom 缩放中心点x
+	 * @param  {number} cy=0 zoom 缩放中心点y
 	 */
 	zoom = (newScale, cx = 0, cy = 0) => {
 		this.scale *= newScale;
@@ -140,11 +145,21 @@ class Controller extends Event {
 
 	};
 
-	zoomTo = (newScale, cx = 0, cy = 0) => {
+    /**
+     * 滚动到指定位置
+     * @param {*} newScale 
+     */
+	zoomTo = (newScale) => {
 		this.scale = newScale;
 		this.update();
 	};
 
+    /**
+     * 做指定转换
+     * @param {*} newScale 
+     * @param {*} x 
+     * @param {*} y 
+     */
 	transform = (newScale, x = 0, y = 0) => {
 		this.scale = newScale;
 		this.x = x;
@@ -167,6 +182,9 @@ class Controller extends Event {
 		this.editor.fire("panning",{event:ev})
 	};
 
+    /**
+     * 更新最新的matrix
+     */
 	update(){
 		this.paper.transform(`matrix(${this.scale},0,0,${this.scale},${this.x},${this.y})`);
 	}

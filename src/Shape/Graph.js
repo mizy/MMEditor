@@ -12,10 +12,22 @@ class Graph extends Event {
 	constructor(editor) {
 		super();
 		this.editor = editor;
+        /**
+         * @property {Node} node
+         */
 		this.node = new Node(this);
+        /**
+         * @property {Line} line
+         */
 		this.line = new Line(this);
+         /**
+         * @prop {AnchorLine} anchorLine
+         */
 		this.anchorLine = new AnchorLine(this);
 		this.node.linkPointsG.before(this.line.lineG);
+        /**
+         * @prop {Animation} animation
+         */
 		this.animation = Animation;
 
 		// 模式：操作、查看模式
@@ -85,12 +97,24 @@ class Graph extends Event {
 				deleteKeys.push(key);
 			}
 			this.line.activeLine && this.line.deleteLine(this.line.activeLine);
+            /**
+             * @event Graph#delete
+             * @type {Object}
+             */
 			this.fire('delete', { event: e, deleteKeys });
 		}
 		if (e.keyCode === 'C'.charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-			this.fire('copy', { event: e });
+			/**
+             * @event Graph#copy
+             * @type {Object}
+             */
+            this.fire('copy', { event: e });
 		}
 		if (e.keyCode === 'V'.charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
+            /**
+             * @event Graph#paste
+             * @type {Object}
+             */
 			this.fire('paste', { event: e });
 		}
 		if (e.keyCode === 'Z'.charCodeAt(0) && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
@@ -138,15 +162,21 @@ class Graph extends Event {
 	 * @param {*} data
 	 */
 	async render(data) {
+        /**
+         * @event Graph#beforeRender 渲染之前触发
+         */
 		this.fire('beforeRender')
 		this.data = data;
 		await this.node.render(data.nodesMap);
 		await this.line.render(data.linesMap);
+        /**
+         * @event Graph#render  渲染后触发
+         */
         this.fire('render')
 	}
 
 	/**
-	 *
+	 * 清空画布
 	 */
 	clearGraph() {
 		this.line.clear();

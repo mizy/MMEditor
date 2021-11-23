@@ -1,5 +1,6 @@
 /**
- * @interface
+ * @interface DomNode
+ * @implements {DefaultNode}
  */
  const DomNode = {
 	adsorb: [20, 20],//磁吸的范围

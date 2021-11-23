@@ -84,8 +84,10 @@
     editor.config.dagreOption = {
         rankdir: 'TB',
     }
-    editor.schema.setData(data);
-    editor.schema.format();
-    editor.controller.autoFit();
+    editor.schema.setData(data).then(()=>{
+        editor.schema.format();
+        editor.controller.autoFit();
+    });
+    
 	</script>
 </html>

@@ -3,8 +3,14 @@
  * @class
  */
 class History {
+    /**
+     * @prop {number} index
+     */
 	index = -1;
 
+    /**
+     * @prop {array} schemaList
+     */
 	schemaList = [];
 
 	constructor(schema) {

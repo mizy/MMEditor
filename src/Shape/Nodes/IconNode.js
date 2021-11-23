@@ -1,5 +1,6 @@
 /**
- * @interface
+ * @interface IconNode
+ * @implements {DefaultNode}
  */
 const IconNode = {
 	adsorb: [20, 20],
