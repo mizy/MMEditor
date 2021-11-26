@@ -1,4 +1,4 @@
-![](https://mizy.github.io/MMEditor/snapshot.png)
+![](https://mizy.github.io/MMEditor/demo.png)
 ## [MMEditor](https://mizy.github.io/MMEditor)
 
 MMEditor is a library for building flow graphs. You can custom your node's shape easily by registe your own node types with svg and dom.
