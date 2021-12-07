@@ -105,10 +105,8 @@ class Controller extends Event {
 	onWheel = e => {
 		e.preventDefault();
 		if (e.ctrlKey) {// 双指
-			const newScale = Math.min((1 - e.deltaY * this.scaleRatio),0.1);
-            
+			const newScale = Math.max((1 - e.deltaY * this.scaleRatio),0.1);
 			this.zoom(newScale, e.offsetX, e.offsetY);
-
 		} else {
 			this.pan(-e.deltaX, -e.deltaY)
 		}
