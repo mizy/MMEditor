@@ -110,6 +110,7 @@ class MiniMap {
 		}
 		this.drag.node.style.width = this.dragBBox.width+'px';
 		this.drag.node.style.height = this.dragBBox.height+'px';
+		// 这里需要考虑width太大的情况，这种时候需要引入一个新变量把图的缩小倍数变小,this.limitScale
 	}
 
     /**
@@ -118,31 +119,36 @@ class MiniMap {
 	render = () => {
 		clearTimeout(this.timeout);
 		this.timeout = setTimeout(async () => {
-			const node = this.editor.svg.node;
-			const svgBBox = node.getBoundingClientRect();
-			const images = node.querySelectorAll("image")||[];
-			images.forEach(img=>{
-				img.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-			})
-			const svg = node.innerHTML.replace(/\"mm-editor-paper\" transform=\"matrix\([-\d\,]+\)\"/i,`"mm-editor-paper" `).replace(
-                /transform=\"matrix\([-\d\,]+\)\" class=\"mm-editor-paper\"/i,`class="mm-editor-paper" `
-            );
-            const paperBBox = this.editor.paper.node.getBBox();  
-            this.scale = Math.max((paperBBox.width)/(this.width-this.padding*2),paperBBox.height/(this.height-this.padding*2),10);
-            const x = this.padding;
-            const y = this.padding;
-			const m = new Snap.Matrix();
-			m.translate(x,y);
-			m.scale(1 / this.scale);
-			this.svgBBox = svgBBox;
+			this.renderCanvas();
 			this.resetDrag();
-			this.converting = await Canvg.fromString(this.ctx, `<g transform="${m.toString()}" class="minimap-graph">${svg}</g>`,{
-                ignoreMouse:true,
-                ignoreDimensions:true,
-                ignoreAnimation:true
-			});
-			this.converting.render();
 		}, 200)
+	}
+
+	async renderCanvas(){
+		const node = this.editor.svg.node;
+		const svgBBox = node.getBoundingClientRect();
+		const images = node.querySelectorAll("image")||[];
+		images.forEach(img=>{
+			img.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+		})
+		const matrix = this.editor.paper.node.getAttribute('transform');
+		this.editor.paper.node.setAttribute('transform','');
+		const svg = node.innerHTML;
+		this.editor.paper.node.setAttribute('transform',matrix)
+		const paperBBox = this.editor.paper.node.getBBox();  
+		this.scale = this.limitScale||Math.max((paperBBox.width)/(this.width-this.padding*2),paperBBox.height/(this.height-this.padding*2),10);
+		const x = this.padding;
+		const y = this.padding;
+		const m = new Snap.Matrix();
+		m.translate(x,y);
+		m.scale(1 / this.scale);
+		this.svgBBox = svgBBox;
+		this.converting = await Canvg.fromString(this.ctx, `<g transform="${m.toString()}" class="minimap-graph">${svg}</g>`,{
+			ignoreMouse:true,
+			ignoreDimensions:true,
+			ignoreAnimation:true
+		});
+		this.converting.render();
 	}
 
 	destroy() {
