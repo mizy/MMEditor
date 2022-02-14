@@ -1,0 +1,11 @@
+{
+  // 更改此项以匹配您的项目
+  "include": ["src/**/*"],
+
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+  }
+}

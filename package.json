@@ -1,13 +1,15 @@
 {
     "name": "mmeditor",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "description": "svg flow editor",
     "main": "./dist/MMEditor.js",
+    "types":"./dist/index.d.ts",
     "scripts": {
         "start": "webpack-dev-server",
         "demo:build": "webpack -p --config webpack.config.js",
         "build": "webpack --config webpack.config.build.js",
-        "doc": "jsdoc -c jsdoc.json"
+        "doc": "jsdoc -c jsdoc.json",
+        "makeDts": "npx -p typescript tsc -p ./tsconfig.json"
     },
     "repository": {
         "type": "git",
@@ -19,7 +21,7 @@
         "editor"
     ],
     "files": [
-        "dist/MMEditor.js"
+        "dist"
     ],
     "td": {
         "type": "block",
