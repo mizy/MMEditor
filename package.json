@@ -1,9 +1,9 @@
 {
     "name": "mmeditor",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "description": "svg flow editor",
     "main": "./dist/MMEditor.js",
-    "types":"./dist/MMEditor.d.ts",
+    "types": "./dist/MMEditor.d.ts",
     "scripts": {
         "start": "webpack-dev-server",
         "demo:build": "webpack -p --config webpack.config.js",
@@ -31,7 +31,7 @@
         "canvg": "^3.0.6",
         "dagre": "^0.8.4",
         "eve": "^0.5.4",
-        "uuid": "^7.0.3"
+        "uuid": "^8.3.2"
     },
     "devDependencies": {
         "@babel/core": "^7.0.1",

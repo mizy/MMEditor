@@ -1,4 +1,4 @@
-import uuid from 'uuid/v1';
+import { v1 as uuid } from 'uuid';
 import defaultNode from './Nodes/DefaultNodes';
 import iconNode from './Nodes/IconNode';
 import domNode from './Nodes/DomNode';
@@ -74,19 +74,19 @@ class Node {
 	}
 
 	render(data = {}) {
-        return new Promise((resolve,reject)=>{
-            this.tmpLinkPoints = [];//先缓存获取所有节点渲染后触发，避免重绘
-            Object.keys(data).map(key => {
-                this.renderNode(data[key]);
-            });
-            this.timeout = setTimeout(()=>{
-                this.tmpLinkPoints.forEach(({node,shape})=>{
-                    this.addNodeLinkPoints(node,shape)
-                })
-                this.tmpLinkPoints = undefined;
-                resolve();
-            },0);
-        })
+		return new Promise((resolve, reject) => {
+			this.tmpLinkPoints = [];//先缓存获取所有节点渲染后触发，避免重绘
+			Object.keys(data).map(key => {
+				this.renderNode(data[key]);
+			});
+			this.timeout = setTimeout(() => {
+				this.tmpLinkPoints.forEach(({ node, shape }) => {
+					this.addNodeLinkPoints(node, shape)
+				})
+				this.tmpLinkPoints = undefined;
+				resolve();
+			}, 0);
+		})
 	}
 
 	/**
@@ -101,10 +101,10 @@ class Node {
 			data.uuid = data.uuid.replace(/-/g, '');
 		}
 		const node = this.renderNode(data);
-        /**
-         * @event Graph#node:change - 节点变化事件
-         * @property {Object} node
-         */
+		/**
+		 * @event Graph#node:change - 节点变化事件
+		 * @property {Object} node
+		 */
 		this.graph.fire('node:change', { node });
 		return node;
 	};
@@ -113,17 +113,17 @@ class Node {
 	 * 删除节点
 	 *  @param {object} data
 	 */
-	deleteNode = (node, ignoreEvent) => {
+	deleteNode = (node) => {
 		let uuid = node;
 		if (node.data) {
 			uuid = node.data.uuid;
 		}
 		const deleteNode = this.nodes[uuid];
 		delete this.nodes[uuid];
-        /**
-         * @event Graph#node:remove - 移除节点事件
-         */
-		!ignoreEvent && this.graph.fire('node:remove', { node: deleteNode, uuid });
+		/**
+		 * @event Graph#node:remove - 移除节点事件
+		 */
+		this.graph.fire('node:remove', { node: deleteNode, uuid });
 		deleteNode.linkPoints?.forEach(point => {
 			point.undrag();
 			point.unhover();
@@ -156,38 +156,38 @@ class Node {
 			class: 'mm-node-shape'
 		});
 		this.nodes[item.uuid] = node;
-		node.node.setAttribute('class', `mm-node ${item.className||''}`);
+		node.node.setAttribute('class', `mm-node ${item.className || ''}`);
 		node.node.setAttribute('data-id', key);
 		node.node.setAttribute('transform', `translate(${item.x || 0},${item.y || 0})`);
 		node.toLines = new Set();
 		node.fromLines = new Set();
 		node.data = item;
-        // 是否缓存
-		this.tmpLinkPoints?this.tmpLinkPoints.push({node,shape}):this.addNodeLinkPoints(node, shape);
+		// 是否缓存
+		this.tmpLinkPoints ? this.tmpLinkPoints.push({ node, shape }) : this.addNodeLinkPoints(node, shape);
 		this.addNodeEvent(node);
 		this.nodeG.node.appendChild(node.node);
 		return node;
 	}
 
 	/**
-     * 根据数据更新节点位置
-     * @param {*} nodeData 
-     * @param {*} rerenderShape 
-     */
-	updateNode(nodeData = {},rerenderShape=false) {
+		 * 根据数据更新节点位置
+		 * @param {*} nodeData 
+		 * @param {*} rerenderShape 
+		 */
+	updateNode(nodeData = {}, rerenderShape = false) {
 		const { uuid } = nodeData;
 		const node = this.nodes[uuid];
 		const shape = this.shapes[nodeData.type || 'default'];
-        if(rerenderShape){
-            const { data } = shape.render(nodeData, node);
-            node.data = {...nodeData,...data};
-        }
+		if (rerenderShape) {
+			const { data } = shape.render(nodeData, node);
+			node.data = { ...nodeData, ...data };
+		}
 		node.transform(`translate(${nodeData.x} ,${nodeData.y})`)
 		node.data = nodeData;
 		node.linkPointsTypes.forEach((linkPoint, index) => {
 			shape.renderLinkPoint(node, linkPoint, node.linkPoints[index]);
 		});
-        
+
 	}
 
 	/**
@@ -267,13 +267,13 @@ class Node {
 				if (this.actives[node.data.uuid]) {
 					for (let key in this.actives) {
 						this.panNode(this.actives[key], info, dx, dy);
-						this.graph.fire('node:move', { node:this.actives[key] });
+						this.graph.fire('node:move', { node: this.actives[key] });
 					}
 				} else {
 					this.panNode(node, info, dx, dy);
-                    /**
-                     * @event Graph#node:move 节点移动事件
-                     */
+					/**
+					 * @event Graph#node:move 节点移动事件
+					 */
 					this.graph.fire('node:move', { node });
 				}
 			},
@@ -312,30 +312,30 @@ class Node {
 					this.unActive();
 					this.setActive(node);
 				}
-                /**
-                 * @event Graph#node:click - 节点点击事件
-                 */
+				/**
+				 * @event Graph#node:click - 节点点击事件
+				 */
 				this.graph.fire('node:click', { node, event });
 			}
 		});
 		node.hover(
 			(event) => {
-                /**
-                 * @event Graph#node:mouseenter - 节点进入事件
-                 */
+				/**
+				 * @event Graph#node:mouseenter - 节点进入事件
+				 */
 				this.graph.fire('node:mouseenter', { node, event });
-		        if(this.graph.mode==='view')return;
+				if (this.graph.mode === 'view') return;
 				if (this.graph.linkStatus === 'lineing') return false;
 				node.linkPoints.forEach(point => {
 					point.node.style.display = 'block';
 				});
 			},
 			(event) => {
-                /**
-                 * @event Graph#node:mouseleave 
-                 */
+				/**
+				 * @event Graph#node:mouseleave 
+				 */
 				this.graph.fire('node:mouseleave', { node, event });
-                if(this.graph.mode==='view')return;
+				if (this.graph.mode === 'view') return;
 				if (this.graph.linkStatus === 'lineing') return false;
 				if (this.actives[node.data.uuid]) {
 					return false;
@@ -382,10 +382,10 @@ class Node {
 			}
 			this.actives = {};
 		}
-        /**
-         * @event Graph#node:unactive 
-         */
-		this.graph.fire('node:unactive', { node: node});
+		/**
+		 * @event Graph#node:unactive 
+		 */
+		this.graph.fire('node:unactive', { node: node });
 	}
 
 	unActiveNode(node) {
@@ -403,7 +403,7 @@ class Node {
 	 */
 	clear() {
 		const { nodes } = this;
-        clearTimeout(this.timeout)
+		clearTimeout(this.timeout)
 		for (let key in nodes) {
 			this.deleteNode(nodes[key], true);
 		}

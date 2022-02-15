@@ -1,7 +1,7 @@
 {
   // 更改此项以匹配您的项目
   "include": ["src/**/*"],
-
+  "exclude": ["src/Snap/*.js"],
   "compilerOptions": {
     "allowJs": true,
     "declaration": true,

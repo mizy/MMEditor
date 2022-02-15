@@ -13,8 +13,8 @@ declare class Schema {
         linesMap: any[];
     };
     /**
-     * @property {MMEditor} editor
-     */
+* @property {MMEditor} editor
+*/
     editor: MMEditor;
     /**
      * @property {History} history

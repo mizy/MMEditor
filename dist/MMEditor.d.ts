@@ -4,43 +4,8 @@ export default MMEditor;
  * @extends Event
  */
 export class MMEditor extends Event {
-    /**
-     * 初始化配置
-     * @param {Object} config - 初始化配置.
-     * @param {boolean} config.hideAchor - 是否隐藏磁吸.
-     * @param {boolean} config.hideAchorLine - 是否隐藏磁吸线
-     * @param {string} config.anchorDistance - 磁吸距离
-     * @param {boolean} config.showBackGrid - 是否展示网格
-     * @param {boolean} config.showMiniMap - 是否隐藏小地图
-     * @param {string} config.mode - 模式是否只读，可选 view
-     * @param {Object} config.dagreOption - dagre的配置
-     */
-    constructor(config: {
-        hideAchor: boolean;
-        hideAchorLine: boolean;
-        anchorDistance: string;
-        showBackGrid: boolean;
-        showMiniMap: boolean;
-        mode: string;
-        dagreOption: any;
-    });
-    config: {
-        hideAchor: boolean;
-        hideAchorLine: boolean;
-        anchorDistance: number;
-        showBackGrid: boolean;
-        showMiniMap: boolean;
-        mode: any;
-        dagreOption: {};
-    } & {
-        hideAchor: boolean;
-        hideAchorLine: boolean;
-        anchorDistance: string;
-        showBackGrid: boolean;
-        showMiniMap: boolean;
-        mode: string;
-        dagreOption: any;
-    };
+    constructor(config: any);
+    config: any;
     /**
     * @property {HTMLElement} dom 容器
     */

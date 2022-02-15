@@ -1,22 +1,22 @@
 import History from "./History";
-import dagre from 'dagre'; 
+import dagre from 'dagre';
 import MMEditor from "../MMEditor";
 /**
  * @class
  */
 class Schema {
-    /**
-     * 
-     * @param {MMEditor} editor - MMEditor实例
-     */
+	/**
+	 * 
+	 * @param {MMEditor} editor - MMEditor实例
+	 */
 	constructor(editor) {
 		this.data = {
 			nodesMap: [],
 			linesMap: []
 		}
-        /**
-		 * @property {MMEditor} editor
-		 */
+		/**
+ * @property {MMEditor} editor
+ */
 		this.editor = editor;
 		/**
 		 * @property {History} history
@@ -25,72 +25,72 @@ class Schema {
 		this.listenEvents();
 	}
 
-    /**
-     * 格式化有向图
-     */
-	format(){
+	/**
+	 * 格式化有向图
+	 */
+	format() {
 		const nodes = this.editor.graph.node.nodes;
 		const lines = this.editor.graph.line.lines;
 		const res = {
-			nodes:[],
-			lines:[]
+			nodes: [],
+			lines: []
 		}
 		const g = new dagre.graphlib.Graph();
 		const option = Object.assign({
 			nodesep: 50,
 			rankdir: 'TB',
-			ranksep:50,
+			ranksep: 50,
 			align: 'UL'
-		},this.editor.config.dagreOption)
+		}, this.editor.config.dagreOption)
 		g.setGraph(option);
-		const {center=true} = this.editor.config.dagreOption;
+		const { center = true } = this.editor.config.dagreOption;
 
-		g.setDefaultEdgeLabel(function() {
+		g.setDefaultEdgeLabel(function () {
 			return {};
 		});
 
-		for(let key in nodes){
+		for (let key in nodes) {
 			const node = nodes[key];
 			const data = node.data;
-			if(!data.width||!data.height){
+			if (!data.width || !data.height) {
 				const bbox = node.getBBox();
 				data.width = bbox.width;
 				data.height = bbox.height;
 			}
-			g.setNode(key, {...data});
+			g.setNode(key, { ...data });
 		}
-		for(let key in lines){
+		for (let key in lines) {
 			const line = lines[key];
 			const data = line.data;
 			g.setEdge(data.from, data.to);
 			res.lines.push(data)
-		} 
-		
+		}
+
 		dagre.layout(g);
 
-		g.nodes().forEach(function(key) {
+		g.nodes().forEach(function (key) {
 			const nodeData = g.node(key);
-			if(center){
-				if(option.rankdir.indexOf('T')<0){// 左右布局
-					nodeData.y -= nodeData.height/2;
-				}else{//上下布局
-					nodeData.x -= nodeData.width/2;
+			if (center) {
+				if (option.rankdir.indexOf('T') < 0) {// 左右布局
+					nodeData.y -= nodeData.height / 2;
+				} else {//上下布局
+					nodeData.x -= nodeData.width / 2;
 				}
 			}
 			res.nodes.push(nodeData);
 		});
 		// 触发format事件，保存历史
 		this.setData(res);
-        /**
-         * @event MMEditor#format
-         * @type {Object}
-         * @property {Object} data
-         */
-		this.editor.fire("format",{data:res})
+		/**
+		 * @event MMEditor#format
+		 * @type {Object}
+		 * @property {Object} data
+		 */
+		this.editor.fire("format", { data: res })
 	}
 
 	listenEvents() {
-		const historyChangeEvents = ["node:change", "node:add", "node:remove", "line:change", "line:add", "line:remove", "delete"]
+		const historyChangeEvents = ["node:change", "node:add", "line:change", "line:add", "line:remove", "delete"]
 		historyChangeEvents.forEach(event => {
 			this.editor.graph.on(
 				event,
@@ -102,23 +102,23 @@ class Schema {
 		});
 	}
 
-    /**
-     * 历史入栈最新数据
-     */
-	pushHistory(){
+	/**
+	 * 历史入栈最新数据
+	 */
+	pushHistory() {
 		this.history.push(this.getNowDataMap());
 	}
 
-    /**
-     * 历史出栈
-     */
-	popHistory(){
+	/**
+	 * 历史出栈
+	 */
+	popHistory() {
 		this.history.pop();
 	}
 
-    /**
-     * 获取当前最新的map
-     */
+	/**
+	 * 获取当前最新的map
+	 */
 	getNowDataMap() {
 		const nodes = this.editor.graph.node.nodes;
 		const lines = this.editor.graph.line.lines;
@@ -145,10 +145,10 @@ class Schema {
 		this.parseData(data); // 解析数据
 		this.editor.graph.clearGraph();
 		await this.renderData(data);
-        /**
-         * @event MMEditor#load
-         * @type {Object}
-         */
+		/**
+		 * @event MMEditor#load
+		 * @type {Object}
+		 */
 		this.editor.fire("load", data);
 	}
 

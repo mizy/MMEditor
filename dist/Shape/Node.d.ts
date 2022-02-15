@@ -67,16 +67,16 @@ declare class Node {
      * 删除节点
      *  @param {object} data
      */
-    deleteNode: (node: any, ignoreEvent: any) => void;
+    deleteNode: (node: any) => void;
     /**
      * 渲染新节点
      */
     renderNode(item: any): any;
     /**
-     * 根据数据更新节点位置
-     * @param {*} nodeData
-     * @param {*} rerenderShape
-     */
+         * 根据数据更新节点位置
+         * @param {*} nodeData
+         * @param {*} rerenderShape
+         */
     updateNode(nodeData?: any, rerenderShape?: any): void;
     /**
      * 给节点添加连线点

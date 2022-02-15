@@ -7,7 +7,7 @@ class Event {
 	 * 箭头
 	 * @param {*} event 
 	 * @param {*} func 
-	 * @param {*} index 
+	 * @param {*=} index 
 	 */
 	on(event, func, index) {
 		if (!this.events[event]) {

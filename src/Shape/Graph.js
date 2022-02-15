@@ -12,35 +12,35 @@ class Graph extends Event {
 	constructor(editor) {
 		super();
 		this.editor = editor;
-        /**
-         * @property {Node} node
-         */
+		/**
+		 * @property {Node} node
+		 */
 		this.node = new Node(this);
-        /**
-         * @property {Line} line
-         */
+		/**
+		 * @property {Line} line
+		 */
 		this.line = new Line(this);
-         /**
-         * @prop {AnchorLine} anchorLine
-         */
+		/**
+		* @prop {AnchorLine} anchorLine
+		*/
 		this.anchorLine = new AnchorLine(this);
 		this.node.linkPointsG.before(this.line.lineG);
-        /**
-         * @prop {Animation} animation
-         */
+		/**
+		 * @prop {Animation} animation
+		 */
 		this.animation = Animation;
 
 		// 模式：操作、查看模式
 		this.mode = editor.config.mode;
 
 		this.listenEvents();
-		if (this.editor.config.showBackGrid) {this.addBack();}
+		if (this.editor.config.showBackGrid) { this.addBack(); }
 	}
 
 	addBack() {
 		this.editor.container.select('.mm-editor-back').node.style.backgroundImage = `url(${backSvg})`;
 	}
-	 
+
 	listenEvents() {
 		this.on('node:move', ({ node }) => {
 			this.line.updateByNode(node);
@@ -58,7 +58,7 @@ class Graph extends Event {
 		if (this.mode !== 'view') {
 			document.addEventListener('keydown', this.onKeyDown);
 		}
-		
+
 		this.on('line:drag', () => {
 			this.linkStatus = 'lineing';
 			for (let key in this.node.nodes) {
@@ -83,38 +83,38 @@ class Graph extends Event {
 		});
 	}
 
-    //todo:
+	//todo:
 	onKeyDown = (e) => {
-		if (["TEXTAREA", "INPUT"].indexOf(document.activeElement.tagName) > -1 && document.activeElement.getAttribute("contenteditable")!=="false") {
-            return;
-        }
+		if (["TEXTAREA", "INPUT"].indexOf(document.activeElement.tagName) > -1 && document.activeElement.getAttribute("contenteditable") !== "false") {
+			return;
+		}
 		if (e.key === 'Backspace') {
 			const deleteKeys = [];
 			for (let key in this.node.actives) {
 				// 不触发事件
-				this.node.deleteNode(this.node.actives[key], true);
+				this.node.deleteNode(this.node.actives[key]);
 				delete this.node.actives[key];
 				deleteKeys.push(key);
 			}
 			this.line.activeLine && this.line.deleteLine(this.line.activeLine);
-            /**
-             * @event Graph#delete
-             * @type {Object}
-             */
+			/**
+			 * @event Graph#delete
+			 * @type {Object}
+			 */
 			this.fire('delete', { event: e, deleteKeys });
 		}
 		if (e.keyCode === 'C'.charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
 			/**
-             * @event Graph#copy
-             * @type {Object}
-             */
-            this.fire('copy', { event: e });
+						 * @event Graph#copy
+						 * @type {Object}
+						 */
+			this.fire('copy', { event: e });
 		}
 		if (e.keyCode === 'V'.charCodeAt(0) && (e.metaKey || e.ctrlKey)) {
-            /**
-             * @event Graph#paste
-             * @type {Object}
-             */
+			/**
+			 * @event Graph#paste
+			 * @type {Object}
+			 */
 			this.fire('paste', { event: e });
 		}
 		if (e.keyCode === 'Z'.charCodeAt(0) && (e.metaKey || e.ctrlKey) && !e.shiftKey) {
@@ -162,17 +162,17 @@ class Graph extends Event {
 	 * @param {*} data
 	 */
 	async render(data) {
-        /**
-         * @event Graph#beforeRender 渲染之前触发
-         */
+		/**
+		 * @event Graph#beforeRender 渲染之前触发
+		 */
 		this.fire('beforeRender')
 		this.data = data;
 		await this.node.render(data.nodesMap);
 		await this.line.render(data.linesMap);
-        /**
-         * @event Graph#render  渲染后触发
-         */
-        this.fire('render')
+		/**
+		 * @event Graph#render  渲染后触发
+		 */
+		this.fire('render')
 	}
 
 	/**
@@ -183,7 +183,7 @@ class Graph extends Event {
 		this.node.clear();
 	}
 
-	destroy(){
+	destroy() {
 		this.clearGraph();
 		this.clear();
 		document.removeEventListener('keydown', this.onKeyDown);
