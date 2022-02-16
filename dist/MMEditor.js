@@ -22862,7 +22862,11 @@ var Line_Line = /*#__PURE__*/function () {
         }, _this.tempLineData);
         if (_this.lines[data.uuid]) return;
 
-        if (_this.shapes['default'].checkNewLine(data, _this.graph.editor)) {
+        _this.graph.editor.fire("line:beforeAdd", {
+          line: data
+        });
+
+        if (_this.shapes[data.type || 'default'].checkNewLine(data, _this.graph.editor)) {
           _this.addLine(data);
         }
 
@@ -24524,7 +24528,9 @@ var snap_svg_Snap = function (root) {
    - query (string) CSS query selector
    = (object) @Element
   \*/
-  function Snap(w, h) {
+  function Snap(w) {
+    var h = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
     if (w) {
       if (w.nodeType) {
         return wrap(w);
@@ -26134,29 +26140,29 @@ var snap_svg_Snap = function (root) {
     }
   }
   /*\
-    * Element.attr
-    [ method ]
-    **
-    * Gets or sets given attributes of the element.
-    **
-    - params (object) contains key-value pairs of attributes you want to set
-    * or
-    - param (string) name of the attribute
-    = (Element) the current element
-    * or
-    = (string) value of attribute
-    > Usage
-    | el.attr({
-    |     fill: "#fc0",
-    |     stroke: "#000",
-    |     strokeWidth: 2, // CamelCase...
-    |     "fill-opacity": 0.5, // or dash-separated names
-    |     width: "*=2" // prefixed values
-    | });
-    | console.log(el.attr("fill")); // #fc0
-    * Prefixed values in format `"+=10"` supported. All four operations
-    * (`+`, `-`, `*` and `/`) could be used. Optionally you can use units for `+`
-    * and `-`: `"+=2em"`.
+  	* Element.attr
+  	[ method ]
+  	**
+  	* Gets or sets given attributes of the element.
+  	**
+  	- params (object) contains key-value pairs of attributes you want to set
+  	* or
+  	- param (string) name of the attribute
+  	= (Element) the current element
+  	* or
+  	= (string) value of attribute
+  	> Usage
+  	| el.attr({
+  	|     fill: "#fc0",
+  	|     stroke: "#000",
+  	|     strokeWidth: 2, // CamelCase...
+  	|     "fill-opacity": 0.5, // or dash-separated names
+  	|     width: "*=2" // prefixed values
+  	| });
+  	| console.log(el.attr("fill")); // #fc0
+  	* Prefixed values in format `"+=10"` supported. All four operations
+  	* (`+`, `-`, `*` and `/`) could be used. Optionally you can use units for `+`
+  	* and `-`: `"+=2em"`.
    \*/
 
 

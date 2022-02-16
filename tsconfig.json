@@ -1,10 +1,11 @@
 {
   // 更改此项以匹配您的项目
-  "include": ["src/**/*"],
-  "exclude": ["src/Snap/*.js"],
+  "include": ["src/**/*.js",],
+  "exclude": ["src/Snap/*","node_modules/**/*"],
   "compilerOptions": {
     "allowJs": true,
     "declaration": true,
+    "noResolve":true,
     "emitDeclarationOnly": true,
     "outDir": "dist",
   }

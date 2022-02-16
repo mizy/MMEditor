@@ -13,7 +13,7 @@ class Line {
 		this.allLinkPointsXY = [];
 		this.shapes = {
 			default: DefaultLine,
-            polyline:PolyLine,
+			polyline: PolyLine,
 			tempLine: {
 				render: paper => {
 					const path = paper.path();
@@ -48,14 +48,14 @@ class Line {
 	 * @param {*} data
 	 */
 	addLine(data) {
-        /**
-         * @event Graph#line:beforeadd
-         */
+		/**
+		 * @event Graph#line:beforeadd
+		 */
 		this.graph.fire('line:beforeadd', { data, type: 'add' });
 		const line = this.renderLine(data);
-        /**
-         * @event Graph#line:add
-         */
+		/**
+		 * @event Graph#line:add
+		 */
 		this.graph.fire('line:add', { line, type: 'add' });
 	}
 
@@ -163,9 +163,9 @@ class Line {
 		nodes[to] && nodes[to].fromLines.delete(id);
 		!notEvent &&
 			// 是否由删除节点触发的线删除操作
-            /**
-             * @event Graph#line:remove
-             */
+			/**
+			 * @event Graph#line:remove
+			 */
 			this.graph.fire('line:remove', {
 				line,
 				uuid,
@@ -209,20 +209,20 @@ class Line {
 			if (this.shapes[shape].checkNewLine({
 				...data,
 				to, toPoint,
-			}, this.graph.editor)&&!(oldTo == to && toPoint == oldToPoint)) {
+			}, this.graph.editor) && !(oldTo == to && toPoint == oldToPoint)) {
 				Object.assign(line.data, { to, toPoint });
 				// 删除节点入口关联的线，给新链接的节点加上入口线
 				nodes[oldTo].fromLines.delete(uuid);
 				nodes[to].fromLines.add(uuid);
-                /**
-                 * @event Graph#line:change
-                 */
+				/**
+				 * @event Graph#line:change
+				 */
 				this.graph.fire('line:change', { line, type: 'change', before: beforeData });
-			}else{
-                /**
-                 * @event Graph#line:drop
-                 */
-				this.graph.fire('line:drop', { line:g });
+			} else {
+				/**
+				 * @event Graph#line:drop
+				 */
+				this.graph.fire('line:drop', { line: g });
 			}
 			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass('hover');
 		}
@@ -248,7 +248,8 @@ class Line {
 				this.tempLineData
 			);
 			if (this.lines[data.uuid]) return;
-			if (this.shapes['default'].checkNewLine(data, this.graph.editor)) {
+			this.graph.editor.fire("line:beforeAdd", { line: data })
+			if (this.shapes[data.type || 'default'].checkNewLine(data, this.graph.editor)) {
 				this.addLine(data);
 			}
 			hoverLinkPoint.removeClass && hoverLinkPoint.removeClass('hover');
@@ -295,26 +296,26 @@ class Line {
 	addLineEvents(g) {
 		g.shape.hover(
 			(event) => {
-                /**
-                 * @event Graph#line:mouseenter
-                 */
+				/**
+				 * @event Graph#line:mouseenter
+				 */
 				this.graph.fire('line:mouseenter', { line: g, event });
 			},
 			(event) => {
-                /**
-                 * @event Graph#line:mouseleave
-                 */
+				/**
+				 * @event Graph#line:mouseleave
+				 */
 				this.graph.fire('line:mouseleave', { line: g, event });
 			}
 		);
-        g.shape.click(e => {
+		g.shape.click(e => {
 			this.setActiveLine(g);
-            /**
-             * @event Graph#line:click
-             */
+			/**
+			 * @event Graph#line:click
+			 */
 			this.graph.fire('line:click', { line: g, event: e });
 		});
-		if(this.graph.mode==='view')return;
+		if (this.graph.mode === 'view') return;
 		// 箭头拖拽
 		g.arrow.drag(
 			(dx, dy) => {
@@ -348,9 +349,9 @@ class Line {
 				this.makeAdsorbPoints();
 				this.graph.addLinkHoverEvent();
 				data.status = 'active';
-                /**
-                 * @event Graph#line:drag
-                 */
+				/**
+				 * @event Graph#line:drag
+				 */
 				this.graph.fire('line:drag');
 			},
 			(e) => {
@@ -365,7 +366,7 @@ class Line {
 				this.graph.offLinkHoverEvent();
 			}
 		);
-	
+
 
 	}
 
@@ -421,7 +422,7 @@ class Line {
 	 * 节点的新增线逻辑
 	 */
 	addLinkPointEvent = (point, node, index) => {
-		if(this.graph.mode==='view')return;
+		if (this.graph.mode === 'view') return;
 		point.drag(
 			(dx, dy) => {
 				const {
@@ -457,7 +458,7 @@ class Line {
 				this.makeAdsorbPoints();
 				this.graph.addLinkHoverEvent();
 				this.tempLine = this.shapes.tempLine.render(this.paper);
-                
+
 				this.graph.fire('line:drag');
 			},
 			(e) => {
@@ -470,9 +471,9 @@ class Line {
 				}
 				this.checkNewLine(e);
 				this.tempLine.remove();
-                /**
-                 * @event Graph#line:drop
-                 */
+				/**
+				 * @event Graph#line:drop
+				 */
 				this.graph.fire('line:drop', { fromNode: node, toNode, event: e });
 			}
 		);

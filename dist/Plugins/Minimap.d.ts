@@ -33,10 +33,9 @@ declare class MiniMap {
      * 重新渲染小地图
      */
     render: () => void;
-    timeout: NodeJS.Timeout;
+    timeout: number;
     renderCanvas(): Promise<void>;
     svgBBox: any;
-    converting: Canvg;
+    converting: any;
     destroy(): void;
 }
-import Canvg from "canvg";

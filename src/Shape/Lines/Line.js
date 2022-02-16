@@ -27,8 +27,8 @@ const DefaultLine = {
 			d: pathString,
 			strokeDasharray: "10",
 			fill: "transparent",
-			stroke:"rgba(178,190,205,0.7)",
-			...(data.style||{})
+			stroke: "rgba(178,190,205,0.7)",
+			...(data.style || {})
 		});
 		path.animate(
 			{
@@ -36,16 +36,16 @@ const DefaultLine = {
 			},
 			300
 		);
-		const labelGroup = this.renderLabel(data,allNodesMap,path,line?line.labelGroup:null);
-		if(!line){
+		const labelGroup = this.renderLabel(data, allNodesMap, path, line ? line.labelGroup : null);
+		if (!line) {
 			line = this.paper.group();
 			line.append(path);
 		}
-		labelGroup&&line.append(labelGroup)
+		labelGroup && line.append(labelGroup)
 		line.labelGroup = labelGroup;
 		line.path = path;
 		return {
-			path:line,
+			path: line,
 			data: {
 				fromX,
 				fromY,
@@ -115,21 +115,21 @@ const DefaultLine = {
 
 	//没用了
 	getPointDirect(pointNode) {
-		const point2center = [pointNode.data.x , pointNode.data.y ];
+		const point2center = [pointNode.data.x, pointNode.data.y];
 		let angel = 0;
-		if(point2center[1] === 0){
-			angel = Math.PI/2;
-		}else if(point2center[1] === 1){
-			angel = -Math.PI/2;
-		}else if(point2center[0] === 0){
+		if (point2center[1] === 0) {
+			angel = Math.PI / 2;
+		} else if (point2center[1] === 1) {
+			angel = -Math.PI / 2;
+		} else if (point2center[0] === 0) {
 			angel = Math.PI;
-		}else if(point2center[0] === 1){
+		} else if (point2center[0] === 1) {
 			angel = -Math.PI;
-		} else{
+		} else {
 			// arctan求角度
-			angel = Math.atan((point2center[1]-0.5) / (point2center[0]-0.5)) + ((point2center[0]-0.5)<0?Math.PI:0);
+			angel = Math.atan((point2center[1] - 0.5) / (point2center[0] - 0.5)) + ((point2center[0] - 0.5) < 0 ? Math.PI : 0);
 		}
-		return angel||0;
+		return angel || 0;
 	},
 
 	/**
@@ -163,7 +163,7 @@ const DefaultLine = {
 			d: pathString,
 			fill: "rgba(178,190,205,0.7)",
 			transform: matrix.toString(),
-            ...data.arrowStyle
+			...data.arrowStyle
 		});
 		path.angle = angle;
 		return path;
@@ -179,10 +179,10 @@ const DefaultLine = {
 		const { fromX, toX, labelCfg } = data;
 		let { label } = data;
 		if (!label) {
-			labelGroup&&labelGroup.remove();
+			labelGroup && labelGroup.remove();
 			return null
 		};
-        const totalLabel = label;
+		const totalLabel = label;
 		// label 样式
 		const {
 			refX = 0,
@@ -236,7 +236,7 @@ const DefaultLine = {
 		});
 		labelGroup.attr({
 			class: "mm-line-label",
-            'data-label': encodeURI(totalLabel)
+			'data-label': encodeURI(totalLabel)
 		})
 		if (autoRotate) {
 			// 文字顺序方向

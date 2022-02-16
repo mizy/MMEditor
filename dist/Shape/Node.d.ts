@@ -57,7 +57,7 @@ declare class Node {
     registeNode(type: string, data: object, extend?: string): void;
     render(data?: {}): Promise<any>;
     tmpLinkPoints: any[];
-    timeout: NodeJS.Timeout;
+    timeout: number;
     /**
      * 添加节点
      * @param {object} data

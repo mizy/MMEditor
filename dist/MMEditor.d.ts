@@ -62,11 +62,8 @@ export namespace MMEditor {
 }
 import Event from "./Utils/Event";
 import Schema from "./Model/Schema";
-import Snap from "./Snap/snap.svg.js";
 import Graph from "./Shape/Graph";
 import Controller from "./Utils/Controller";
-import { eve } from "./Snap/snap.svg.js";
-import { mina } from "./Snap/snap.svg.js";
 import Minimap from "./Plugins/Minimap";
 import Util from "./Utils/util";
 export { Event, Schema, Snap, Graph, Controller, eve, mina };

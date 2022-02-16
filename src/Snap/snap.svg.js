@@ -17,7 +17,7 @@ var Snap = (function (root) {
 	 - query (string) CSS query selector
 	 = (object) @Element
 	\*/
-	function Snap(w, h) {
+	function Snap(w, h = null) {
 		if (w) {
 			if (w.nodeType) {
 				return wrap(w);
@@ -1363,29 +1363,29 @@ var Snap = (function (root) {
 		}
 	}
 	/*\
-	  * Element.attr
-	  [ method ]
-	  **
-	  * Gets or sets given attributes of the element.
-	  **
-	  - params (object) contains key-value pairs of attributes you want to set
-	  * or
-	  - param (string) name of the attribute
-	  = (Element) the current element
-	  * or
-	  = (string) value of attribute
-	  > Usage
-	  | el.attr({
-	  |     fill: "#fc0",
-	  |     stroke: "#000",
-	  |     strokeWidth: 2, // CamelCase...
-	  |     "fill-opacity": 0.5, // or dash-separated names
-	  |     width: "*=2" // prefixed values
-	  | });
-	  | console.log(el.attr("fill")); // #fc0
-	  * Prefixed values in format `"+=10"` supported. All four operations
-	  * (`+`, `-`, `*` and `/`) could be used. Optionally you can use units for `+`
-	  * and `-`: `"+=2em"`.
+		* Element.attr
+		[ method ]
+		**
+		* Gets or sets given attributes of the element.
+		**
+		- params (object) contains key-value pairs of attributes you want to set
+		* or
+		- param (string) name of the attribute
+		= (Element) the current element
+		* or
+		= (string) value of attribute
+		> Usage
+		| el.attr({
+		|     fill: "#fc0",
+		|     stroke: "#000",
+		|     strokeWidth: 2, // CamelCase...
+		|     "fill-opacity": 0.5, // or dash-separated names
+		|     width: "*=2" // prefixed values
+		| });
+		| console.log(el.attr("fill")); // #fc0
+		* Prefixed values in format `"+=10"` supported. All four operations
+		* (`+`, `-`, `*` and `/`) could be used. Optionally you can use units for `+`
+		* and `-`: `"+=2em"`.
 	 \*/
 	Element.prototype.attr = function (params, value) {
 		var el = this,
@@ -1872,31 +1872,31 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		getSomeDefs = Snap._.getSomeDefs,
 		has = "hasOwnProperty",
 		wrap = Snap._.wrap;
-    /*\
-     * Element.getBBox
-     [ method ]
-     **
-     * Returns the bounding box descriptor for the given element
-     **
-     = (object) bounding box descriptor:
-     o {
-     o     cx: (number) x of the center,
-     o     cy: (number) x of the center,
-     o     h: (number) height,
-     o     height: (number) height,
-     o     path: (string) path command for the box,
-     o     r0: (number) radius of a circle that fully encloses the box,
-     o     r1: (number) radius of the smallest circle that can be enclosed,
-     o     r2: (number) radius of the largest circle that can be enclosed,
-     o     vb: (string) box as a viewbox command,
-     o     w: (number) width,
-     o     width: (number) width,
-     o     x2: (number) x of the right side,
-     o     x: (number) x of the left side,
-     o     y2: (number) y of the bottom edge,
-     o     y: (number) y of the top edge
-     o }
-    \*/
+	/*\
+	 * Element.getBBox
+	 [ method ]
+	 **
+	 * Returns the bounding box descriptor for the given element
+	 **
+	 = (object) bounding box descriptor:
+	 o {
+	 o     cx: (number) x of the center,
+	 o     cy: (number) x of the center,
+	 o     h: (number) height,
+	 o     height: (number) height,
+	 o     path: (string) path command for the box,
+	 o     r0: (number) radius of a circle that fully encloses the box,
+	 o     r1: (number) radius of the smallest circle that can be enclosed,
+	 o     r2: (number) radius of the largest circle that can be enclosed,
+	 o     vb: (string) box as a viewbox command,
+	 o     w: (number) width,
+	 o     width: (number) width,
+	 o     x2: (number) x of the right side,
+	 o     x: (number) x of the left side,
+	 o     y2: (number) y of the bottom edge,
+	 o     y: (number) y of the top edge
+	 o }
+	\*/
 	elproto.getBBox = function (isWithoutTransform) {
 		if (this.type == "tspan") {
 			return Snap._.box(this.node.getClientRects().item(0));
@@ -1972,26 +1972,26 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			el.matrix = m;
 		}
 	}
-    /*\
-     * Element.transform
-     [ method ]
-     **
-     * Gets or sets transformation of the element
-     **
-     - tstr (string) transform string in Snap or SVG format
-     = (Element) the current element
-     * or
-     = (object) transformation descriptor:
-     o {
-     o     string (string) transform string,
-     o     globalMatrix (Matrix) matrix of all transformations applied to element or its parents,
-     o     localMatrix (Matrix) matrix of transformations applied only to the element,
-     o     diffMatrix (Matrix) matrix of difference between global and local transformations,
-     o     global (string) global transformation as string,
-     o     local (string) local transformation as string,
-     o     toString (function) returns `string` property
-     o }
-    \*/
+	/*\
+	 * Element.transform
+	 [ method ]
+	 **
+	 * Gets or sets transformation of the element
+	 **
+	 - tstr (string) transform string in Snap or SVG format
+	 = (Element) the current element
+	 * or
+	 = (object) transformation descriptor:
+	 o {
+	 o     string (string) transform string,
+	 o     globalMatrix (Matrix) matrix of all transformations applied to element or its parents,
+	 o     localMatrix (Matrix) matrix of transformations applied only to the element,
+	 o     diffMatrix (Matrix) matrix of difference between global and local transformations,
+	 o     global (string) global transformation as string,
+	 o     local (string) local transformation as string,
+	 o     toString (function) returns `string` property
+	 o }
+	\*/
 	elproto.transform = function (tstr) {
 		var _ = this._;
 		if (tstr == null) {
@@ -2042,32 +2042,32 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 
 		return this;
 	};
-    /*\
-     * Element.parent
-     [ method ]
-     **
-     * Returns the element's parent
-     **
-     = (Element) the parent element
-    \*/
+	/*\
+	 * Element.parent
+	 [ method ]
+	 **
+	 * Returns the element's parent
+	 **
+	 = (Element) the parent element
+	\*/
 	elproto.parent = function () {
 		return wrap(this.node.parentNode);
 	};
-    /*\
-     * Element.append
-     [ method ]
-     **
-     * Appends the given element to current one
-     **
-     - el (Element|Set) element to append
-     = (Element) the parent element
-    \*/
-    /*\
-     * Element.add
-     [ method ]
-     **
-     * See @Element.append
-    \*/
+	/*\
+	 * Element.append
+	 [ method ]
+	 **
+	 * Appends the given element to current one
+	 **
+	 - el (Element|Set) element to append
+	 = (Element) the parent element
+	\*/
+	/*\
+	 * Element.add
+	 [ method ]
+	 **
+	 * See @Element.append
+	\*/
 	elproto.append = elproto.add = function (el) {
 		if (el) {
 			if (el.type == "set") {
@@ -2083,15 +2083,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this;
 	};
-    /*\
-     * Element.appendTo
-     [ method ]
-     **
-     * Appends the current element to the given one
-     **
-     - el (Element) parent element to append to
-     = (Element) the child element
-    \*/
+	/*\
+	 * Element.appendTo
+	 [ method ]
+	 **
+	 * Appends the current element to the given one
+	 **
+	 - el (Element) parent element to append to
+	 = (Element) the child element
+	\*/
 	elproto.appendTo = function (el) {
 		if (el) {
 			el = wrap(el);
@@ -2099,15 +2099,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this;
 	};
-    /*\
-     * Element.prepend
-     [ method ]
-     **
-     * Prepends the given element to the current one
-     **
-     - el (Element) element to prepend
-     = (Element) the parent element
-    \*/
+	/*\
+	 * Element.prepend
+	 [ method ]
+	 **
+	 * Prepends the given element to the current one
+	 **
+	 - el (Element) element to prepend
+	 = (Element) the parent element
+	\*/
 	elproto.prepend = function (el) {
 		if (el) {
 			if (el.type == "set") {
@@ -2133,29 +2133,29 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this;
 	};
-    /*\
-     * Element.prependTo
-     [ method ]
-     **
-     * Prepends the current element to the given one
-     **
-     - el (Element) parent element to prepend to
-     = (Element) the child element
-    \*/
+	/*\
+	 * Element.prependTo
+	 [ method ]
+	 **
+	 * Prepends the current element to the given one
+	 **
+	 - el (Element) parent element to prepend to
+	 = (Element) the child element
+	\*/
 	elproto.prependTo = function (el) {
 		el = wrap(el);
 		el.prepend(this);
 		return this;
 	};
-    /*\
-     * Element.before
-     [ method ]
-     **
-     * Inserts given element before the current one
-     **
-     - el (Element) element to insert
-     = (Element) the parent element
-    \*/
+	/*\
+	 * Element.before
+	 [ method ]
+	 **
+	 * Inserts given element before the current one
+	 **
+	 - el (Element) element to insert
+	 = (Element) the parent element
+	\*/
 	elproto.before = function (el) {
 		if (el.type == "set") {
 			var it = this;
@@ -2175,15 +2175,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		el.paper = this.paper;
 		return this;
 	};
-    /*\
-     * Element.after
-     [ method ]
-     **
-     * Inserts given element after the current one
-     **
-     - el (Element) element to insert
-     = (Element) the parent element
-    \*/
+	/*\
+	 * Element.after
+	 [ method ]
+	 **
+	 * Inserts given element after the current one
+	 **
+	 - el (Element) element to insert
+	 = (Element) the parent element
+	\*/
 	elproto.after = function (el) {
 		el = wrap(el);
 		var parent = el.parent();
@@ -2197,15 +2197,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		el.paper = this.paper;
 		return this;
 	};
-    /*\
-     * Element.insertBefore
-     [ method ]
-     **
-     * Inserts the element after the given one
-     **
-     - el (Element) element next to whom insert to
-     = (Element) the parent element
-    \*/
+	/*\
+	 * Element.insertBefore
+	 [ method ]
+	 **
+	 * Inserts the element after the given one
+	 **
+	 - el (Element) element next to whom insert to
+	 = (Element) the parent element
+	\*/
 	elproto.insertBefore = function (el) {
 		el = wrap(el);
 		var parent = this.parent();
@@ -2215,15 +2215,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		el.parent() && el.parent().add();
 		return this;
 	};
-    /*\
-     * Element.insertAfter
-     [ method ]
-     **
-     * Inserts the element after the given one
-     **
-     - el (Element) element next to whom insert to
-     = (Element) the parent element
-    \*/
+	/*\
+	 * Element.insertAfter
+	 [ method ]
+	 **
+	 * Inserts the element after the given one
+	 **
+	 - el (Element) element next to whom insert to
+	 = (Element) the parent element
+	\*/
 	elproto.insertAfter = function (el) {
 		el = wrap(el);
 		var parent = this.parent();
@@ -2233,13 +2233,13 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		el.parent() && el.parent().add();
 		return this;
 	};
-    /*\
-     * Element.remove
-     [ method ]
-     **
-     * Removes element from the DOM
-     = (Element) the detached element
-    \*/
+	/*\
+	 * Element.remove
+	 [ method ]
+	 **
+	 * Removes element from the DOM
+	 = (Element) the detached element
+	\*/
 	elproto.remove = function () {
 		var parent = this.parent();
 		this.node.parentNode && this.node.parentNode.removeChild(this.node);
@@ -2248,27 +2248,27 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		parent && parent.add();
 		return this;
 	};
-    /*\
-     * Element.select
-     [ method ]
-     **
-     * Gathers the nested @Element matching the given set of CSS selectors
-     **
-     - query (string) CSS selector
-     = (Element) result of query selection
-    \*/
+	/*\
+	 * Element.select
+	 [ method ]
+	 **
+	 * Gathers the nested @Element matching the given set of CSS selectors
+	 **
+	 - query (string) CSS selector
+	 = (Element) result of query selection
+	\*/
 	elproto.select = function (query) {
 		return wrap(this.node.querySelector(query));
 	};
-    /*\
-     * Element.selectAll
-     [ method ]
-     **
-     * Gathers nested @Element objects matching the given set of CSS selectors
-     **
-     - query (string) CSS selector
-     = (Set|array) result of query selection
-    \*/
+	/*\
+	 * Element.selectAll
+	 [ method ]
+	 **
+	 * Gathers nested @Element objects matching the given set of CSS selectors
+	 **
+	 - query (string) CSS selector
+	 = (Set|array) result of query selection
+	\*/
 	elproto.selectAll = function (query) {
 		var nodelist = this.node.querySelectorAll(query),
 			set = (Snap.set || Array)();
@@ -2277,16 +2277,16 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return set;
 	};
-    /*\
-     * Element.asPX
-     [ method ]
-     **
-     * Returns given attribute of the element as a `px` value (not %, em, etc.)
-     **
-     - attr (string) attribute name
-     - value (string) #optional attribute value
-     = (Element) result of query selection
-    \*/
+	/*\
+	 * Element.asPX
+	 [ method ]
+	 **
+	 * Returns given attribute of the element as a `px` value (not %, em, etc.)
+	 **
+	 - attr (string) attribute name
+	 - value (string) #optional attribute value
+	 = (Element) result of query selection
+	\*/
 	elproto.asPX = function (attr, value) {
 		if (value == null) {
 			value = this.attr(attr);
@@ -2296,14 +2296,14 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		// return +unit2px(this, attr, value);
 	};
 	// SIERRA Element.use(): I suggest adding a note about how to access the original element the returned <use> instantiates. It's a part of SVG with which ordinary web developers may be least familiar.
-    /*\
-     * Element.use
-     [ method ]
-     **
-     * Creates a `<use>` element linked to the current element
-     **
-     = (Element) the `<use>` element
-    \*/
+	/*\
+	 * Element.use
+	 [ method ]
+	 **
+	 * Creates a `<use>` element linked to the current element
+	 **
+	 = (Element) the `<use>` element
+	\*/
 	elproto.use = function () {
 		var use,
 			id = this.node.id;
@@ -2387,14 +2387,14 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			}
 		}
 	}
-    /*\
-     * Element.clone
-     [ method ]
-     **
-     * Creates a clone of the element and inserts it after the element
-     **
-     = (Element) the clone
-    \*/
+	/*\
+	 * Element.clone
+	 [ method ]
+	 **
+	 * Creates a clone of the element and inserts it after the element
+	 **
+	 = (Element) the clone
+	\*/
 	elproto.clone = function () {
 		var clone = wrap(this.node.cloneNode(true));
 		if ($(clone.node, "id")) {
@@ -2404,42 +2404,42 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		clone.insertAfter(this);
 		return clone;
 	};
-    /*\
-     * Element.toDefs
-     [ method ]
-     **
-     * Moves element to the shared `<defs>` area
-     **
-     = (Element) the element
-    \*/
+	/*\
+	 * Element.toDefs
+	 [ method ]
+	 **
+	 * Moves element to the shared `<defs>` area
+	 **
+	 = (Element) the element
+	\*/
 	elproto.toDefs = function () {
 		var defs = getSomeDefs(this);
 		defs.appendChild(this.node);
 		return this;
 	};
-    /*\
-     * Element.toPattern
-     [ method ]
-     **
-     * Creates a `<pattern>` element from the current element
-     **
-     * To create a pattern you have to specify the pattern rect:
-     - x (string|number)
-     - y (string|number)
-     - width (string|number)
-     - height (string|number)
-     = (Element) the `<pattern>` element
-     * You can use pattern later on as an argument for `fill` attribute:
-     | var p = paper.path("M10-5-10,15M15,0,0,15M0-5-20,15").attr({
-     |         fill: "none",
-     |         stroke: "#bada55",
-     |         strokeWidth: 5
-     |     }).pattern(0, 0, 10, 10),
-     |     c = paper.circle(200, 200, 100);
-     | c.attr({
-     |     fill: p
-     | });
-    \*/
+	/*\
+	 * Element.toPattern
+	 [ method ]
+	 **
+	 * Creates a `<pattern>` element from the current element
+	 **
+	 * To create a pattern you have to specify the pattern rect:
+	 - x (string|number)
+	 - y (string|number)
+	 - width (string|number)
+	 - height (string|number)
+	 = (Element) the `<pattern>` element
+	 * You can use pattern later on as an argument for `fill` attribute:
+	 | var p = paper.path("M10-5-10,15M15,0,0,15M0-5-20,15").attr({
+	 |         fill: "none",
+	 |         stroke: "#bada55",
+	 |         strokeWidth: 5
+	 |     }).pattern(0, 0, 10, 10),
+	 |     c = paper.circle(200, 200, 100);
+	 | c.attr({
+	 |     fill: p
+	 | });
+	\*/
 	elproto.pattern = elproto.toPattern = function (x, y, width, height) {
 		var p = make("pattern", getSomeDefs(this));
 		if (x == null) {
@@ -2465,22 +2465,22 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 	};
 	// SIERRA Element.marker(): clarify what a reference point is. E.g., helps you offset the object from its edge such as when centering it over a path.
 	// SIERRA Element.marker(): I suggest the method should accept default reference point values.  Perhaps centered with (refX = width/2) and (refY = height/2)? Also, couldn't it assume the element's current _width_ and _height_? And please specify what _x_ and _y_ mean: offsets? If so, from where?  Couldn't they also be assigned default values?
-    /*\
-     * Element.marker
-     [ method ]
-     **
-     * Creates a `<marker>` element from the current element
-     **
-     * To create a marker you have to specify the bounding rect and reference point:
-     - x (number)
-     - y (number)
-     - width (number)
-     - height (number)
-     - refX (number)
-     - refY (number)
-     = (Element) the `<marker>` element
-     * You can specify the marker later as an argument for `marker-start`, `marker-end`, `marker-mid`, and `marker` attributes. The `marker` attribute places the marker at every point along the path, and `marker-mid` places them at every point except the start and end.
-    \*/
+	/*\
+	 * Element.marker
+	 [ method ]
+	 **
+	 * Creates a `<marker>` element from the current element
+	 **
+	 * To create a marker you have to specify the bounding rect and reference point:
+	 - x (number)
+	 - y (number)
+	 - width (number)
+	 - height (number)
+	 - refX (number)
+	 - refY (number)
+	 = (Element) the `<marker>` element
+	 * You can specify the marker later as an argument for `marker-start`, `marker-end`, `marker-mid`, and `marker` attributes. The `marker` attribute places the marker at every point along the path, and `marker-mid` places them at every point except the start and end.
+	\*/
 	// TODO add usage for markers
 	elproto.marker = function (x, y, width, height, refX, refY) {
 		var p = make("marker", getSomeDefs(this));
@@ -2508,29 +2508,29 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		return p;
 	};
 	var eldata = {};
-    /*\
-     * Element.data
-     [ method ]
-     **
-     * Adds or retrieves given value associated with given key. (Don’t confuse
-     * with `data-` attributes)
-     *
-     * See also @Element.removeData
-     - key (string) key to store data
-     - value (any) #optional value to store
-     = (object) @Element
-     * or, if value is not specified:
-     = (any) value
-     > Usage
-     | for (var i = 0, i < 5, i++) {
-     |     paper.circle(10 + 15 * i, 10, 10)
-     |          .attr({fill: "#000"})
-     |          .data("i", i)
-     |          .click(function () {
-     |             alert(this.data("i"));
-     |          });
-     | }
-    \*/
+	/*\
+	 * Element.data
+	 [ method ]
+	 **
+	 * Adds or retrieves given value associated with given key. (Don’t confuse
+	 * with `data-` attributes)
+	 *
+	 * See also @Element.removeData
+	 - key (string) key to store data
+	 - value (any) #optional value to store
+	 = (object) @Element
+	 * or, if value is not specified:
+	 = (any) value
+	 > Usage
+	 | for (var i = 0, i < 5, i++) {
+	 |     paper.circle(10 + 15 * i, 10, 10)
+	 |          .attr({fill: "#000"})
+	 |          .data("i", i)
+	 |          .click(function () {
+	 |             alert(this.data("i"));
+	 |          });
+	 | }
+	\*/
 	elproto.data = function (key, value) {
 		var data = eldata[this.id] = eldata[this.id] || {};
 		if (arguments.length == 0) {
@@ -2551,15 +2551,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		eve("snap.data.set." + this.id, this, value, key);
 		return this;
 	};
-    /*\
-     * Element.removeData
-     [ method ]
-     **
-     * Removes value associated with an element by given key.
-     * If key is not provided, removes all the data of the element.
-     - key (string) #optional key
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.removeData
+	 [ method ]
+	 **
+	 * Removes value associated with an element by given key.
+	 * If key is not provided, removes all the data of the element.
+	 - key (string) #optional key
+	 = (object) @Element
+	\*/
 	elproto.removeData = function (key) {
 		if (key == null) {
 			eldata[this.id] = {};
@@ -2568,29 +2568,29 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this;
 	};
-    /*\
-     * Element.outerSVG
-     [ method ]
-     **
-     * Returns SVG code for the element, equivalent to HTML's `outerHTML`.
-     *
-     * See also @Element.innerSVG
-     = (string) SVG code for the element
-    \*/
-    /*\
-     * Element.toString
-     [ method ]
-     **
-     * See @Element.outerSVG
-    \*/
+	/*\
+	 * Element.outerSVG
+	 [ method ]
+	 **
+	 * Returns SVG code for the element, equivalent to HTML's `outerHTML`.
+	 *
+	 * See also @Element.innerSVG
+	 = (string) SVG code for the element
+	\*/
+	/*\
+	 * Element.toString
+	 [ method ]
+	 **
+	 * See @Element.outerSVG
+	\*/
 	elproto.outerSVG = elproto.toString = toString(1);
-    /*\
-     * Element.innerSVG
-     [ method ]
-     **
-     * Returns SVG code for the element's contents, equivalent to HTML's `innerHTML`
-     = (string) SVG code for the element
-    \*/
+	/*\
+	 * Element.innerSVG
+	 [ method ]
+	 **
+	 * Returns SVG code for the element's contents, equivalent to HTML's `innerHTML`
+	 = (string) SVG code for the element
+	\*/
 	elproto.innerSVG = toString();
 	function toString(type) {
 		return function () {
@@ -2632,19 +2632,19 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			return "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
 		}
 	};
-    /*\
-     * Fragment.select
-     [ method ]
-     **
-     * See @Element.select
-    \*/
+	/*\
+	 * Fragment.select
+	 [ method ]
+	 **
+	 * See @Element.select
+	\*/
 	Fragment.prototype.select = elproto.select;
-    /*\
-     * Fragment.selectAll
-     [ method ]
-     **
-     * See @Element.selectAll
-    \*/
+	/*\
+	 * Fragment.selectAll
+	 [ method ]
+	 **
+	 * See @Element.selectAll
+	\*/
 	Fragment.prototype.selectAll = elproto.selectAll;
 });
 
@@ -2686,36 +2686,36 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		callback && (this.callback = callback);
 	};
 	Snap._.Animation = Animation;
-    /*\
-     * Snap.animation
-     [ method ]
-     **
-     * Creates an animation object
-     **
-     - attr (object) attributes of final destination
-     - duration (number) duration of the animation, in milliseconds
-     - easing (function) #optional one of easing functions of @mina or custom one
-     - callback (function) #optional callback function that fires when animation ends
-     = (object) animation object
-    \*/
+	/*\
+	 * Snap.animation
+	 [ method ]
+	 **
+	 * Creates an animation object
+	 **
+	 - attr (object) attributes of final destination
+	 - duration (number) duration of the animation, in milliseconds
+	 - easing (function) #optional one of easing functions of @mina or custom one
+	 - callback (function) #optional callback function that fires when animation ends
+	 = (object) animation object
+	\*/
 	Snap.animation = function (attr, ms, easing, callback) {
 		return new Animation(attr, ms, easing, callback);
 	};
-    /*\
-     * Element.inAnim
-     [ method ]
-     **
-     * Returns a set of animations that may be able to manipulate the current element
-     **
-     = (object) in format:
-     o {
-     o     anim (object) animation object,
-     o     mina (object) @mina object,
-     o     curStatus (number) 0..1 — status of the animation: 0 — just started, 1 — just finished,
-     o     status (function) gets or sets the status of the animation,
-     o     stop (function) stops the animation
-     o }
-    \*/
+	/*\
+	 * Element.inAnim
+	 [ method ]
+	 **
+	 * Returns a set of animations that may be able to manipulate the current element
+	 **
+	 = (object) in format:
+	 o {
+	 o     anim (object) animation object,
+	 o     mina (object) @mina object,
+	 o     curStatus (number) 0..1 — status of the animation: 0 — just started, 1 — just finished,
+	 o     status (function) gets or sets the status of the animation,
+	 o     stop (function) stops the animation
+	 o }
+	\*/
 	elproto.inAnim = function () {
 		var el = this,
 			res = [];
@@ -2736,36 +2736,36 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return res;
 	};
-    /*\
-     * Snap.animate
-     [ method ]
-     **
-     * Runs generic animation of one number into another with a caring function
-     **
-     - from (number|array) number or array of numbers
-     - to (number|array) number or array of numbers
-     - setter (function) caring function that accepts one number argument
-     - duration (number) duration, in milliseconds
-     - easing (function) #optional easing function from @mina or custom
-     - callback (function) #optional callback function to execute when animation ends
-     = (object) animation object in @mina format
-     o {
-     o     id (string) animation id, consider it read-only,
-     o     duration (function) gets or sets the duration of the animation,
-     o     easing (function) easing,
-     o     speed (function) gets or sets the speed of the animation,
-     o     status (function) gets or sets the status of the animation,
-     o     stop (function) stops the animation
-     o }
-     | var rect = Snap().rect(0, 0, 10, 10);
-     | Snap.animate(0, 10, function (val) {
-     |     rect.attr({
-     |         x: val
-     |     });
-     | }, 1000);
-     | // in given context is equivalent to
-     | rect.animate({x: 10}, 1000);
-    \*/
+	/*\
+	 * Snap.animate
+	 [ method ]
+	 **
+	 * Runs generic animation of one number into another with a caring function
+	 **
+	 - from (number|array) number or array of numbers
+	 - to (number|array) number or array of numbers
+	 - setter (function) caring function that accepts one number argument
+	 - duration (number) duration, in milliseconds
+	 - easing (function) #optional easing function from @mina or custom
+	 - callback (function) #optional callback function to execute when animation ends
+	 = (object) animation object in @mina format
+	 o {
+	 o     id (string) animation id, consider it read-only,
+	 o     duration (function) gets or sets the duration of the animation,
+	 o     easing (function) easing,
+	 o     speed (function) gets or sets the speed of the animation,
+	 o     status (function) gets or sets the status of the animation,
+	 o     stop (function) stops the animation
+	 o }
+	 | var rect = Snap().rect(0, 0, 10, 10);
+	 | Snap.animate(0, 10, function (val) {
+	 |     rect.attr({
+	 |         x: val
+	 |     });
+	 | }, 1000);
+	 | // in given context is equivalent to
+	 | rect.animate({x: 10}, 1000);
+	\*/
 	Snap.animate = function (from, to, setter, ms, easing, callback) {
 		if (typeof easing == "function" && !easing.length) {
 			callback = easing;
@@ -2776,14 +2776,14 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		callback && eve.once("mina.finish." + anim.id, callback);
 		return anim;
 	};
-    /*\
-     * Element.stop
-     [ method ]
-     **
-     * Stops all the animations for the current element
-     **
-     = (Element) the current element
-    \*/
+	/*\
+	 * Element.stop
+	 [ method ]
+	 **
+	 * Stops all the animations for the current element
+	 **
+	 = (Element) the current element
+	\*/
 	elproto.stop = function () {
 		var anims = this.inAnim();
 		for (var i = 0, ii = anims.length; i < ii; i++) {
@@ -2791,18 +2791,18 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this;
 	};
-    /*\
-     * Element.animate
-     [ method ]
-     **
-     * Animates the given attributes of the element
-     **
-     - attrs (object) key-value pairs of destination attributes
-     - duration (number) duration of the animation in milliseconds
-     - easing (function) #optional easing function from @mina or custom
-     - callback (function) #optional callback function that executes when the animation ends
-     = (Element) the current element
-    \*/
+	/*\
+	 * Element.animate
+	 [ method ]
+	 **
+	 * Animates the given attributes of the element
+	 **
+	 - attrs (object) key-value pairs of destination attributes
+	 - duration (number) duration of the animation in milliseconds
+	 - easing (function) #optional easing function from @mina or custom
+	 - callback (function) #optional callback function that executes when the animation ends
+	 = (Element) the current element
+	\*/
 	elproto.animate = function (attrs, ms, easing, callback) {
 		if (typeof easing == "function" && !easing.length) {
 			callback = easing;
@@ -2901,20 +2901,20 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 	}
 	(function (matrixproto) {
-        /*\
-         * Matrix.add
-         [ method ]
-         **
-         * Adds the given matrix to existing one
-         - a (number)
-         - b (number)
-         - c (number)
-         - d (number)
-         - e (number)
-         - f (number)
-         * or
-         - matrix (object) @Matrix
-        \*/
+		/*\
+		 * Matrix.add
+		 [ method ]
+		 **
+		 * Adds the given matrix to existing one
+		 - a (number)
+		 - b (number)
+		 - c (number)
+		 - d (number)
+		 - e (number)
+		 - f (number)
+		 * or
+		 - matrix (object) @Matrix
+		\*/
 		matrixproto.add = function (a, b, c, d, e, f) {
 			if (a && a instanceof Matrix) {
 				return this.add(a.a, a.b, a.c, a.d, a.e, a.f);
@@ -2930,20 +2930,20 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			this.b = bNew;
 			return this;
 		};
-        /*\
-         * Matrix.multLeft
-         [ method ]
-         **
-         * Multiplies a passed affine transform to the left: M * this.
-         - a (number)
-         - b (number)
-         - c (number)
-         - d (number)
-         - e (number)
-         - f (number)
-         * or
-         - matrix (object) @Matrix
-        \*/
+		/*\
+		 * Matrix.multLeft
+		 [ method ]
+		 **
+		 * Multiplies a passed affine transform to the left: M * this.
+		 - a (number)
+		 - b (number)
+		 - c (number)
+		 - d (number)
+		 - e (number)
+		 - f (number)
+		 * or
+		 - matrix (object) @Matrix
+		\*/
 		Matrix.prototype.multLeft = function (a, b, c, d, e, f) {
 			if (a && a instanceof Matrix) {
 				return this.multLeft(a.a, a.b, a.c, a.d, a.e, a.f);
@@ -2960,52 +2960,52 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			this.e = eNew;
 			return this;
 		};
-        /*\
-         * Matrix.invert
-         [ method ]
-         **
-         * Returns an inverted version of the matrix
-         = (object) @Matrix
-        \*/
+		/*\
+		 * Matrix.invert
+		 [ method ]
+		 **
+		 * Returns an inverted version of the matrix
+		 = (object) @Matrix
+		\*/
 		matrixproto.invert = function () {
 			var me = this,
 				x = me.a * me.d - me.b * me.c;
 			return new Matrix(me.d / x, -me.b / x, -me.c / x, me.a / x, (me.c * me.f - me.d * me.e) / x, (me.b * me.e - me.a * me.f) / x);
 		};
-        /*\
-         * Matrix.clone
-         [ method ]
-         **
-         * Returns a copy of the matrix
-         = (object) @Matrix
-        \*/
+		/*\
+		 * Matrix.clone
+		 [ method ]
+		 **
+		 * Returns a copy of the matrix
+		 = (object) @Matrix
+		\*/
 		matrixproto.clone = function () {
 			return new Matrix(this.a, this.b, this.c, this.d, this.e, this.f);
 		};
-        /*\
-         * Matrix.translate
-         [ method ]
-         **
-         * Translate the matrix
-         - x (number) horizontal offset distance
-         - y (number) vertical offset distance
-        \*/
+		/*\
+		 * Matrix.translate
+		 [ method ]
+		 **
+		 * Translate the matrix
+		 - x (number) horizontal offset distance
+		 - y (number) vertical offset distance
+		\*/
 		matrixproto.translate = function (x, y) {
 			this.e += x * this.a + y * this.c;
 			this.f += x * this.b + y * this.d;
 			return this;
 		};
-        /*\
-         * Matrix.scale
-         [ method ]
-         **
-         * Scales the matrix
-         - x (number) amount to be scaled, with `1` resulting in no change
-         - y (number) #optional amount to scale along the vertical axis. (Otherwise `x` applies to both axes.)
-         - cx (number) #optional horizontal origin point from which to scale
-         - cy (number) #optional vertical origin point from which to scale
-         * Default cx, cy is the middle point of the element.
-        \*/
+		/*\
+		 * Matrix.scale
+		 [ method ]
+		 **
+		 * Scales the matrix
+		 - x (number) amount to be scaled, with `1` resulting in no change
+		 - y (number) #optional amount to scale along the vertical axis. (Otherwise `x` applies to both axes.)
+		 - cx (number) #optional horizontal origin point from which to scale
+		 - cy (number) #optional vertical origin point from which to scale
+		 * Default cx, cy is the middle point of the element.
+		\*/
 		matrixproto.scale = function (x, y, cx, cy) {
 			y == null && (y = x);
 			(cx || cy) && this.translate(cx, cy);
@@ -3016,15 +3016,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			(cx || cy) && this.translate(-cx, -cy);
 			return this;
 		};
-        /*\
-         * Matrix.rotate
-         [ method ]
-         **
-         * Rotates the matrix
-         - a (number) angle of rotation, in degrees
-         - x (number) horizontal origin point from which to rotate
-         - y (number) vertical origin point from which to rotate
-        \*/
+		/*\
+		 * Matrix.rotate
+		 [ method ]
+		 **
+		 * Rotates the matrix
+		 - a (number) angle of rotation, in degrees
+		 - x (number) horizontal origin point from which to rotate
+		 - y (number) vertical origin point from which to rotate
+		\*/
 		matrixproto.rotate = function (a, x, y) {
 			a = Snap.rad(a);
 			x = x || 0;
@@ -3034,34 +3034,34 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			this.add(cos, sin, -sin, cos, x, y);
 			return this.add(1, 0, 0, 1, -x, -y);
 		};
-        /*\
-         * Matrix.skewX
-         [ method ]
-         **
-         * Skews the matrix along the x-axis
-         - x (number) Angle to skew along the x-axis (in degrees).
-        \*/
+		/*\
+		 * Matrix.skewX
+		 [ method ]
+		 **
+		 * Skews the matrix along the x-axis
+		 - x (number) Angle to skew along the x-axis (in degrees).
+		\*/
 		matrixproto.skewX = function (x) {
 			return this.skew(x, 0);
 		};
-        /*\
-         * Matrix.skewY
-         [ method ]
-         **
-         * Skews the matrix along the y-axis
-         - y (number) Angle to skew along the y-axis (in degrees).
-        \*/
+		/*\
+		 * Matrix.skewY
+		 [ method ]
+		 **
+		 * Skews the matrix along the y-axis
+		 - y (number) Angle to skew along the y-axis (in degrees).
+		\*/
 		matrixproto.skewY = function (y) {
 			return this.skew(0, y);
 		};
-        /*\
-         * Matrix.skew
-         [ method ]
-         **
-         * Skews the matrix
-         - y (number) Angle to skew along the y-axis (in degrees).
-         - x (number) Angle to skew along the x-axis (in degrees).
-        \*/
+		/*\
+		 * Matrix.skew
+		 [ method ]
+		 **
+		 * Skews the matrix
+		 - y (number) Angle to skew along the y-axis (in degrees).
+		 - x (number) Angle to skew along the x-axis (in degrees).
+		\*/
 		matrixproto.skew = function (x, y) {
 			x = x || 0;
 			y = y || 0;
@@ -3071,27 +3071,27 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			var b = math.tan(y).toFixed(9);
 			return this.add(1, b, c, 1, 0, 0);
 		};
-        /*\
-         * Matrix.x
-         [ method ]
-         **
-         * Returns x coordinate for given point after transformation described by the matrix. See also @Matrix.y
-         - x (number)
-         - y (number)
-         = (number) x
-        \*/
+		/*\
+		 * Matrix.x
+		 [ method ]
+		 **
+		 * Returns x coordinate for given point after transformation described by the matrix. See also @Matrix.y
+		 - x (number)
+		 - y (number)
+		 = (number) x
+		\*/
 		matrixproto.x = function (x, y) {
 			return x * this.a + y * this.c + this.e;
 		};
-        /*\
-         * Matrix.y
-         [ method ]
-         **
-         * Returns y coordinate for given point after transformation described by the matrix. See also @Matrix.x
-         - x (number)
-         - y (number)
-         = (number) y
-        \*/
+		/*\
+		 * Matrix.y
+		 [ method ]
+		 **
+		 * Returns y coordinate for given point after transformation described by the matrix. See also @Matrix.x
+		 - x (number)
+		 - y (number)
+		 = (number) y
+		\*/
 		matrixproto.y = function (x, y) {
 			return x * this.b + y * this.d + this.f;
 		};
@@ -3112,30 +3112,30 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			a[0] && (a[0] /= mag);
 			a[1] && (a[1] /= mag);
 		}
-        /*\
-         * Matrix.determinant
-         [ method ]
-         **
-         * Finds determinant of the given matrix.
-         = (number) determinant
-        \*/
+		/*\
+		 * Matrix.determinant
+		 [ method ]
+		 **
+		 * Finds determinant of the given matrix.
+		 = (number) determinant
+		\*/
 		matrixproto.determinant = function () {
 			return this.a * this.d - this.b * this.c;
 		};
-        /*\
-         * Matrix.split
-         [ method ]
-         **
-         * Splits matrix into primitive transformations
-         = (object) in format:
-         o dx (number) translation by x
-         o dy (number) translation by y
-         o scalex (number) scale by x
-         o scaley (number) scale by y
-         o shear (number) shear
-         o rotate (number) rotation in deg
-         o isSimple (boolean) could it be represented via simple transformations
-        \*/
+		/*\
+		 * Matrix.split
+		 [ method ]
+		 **
+		 * Splits matrix into primitive transformations
+		 = (object) in format:
+		 o dx (number) translation by x
+		 o dy (number) translation by y
+		 o scalex (number) scale by x
+		 o scaley (number) scale by y
+		 o shear (number) shear
+		 o rotate (number) rotation in deg
+		 o isSimple (boolean) could it be represented via simple transformations
+		\*/
 		matrixproto.split = function () {
 			var out = {};
 			// translation
@@ -3175,13 +3175,13 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			out.noRotation = !+out.shear.toFixed(9) && !out.rotate;
 			return out;
 		};
-        /*\
-         * Matrix.toTransformString
-         [ method ]
-         **
-         * Returns transform string that represents given matrix
-         = (string) transform string
-        \*/
+		/*\
+		 * Matrix.toTransformString
+		 [ method ]
+		 **
+		 * Returns transform string that represents given matrix
+		 = (string) transform string
+		\*/
 		matrixproto.toTransformString = function (shorter) {
 			var s = shorter || this.split();
 			if (!+s.shear.toFixed(9)) {
@@ -3196,31 +3196,31 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			}
 		};
 	})(Matrix.prototype);
-    /*\
-     * Snap.Matrix
-     [ method ]
-     **
-     * Matrix constructor, extend on your own risk.
-     * To create matrices use @Snap.matrix.
-    \*/
+	/*\
+	 * Snap.Matrix
+	 [ method ]
+	 **
+	 * Matrix constructor, extend on your own risk.
+	 * To create matrices use @Snap.matrix.
+	\*/
 	Snap.Matrix = Matrix;
-    /*\
-     * Snap.matrix
-     [ method ]
-     **
-     * Utility method
-     **
-     * Returns a matrix based on the given parameters
-     - a (number)
-     - b (number)
-     - c (number)
-     - d (number)
-     - e (number)
-     - f (number)
-     * or
-     - svgMatrix (SVGMatrix)
-     = (object) @Matrix
-    \*/
+	/*\
+	 * Snap.matrix
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Returns a matrix based on the given parameters
+	 - a (number)
+	 - b (number)
+	 - c (number)
+	 - d (number)
+	 - e (number)
+	 - f (number)
+	 * or
+	 - svgMatrix (SVGMatrix)
+	 = (object) @Matrix
+	\*/
 	Snap.matrix = function (a, b, c, d, e, f) {
 		return new Matrix(a, b, c, d, e, f);
 	};
@@ -3251,14 +3251,14 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		Str = String,
 		separator = Snap._.separator,
 		E = "";
-    /*\
-     * Snap.deurl
-     [ method ]
-     **
-     * Unwraps path from `"url(<path>)"`.
-     - value (string) url path
-     = (string) unwrapped path
-    \*/
+	/*\
+	 * Snap.deurl
+	 [ method ]
+	 **
+	 * Unwraps path from `"url(<path>)"`.
+	 - value (string) url path
+	 = (string) unwrapped path
+	\*/
 	Snap.deurl = function (value) {
 		var res = String(value).match(reURLValue);
 		return res ? res[2] : value;
@@ -3713,15 +3713,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		rgTrim = /(^\s+|\s+$)/g,
 		Str = String,
 		elproto = Element.prototype;
-    /*\
-     * Element.addClass
-     [ method ]
-     **
-     * Adds given class name or list of class names to the element.
-     - value (string) class name or space separated list of class names
-     **
-     = (Element) original element.
-    \*/
+	/*\
+	 * Element.addClass
+	 [ method ]
+	 **
+	 * Adds given class name or list of class names to the element.
+	 - value (string) class name or space separated list of class names
+	 **
+	 = (Element) original element.
+	\*/
 	elproto.addClass = function (value) {
 		var classes = Str(value || "").match(rgNotSpace) || [],
 			elem = this.node,
@@ -3748,15 +3748,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this;
 	};
-    /*\
-     * Element.removeClass
-     [ method ]
-     **
-     * Removes given class name or list of class names from the element.
-     - value (string) class name or space separated list of class names
-     **
-     = (Element) original element.
-    \*/
+	/*\
+	 * Element.removeClass
+	 [ method ]
+	 **
+	 * Removes given class name or list of class names from the element.
+	 - value (string) class name or space separated list of class names
+	 **
+	 = (Element) original element.
+	\*/
 	elproto.removeClass = function (value) {
 		var classes = Str(value || "").match(rgNotSpace) || [],
 			elem = this.node,
@@ -3782,32 +3782,32 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this;
 	};
-    /*\
-     * Element.hasClass
-     [ method ]
-     **
-     * Checks if the element has a given class name in the list of class names applied to it.
-     - value (string) class name
-     **
-     = (boolean) `true` if the element has given class
-    \*/
+	/*\
+	 * Element.hasClass
+	 [ method ]
+	 **
+	 * Checks if the element has a given class name in the list of class names applied to it.
+	 - value (string) class name
+	 **
+	 = (boolean) `true` if the element has given class
+	\*/
 	elproto.hasClass = function (value) {
 		var elem = this.node,
 			className = elem.className.baseVal,
 			curClasses = className.match(rgNotSpace) || [];
 		return !!~curClasses.indexOf(value);
 	};
-    /*\
-     * Element.toggleClass
-     [ method ]
-     **
-     * Add or remove one or more classes from the element, depending on either
-     * the class’s presence or the value of the `flag` argument.
-     - value (string) class name or space separated list of class names
-     - flag (boolean) value to determine whether the class should be added or removed
-     **
-     = (Element) original element.
-    \*/
+	/*\
+	 * Element.toggleClass
+	 [ method ]
+	 **
+	 * Add or remove one or more classes from the element, depending on either
+	 * the class’s presence or the value of the `flag` argument.
+	 - value (string) class name or space separated list of class names
+	 - flag (boolean) value to determine whether the class should be added or removed
+	 **
+	 = (Element) original element.
+	\*/
 	elproto.toggleClass = function (value, flag) {
 		if (flag != null) {
 			if (flag) {
@@ -3948,26 +3948,26 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 	var proto = Paper.prototype,
 		is = Snap.is;
-    /*\
-     * Paper.rect
-     [ method ]
-     *
-     * Draws a rectangle
-     **
-     - x (number) x coordinate of the top left corner
-     - y (number) y coordinate of the top left corner
-     - width (number) width
-     - height (number) height
-     - rx (number) #optional horizontal radius for rounded corners, default is 0
-     - ry (number) #optional vertical radius for rounded corners, default is rx or 0
-     = (object) the `rect` element
-     **
-     > Usage
-     | // regular rectangle
-     | var c = paper.rect(10, 10, 50, 50);
-     | // rectangle with rounded corners
-     | var c = paper.rect(40, 40, 50, 50, 10);
-    \*/
+	/*\
+	 * Paper.rect
+	 [ method ]
+	 *
+	 * Draws a rectangle
+	 **
+	 - x (number) x coordinate of the top left corner
+	 - y (number) y coordinate of the top left corner
+	 - width (number) width
+	 - height (number) height
+	 - rx (number) #optional horizontal radius for rounded corners, default is 0
+	 - ry (number) #optional vertical radius for rounded corners, default is rx or 0
+	 = (object) the `rect` element
+	 **
+	 > Usage
+	 | // regular rectangle
+	 | var c = paper.rect(10, 10, 50, 50);
+	 | // rectangle with rounded corners
+	 | var c = paper.rect(40, 40, 50, 50, 10);
+	\*/
 	proto.rect = function (x, y, w, h, rx, ry) {
 		var attr;
 		if (ry == null) {
@@ -3989,20 +3989,20 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this.el("rect", attr);
 	};
-    /*\
-     * Paper.circle
-     [ method ]
-     **
-     * Draws a circle
-     **
-     - x (number) x coordinate of the centre
-     - y (number) y coordinate of the centre
-     - r (number) radius
-     = (object) the `circle` element
-     **
-     > Usage
-     | var c = paper.circle(50, 50, 40);
-    \*/
+	/*\
+	 * Paper.circle
+	 [ method ]
+	 **
+	 * Draws a circle
+	 **
+	 - x (number) x coordinate of the centre
+	 - y (number) y coordinate of the centre
+	 - r (number) radius
+	 = (object) the `circle` element
+	 **
+	 > Usage
+	 | var c = paper.circle(50, 50, 40);
+	\*/
 	proto.circle = function (cx, cy, r) {
 		var attr;
 		if (is(cx, "object") && cx == "[object Object]") {
@@ -4036,24 +4036,24 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		};
 	}());
 
-    /*\
-     * Paper.image
-     [ method ]
-     **
-     * Places an image on the surface
-     **
-     - src (string) URI of the source image
-     - x (number) x offset position
-     - y (number) y offset position
-     - width (number) width of the image
-     - height (number) height of the image
-     = (object) the `image` element
-     * or
-     = (object) Snap element object with type `image`
-     **
-     > Usage
-     | var c = paper.image("apple.png", 10, 10, 80, 80);
-    \*/
+	/*\
+	 * Paper.image
+	 [ method ]
+	 **
+	 * Places an image on the surface
+	 **
+	 - src (string) URI of the source image
+	 - x (number) x offset position
+	 - y (number) y offset position
+	 - width (number) width of the image
+	 - height (number) height of the image
+	 = (object) the `image` element
+	 * or
+	 = (object) Snap element object with type `image`
+	 **
+	 > Usage
+	 | var c = paper.image("apple.png", 10, 10, 80, 80);
+	\*/
 	proto.image = function (src, x, y, width, height) {
 		var el = this.el("image");
 		if (is(src, "object") && "src" in src) {
@@ -4082,21 +4082,21 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return el;
 	};
-    /*\
-     * Paper.ellipse
-     [ method ]
-     **
-     * Draws an ellipse
-     **
-     - x (number) x coordinate of the centre
-     - y (number) y coordinate of the centre
-     - rx (number) horizontal radius
-     - ry (number) vertical radius
-     = (object) the `ellipse` element
-     **
-     > Usage
-     | var c = paper.ellipse(50, 50, 40, 20);
-    \*/
+	/*\
+	 * Paper.ellipse
+	 [ method ]
+	 **
+	 * Draws an ellipse
+	 **
+	 - x (number) x coordinate of the centre
+	 - y (number) y coordinate of the centre
+	 - rx (number) horizontal radius
+	 - ry (number) vertical radius
+	 = (object) the `ellipse` element
+	 **
+	 > Usage
+	 | var c = paper.ellipse(50, 50, 40, 20);
+	\*/
 	proto.ellipse = function (cx, cy, rx, ry) {
 		var attr;
 		if (is(cx, "object") && cx == "[object Object]") {
@@ -4112,36 +4112,36 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		return this.el("ellipse", attr);
 	};
 	// SIERRA Paper.path(): Unclear from the link what a Catmull-Rom curveto is, and why it would make life any easier.
-    /*\
-     * Paper.path
-     [ method ]
-     **
-     * Creates a `<path>` element using the given string as the path's definition
-     - pathString (string) #optional path string in SVG format
-     * Path string consists of one-letter commands, followed by comma seprarated arguments in numerical form. Example:
-     | "M10,20L30,40"
-     * This example features two commands: `M`, with arguments `(10, 20)` and `L` with arguments `(30, 40)`. Uppercase letter commands express coordinates in absolute terms, while lowercase commands express them in relative terms from the most recently declared coordinates.
-     *
-     # <p>Here is short list of commands available, for more details see <a href="http://www.w3.org/TR/SVG/paths.html#PathData" title="Details of a path's data attribute's format are described in the SVG specification.">SVG path string format</a> or <a href="https://developer.mozilla.org/en/SVG/Tutorial/Paths">article about path strings at MDN</a>.</p>
-     # <table><thead><tr><th>Command</th><th>Name</th><th>Parameters</th></tr></thead><tbody>
-     # <tr><td>M</td><td>moveto</td><td>(x y)+</td></tr>
-     # <tr><td>Z</td><td>closepath</td><td>(none)</td></tr>
-     # <tr><td>L</td><td>lineto</td><td>(x y)+</td></tr>
-     # <tr><td>H</td><td>horizontal lineto</td><td>x+</td></tr>
-     # <tr><td>V</td><td>vertical lineto</td><td>y+</td></tr>
-     # <tr><td>C</td><td>curveto</td><td>(x1 y1 x2 y2 x y)+</td></tr>
-     # <tr><td>S</td><td>smooth curveto</td><td>(x2 y2 x y)+</td></tr>
-     # <tr><td>Q</td><td>quadratic Bézier curveto</td><td>(x1 y1 x y)+</td></tr>
-     # <tr><td>T</td><td>smooth quadratic Bézier curveto</td><td>(x y)+</td></tr>
-     # <tr><td>A</td><td>elliptical arc</td><td>(rx ry x-axis-rotation large-arc-flag sweep-flag x y)+</td></tr>
-     # <tr><td>R</td><td><a href="http://en.wikipedia.org/wiki/Catmull–Rom_spline#Catmull.E2.80.93Rom_spline">Catmull-Rom curveto</a>*</td><td>x1 y1 (x y)+</td></tr></tbody></table>
-     * * _Catmull-Rom curveto_ is a not standard SVG command and added to make life easier.
-     * Note: there is a special case when a path consists of only three commands: `M10,10R…z`. In this case the path connects back to its starting point.
-     > Usage
-     | var c = paper.path("M10 10L90 90");
-     | // draw a diagonal line:
-     | // move to 10,10, line to 90,90
-    \*/
+	/*\
+	 * Paper.path
+	 [ method ]
+	 **
+	 * Creates a `<path>` element using the given string as the path's definition
+	 - pathString (string) #optional path string in SVG format
+	 * Path string consists of one-letter commands, followed by comma seprarated arguments in numerical form. Example:
+	 | "M10,20L30,40"
+	 * This example features two commands: `M`, with arguments `(10, 20)` and `L` with arguments `(30, 40)`. Uppercase letter commands express coordinates in absolute terms, while lowercase commands express them in relative terms from the most recently declared coordinates.
+	 *
+	 # <p>Here is short list of commands available, for more details see <a href="http://www.w3.org/TR/SVG/paths.html#PathData" title="Details of a path's data attribute's format are described in the SVG specification.">SVG path string format</a> or <a href="https://developer.mozilla.org/en/SVG/Tutorial/Paths">article about path strings at MDN</a>.</p>
+	 # <table><thead><tr><th>Command</th><th>Name</th><th>Parameters</th></tr></thead><tbody>
+	 # <tr><td>M</td><td>moveto</td><td>(x y)+</td></tr>
+	 # <tr><td>Z</td><td>closepath</td><td>(none)</td></tr>
+	 # <tr><td>L</td><td>lineto</td><td>(x y)+</td></tr>
+	 # <tr><td>H</td><td>horizontal lineto</td><td>x+</td></tr>
+	 # <tr><td>V</td><td>vertical lineto</td><td>y+</td></tr>
+	 # <tr><td>C</td><td>curveto</td><td>(x1 y1 x2 y2 x y)+</td></tr>
+	 # <tr><td>S</td><td>smooth curveto</td><td>(x2 y2 x y)+</td></tr>
+	 # <tr><td>Q</td><td>quadratic Bézier curveto</td><td>(x1 y1 x y)+</td></tr>
+	 # <tr><td>T</td><td>smooth quadratic Bézier curveto</td><td>(x y)+</td></tr>
+	 # <tr><td>A</td><td>elliptical arc</td><td>(rx ry x-axis-rotation large-arc-flag sweep-flag x y)+</td></tr>
+	 # <tr><td>R</td><td><a href="http://en.wikipedia.org/wiki/Catmull–Rom_spline#Catmull.E2.80.93Rom_spline">Catmull-Rom curveto</a>*</td><td>x1 y1 (x y)+</td></tr></tbody></table>
+	 * * _Catmull-Rom curveto_ is a not standard SVG command and added to make life easier.
+	 * Note: there is a special case when a path consists of only three commands: `M10,10R…z`. In this case the path connects back to its starting point.
+	 > Usage
+	 | var c = paper.path("M10 10L90 90");
+	 | // draw a diagonal line:
+	 | // move to 10,10, line to 90,90
+	\*/
 	proto.path = function (d) {
 		var attr;
 		if (is(d, "object") && !is(d, "array")) {
@@ -4151,31 +4151,31 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this.el("path", attr);
 	};
-    /*\
-     * Paper.g
-     [ method ]
-     **
-     * Creates a group element
-     **
-     - varargs (…) #optional elements to nest within the group
-     = (object) the `g` element
-     **
-     > Usage
-     | var c1 = paper.circle(),
-     |     c2 = paper.rect(),
-     |     g = paper.g(c2, c1); // note that the order of elements is different
-     * or
-     | var c1 = paper.circle(),
-     |     c2 = paper.rect(),
-     |     g = paper.g();
-     | g.add(c2, c1);
-    \*/
-    /*\
-     * Paper.group
-     [ method ]
-     **
-     * See @Paper.g
-    \*/
+	/*\
+	 * Paper.g
+	 [ method ]
+	 **
+	 * Creates a group element
+	 **
+	 - varargs (…) #optional elements to nest within the group
+	 = (object) the `g` element
+	 **
+	 > Usage
+	 | var c1 = paper.circle(),
+	 |     c2 = paper.rect(),
+	 |     g = paper.g(c2, c1); // note that the order of elements is different
+	 * or
+	 | var c1 = paper.circle(),
+	 |     c2 = paper.rect(),
+	 |     g = paper.g();
+	 | g.add(c2, c1);
+	\*/
+	/*\
+	 * Paper.group
+	 [ method ]
+	 **
+	 * See @Paper.g
+	\*/
 	proto.group = proto.g = function (first) {
 		var attr,
 			el = this.el("g");
@@ -4186,23 +4186,23 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return el;
 	};
-    /*\
-     * Paper.svg
-     [ method ]
-     **
-     * Creates a nested SVG element.
-     - x (number) @optional X of the element
-     - y (number) @optional Y of the element
-     - width (number) @optional width of the element
-     - height (number) @optional height of the element
-     - vbx (number) @optional viewbox X
-     - vby (number) @optional viewbox Y
-     - vbw (number) @optional viewbox width
-     - vbh (number) @optional viewbox height
-     **
-     = (object) the `svg` element
-     **
-    \*/
+	/*\
+	 * Paper.svg
+	 [ method ]
+	 **
+	 * Creates a nested SVG element.
+	 - x (number) @optional X of the element
+	 - y (number) @optional Y of the element
+	 - width (number) @optional width of the element
+	 - height (number) @optional height of the element
+	 - vbx (number) @optional viewbox X
+	 - vby (number) @optional viewbox Y
+	 - vbw (number) @optional viewbox width
+	 - vbh (number) @optional viewbox height
+	 **
+	 = (object) the `svg` element
+	 **
+	\*/
 	proto.svg = function (x, y, width, height, vbx, vby, vbw, vbh) {
 		var attrs = {};
 		if (is(x, "object") && y == null) {
@@ -4226,15 +4226,15 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this.el("svg", attrs);
 	};
-    /*\
-     * Paper.mask
-     [ method ]
-     **
-     * Equivalent in behaviour to @Paper.g, except it’s a mask.
-     **
-     = (object) the `mask` element
-     **
-    \*/
+	/*\
+	 * Paper.mask
+	 [ method ]
+	 **
+	 * Equivalent in behaviour to @Paper.g, except it’s a mask.
+	 **
+	 = (object) the `mask` element
+	 **
+	\*/
 	proto.mask = function (first) {
 		var attr,
 			el = this.el("mask");
@@ -4245,23 +4245,23 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return el;
 	};
-    /*\
-     * Paper.ptrn
-     [ method ]
-     **
-     * Equivalent in behaviour to @Paper.g, except it’s a pattern.
-     - x (number) @optional X of the element
-     - y (number) @optional Y of the element
-     - width (number) @optional width of the element
-     - height (number) @optional height of the element
-     - vbx (number) @optional viewbox X
-     - vby (number) @optional viewbox Y
-     - vbw (number) @optional viewbox width
-     - vbh (number) @optional viewbox height
-     **
-     = (object) the `pattern` element
-     **
-    \*/
+	/*\
+	 * Paper.ptrn
+	 [ method ]
+	 **
+	 * Equivalent in behaviour to @Paper.g, except it’s a pattern.
+	 - x (number) @optional X of the element
+	 - y (number) @optional Y of the element
+	 - width (number) @optional width of the element
+	 - height (number) @optional height of the element
+	 - vbx (number) @optional viewbox X
+	 - vby (number) @optional viewbox Y
+	 - vbw (number) @optional viewbox width
+	 - vbh (number) @optional viewbox height
+	 **
+	 = (object) the `pattern` element
+	 **
+	\*/
 	proto.ptrn = function (x, y, width, height, vx, vy, vw, vh) {
 		if (is(x, "object")) {
 			var attr = x;
@@ -4287,18 +4287,18 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this.el("pattern", attr);
 	};
-    /*\
-     * Paper.use
-     [ method ]
-     **
-     * Creates a <use> element.
-     - id (string) @optional id of element to link
-     * or
-     - id (Element) @optional element to link
-     **
-     = (object) the `use` element
-     **
-    \*/
+	/*\
+	 * Paper.use
+	 [ method ]
+	 **
+	 * Creates a <use> element.
+	 - id (string) @optional id of element to link
+	 * or
+	 - id (Element) @optional element to link
+	 **
+	 = (object) the `use` element
+	 **
+	\*/
 	proto.use = function (id) {
 		if (id != null) {
 			if (id instanceof Element) {
@@ -4315,18 +4315,18 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			return Element.prototype.use.call(this);
 		}
 	};
-    /*\
-     * Paper.symbol
-     [ method ]
-     **
-     * Creates a <symbol> element.
-     - vbx (number) @optional viewbox X
-     - vby (number) @optional viewbox Y
-     - vbw (number) @optional viewbox width
-     - vbh (number) @optional viewbox height
-     = (object) the `symbol` element
-     **
-    \*/
+	/*\
+	 * Paper.symbol
+	 [ method ]
+	 **
+	 * Creates a <symbol> element.
+	 - vbx (number) @optional viewbox X
+	 - vby (number) @optional viewbox Y
+	 - vbw (number) @optional viewbox width
+	 - vbh (number) @optional viewbox height
+	 = (object) the `symbol` element
+	 **
+	\*/
 	proto.symbol = function (vx, vy, vw, vh) {
 		var attr = {};
 		if (vx != null && vy != null && vw != null && vh != null) {
@@ -4335,26 +4335,26 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 
 		return this.el("symbol", attr);
 	};
-    /*\
-     * Paper.text
-     [ method ]
-     **
-     * Draws a text string
-     **
-     - x (number) x coordinate position
-     - y (number) y coordinate position
-     - text (string|array) The text string to draw or array of strings to nest within separate `<tspan>` elements
-     = (object) the `text` element
-     **
-     > Usage
-     | var t1 = paper.text(50, 50, "Snap");
-     | var t2 = paper.text(50, 50, ["S","n","a","p"]);
-     | // Text path usage
-     | t1.attr({textpath: "M10,10L100,100"});
-     | // or
-     | var pth = paper.path("M10,10L100,100");
-     | t1.attr({textpath: pth});
-    \*/
+	/*\
+	 * Paper.text
+	 [ method ]
+	 **
+	 * Draws a text string
+	 **
+	 - x (number) x coordinate position
+	 - y (number) y coordinate position
+	 - text (string|array) The text string to draw or array of strings to nest within separate `<tspan>` elements
+	 = (object) the `text` element
+	 **
+	 > Usage
+	 | var t1 = paper.text(50, 50, "Snap");
+	 | var t2 = paper.text(50, 50, ["S","n","a","p"]);
+	 | // Text path usage
+	 | t1.attr({textpath: "M10,10L100,100"});
+	 | // or
+	 | var pth = paper.path("M10,10L100,100");
+	 | t1.attr({textpath: pth});
+	\*/
 	proto.text = function (x, y, text) {
 		var attr = {};
 		if (is(x, "object")) {
@@ -4368,21 +4368,21 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this.el("text", attr);
 	};
-    /*\
-     * Paper.line
-     [ method ]
-     **
-     * Draws a line
-     **
-     - x1 (number) x coordinate position of the start
-     - y1 (number) y coordinate position of the start
-     - x2 (number) x coordinate position of the end
-     - y2 (number) y coordinate position of the end
-     = (object) the `line` element
-     **
-     > Usage
-     | var t1 = paper.line(50, 50, 100, 100);
-    \*/
+	/*\
+	 * Paper.line
+	 [ method ]
+	 **
+	 * Draws a line
+	 **
+	 - x1 (number) x coordinate position of the start
+	 - y1 (number) y coordinate position of the start
+	 - x2 (number) x coordinate position of the end
+	 - y2 (number) y coordinate position of the end
+	 = (object) the `line` element
+	 **
+	 > Usage
+	 | var t1 = paper.line(50, 50, 100, 100);
+	\*/
 	proto.line = function (x1, y1, x2, y2) {
 		var attr = {};
 		if (is(x1, "object")) {
@@ -4397,21 +4397,21 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this.el("line", attr);
 	};
-    /*\
-     * Paper.polyline
-     [ method ]
-     **
-     * Draws a polyline
-     **
-     - points (array) array of points
-     * or
-     - varargs (…) points
-     = (object) the `polyline` element
-     **
-     > Usage
-     | var p1 = paper.polyline([10, 10, 100, 100]);
-     | var p2 = paper.polyline(10, 10, 100, 100);
-    \*/
+	/*\
+	 * Paper.polyline
+	 [ method ]
+	 **
+	 * Draws a polyline
+	 **
+	 - points (array) array of points
+	 * or
+	 - varargs (…) points
+	 = (object) the `polyline` element
+	 **
+	 > Usage
+	 | var p1 = paper.polyline([10, 10, 100, 100]);
+	 | var p2 = paper.polyline(10, 10, 100, 100);
+	\*/
 	proto.polyline = function (points) {
 		if (arguments.length > 1) {
 			points = Array.prototype.slice.call(arguments, 0);
@@ -4424,12 +4424,12 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		}
 		return this.el("polyline", attr);
 	};
-    /*\
-     * Paper.polygon
-     [ method ]
-     **
-     * Draws a polygon. See @Paper.polyline
-    \*/
+	/*\
+	 * Paper.polygon
+	 [ method ]
+	 **
+	 * Draws a polygon. See @Paper.polyline
+	\*/
 	proto.polygon = function (points) {
 		if (arguments.length > 1) {
 			points = Array.prototype.slice.call(arguments, 0);
@@ -4446,27 +4446,27 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 	(function () {
 		var $ = Snap._.$;
 		// gradients' helpers
-        /*\
-         * Element.stops
-         [ method ]
-         **
-         * Only for gradients!
-         * Returns array of gradient stops elements.
-         = (array) the stops array.
-        \*/
+		/*\
+		 * Element.stops
+		 [ method ]
+		 **
+		 * Only for gradients!
+		 * Returns array of gradient stops elements.
+		 = (array) the stops array.
+		\*/
 		function Gstops() {
 			return this.selectAll("stop");
 		}
-        /*\
-         * Element.addStop
-         [ method ]
-         **
-         * Only for gradients!
-         * Adds another stop to the gradient.
-         - color (string) stops color
-         - offset (number) stops offset 0..100
-         = (object) gradient element
-        \*/
+		/*\
+		 * Element.addStop
+		 [ method ]
+		 **
+		 * Only for gradients!
+		 * Adds another stop to the gradient.
+		 - color (string) stops color
+		 - offset (number) stops offset 0..100
+		 = (object) gradient element
+		\*/
 		function GaddStop(color, offset) {
 			var stop = $("stop"),
 				attr = {
@@ -4507,17 +4507,17 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 				return Snap._.box(cx - r, cy - r, r * 2, r * 2);
 			}
 		}
-        /*\
-         * Element.setStops
-         [ method ]
-         **
-         * Only for gradients!
-         * Updates stops of the gradient based on passed gradient descriptor. See @Ppaer.gradient
-         - str (string) gradient descriptor part after `()`.
-         = (object) gradient element
-         | var g = paper.gradient("l(0, 0, 1, 1)#000-#f00-#fff");
-         | g.setStops("#fff-#000-#f00-#fc0");
-        \*/
+		/*\
+		 * Element.setStops
+		 [ method ]
+		 **
+		 * Only for gradients!
+		 * Updates stops of the gradient based on passed gradient descriptor. See @Ppaer.gradient
+		 - str (string) gradient descriptor part after `()`.
+		 = (object) gradient element
+		 | var g = paper.gradient("l(0, 0, 1, 1)#000-#f00-#fff");
+		 | g.setStops("#fff-#000-#f00-#fc0");
+		\*/
 		function GsetStops(str) {
 			var grad = str,
 				stops = this.stops();
@@ -4606,43 +4606,43 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			}
 			return el;
 		}
-        /*\
-         * Paper.gradient
-         [ method ]
-         **
-         * Creates a gradient element
-         **
-         - gradient (string) gradient descriptor
-         > Gradient Descriptor
-         * The gradient descriptor is an expression formatted as
-         * follows: `<type>(<coords>)<colors>`.  The `<type>` can be
-         * either linear or radial.  The uppercase `L` or `R` letters
-         * indicate absolute coordinates offset from the SVG surface.
-         * Lowercase `l` or `r` letters indicate coordinates
-         * calculated relative to the element to which the gradient is
-         * applied.  Coordinates specify a linear gradient vector as
-         * `x1`, `y1`, `x2`, `y2`, or a radial gradient as `cx`, `cy`,
-         * `r` and optional `fx`, `fy` specifying a focal point away
-         * from the center of the circle. Specify `<colors>` as a list
-         * of dash-separated CSS color values.  Each color may be
-         * followed by a custom offset value, separated with a colon
-         * character.
-         > Examples
-         * Linear gradient, relative from top-left corner to bottom-right
-         * corner, from black through red to white:
-         | var g = paper.gradient("l(0, 0, 1, 1)#000-#f00-#fff");
-         * Linear gradient, absolute from (0, 0) to (100, 100), from black
-         * through red at 25% to white:
-         | var g = paper.gradient("L(0, 0, 100, 100)#000-#f00:25-#fff");
-         * Radial gradient, relative from the center of the element with radius
-         * half the width, from black to white:
-         | var g = paper.gradient("r(0.5, 0.5, 0.5)#000-#fff");
-         * To apply the gradient:
-         | paper.circle(50, 50, 40).attr({
-         |     fill: g
-         | });
-         = (object) the `gradient` element
-        \*/
+		/*\
+		 * Paper.gradient
+		 [ method ]
+		 **
+		 * Creates a gradient element
+		 **
+		 - gradient (string) gradient descriptor
+		 > Gradient Descriptor
+		 * The gradient descriptor is an expression formatted as
+		 * follows: `<type>(<coords>)<colors>`.  The `<type>` can be
+		 * either linear or radial.  The uppercase `L` or `R` letters
+		 * indicate absolute coordinates offset from the SVG surface.
+		 * Lowercase `l` or `r` letters indicate coordinates
+		 * calculated relative to the element to which the gradient is
+		 * applied.  Coordinates specify a linear gradient vector as
+		 * `x1`, `y1`, `x2`, `y2`, or a radial gradient as `cx`, `cy`,
+		 * `r` and optional `fx`, `fy` specifying a focal point away
+		 * from the center of the circle. Specify `<colors>` as a list
+		 * of dash-separated CSS color values.  Each color may be
+		 * followed by a custom offset value, separated with a colon
+		 * character.
+		 > Examples
+		 * Linear gradient, relative from top-left corner to bottom-right
+		 * corner, from black through red to white:
+		 | var g = paper.gradient("l(0, 0, 1, 1)#000-#f00-#fff");
+		 * Linear gradient, absolute from (0, 0) to (100, 100), from black
+		 * through red at 25% to white:
+		 | var g = paper.gradient("L(0, 0, 100, 100)#000-#f00:25-#fff");
+		 * Radial gradient, relative from the center of the element with radius
+		 * half the width, from black to white:
+		 | var g = paper.gradient("r(0.5, 0.5, 0.5)#000-#fff");
+		 * To apply the gradient:
+		 | paper.circle(50, 50, 40).attr({
+		 |     fill: g
+		 | });
+		 = (object) the `gradient` element
+		\*/
 		proto.gradient = function (str) {
 			return gradient(this.defs, str);
 		};
@@ -4652,13 +4652,13 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		proto.gradientRadial = function (cx, cy, r, fx, fy) {
 			return gradientRadial(this.defs, cx, cy, r, fx, fy);
 		};
-        /*\
-         * Paper.toString
-         [ method ]
-         **
-         * Returns SVG code for the @Paper
-         = (string) SVG code for the @Paper
-        \*/
+		/*\
+		 * Paper.toString
+		 [ method ]
+		 **
+		 * Returns SVG code for the @Paper
+		 = (string) SVG code for the @Paper
+		\*/
 		proto.toString = function () {
 			var doc = this.node.ownerDocument,
 				f = doc.createDocumentFragment(),
@@ -4672,24 +4672,24 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 			f.removeChild(f.firstChild);
 			return res;
 		};
-        /*\
-         * Paper.toDataURL
-         [ method ]
-         **
-         * Returns SVG code for the @Paper as Data URI string.
-         = (string) Data URI string
-        \*/
+		/*\
+		 * Paper.toDataURL
+		 [ method ]
+		 **
+		 * Returns SVG code for the @Paper as Data URI string.
+		 = (string) Data URI string
+		\*/
 		proto.toDataURL = function () {
 			if (window && window.btoa) {
 				return "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(this)));
 			}
 		};
-        /*\
-         * Paper.clear
-         [ method ]
-         **
-         * Removes all child nodes of the paper, except <defs>.
-        \*/
+		/*\
+		 * Paper.clear
+		 [ method ]
+		 **
+		 * Removes all child nodes of the paper, except <defs>.
+		\*/
 		proto.clear = function () {
 			var node = this.node.firstChild,
 				next;
@@ -5825,46 +5825,46 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	// export
 	Snap.path = paths;
 
-    /*\
-     * Snap.path.getTotalLength
-     [ method ]
-     **
-     * Returns the length of the given path in pixels
-     **
-     - path (string) SVG path string
-     **
-     = (number) length
-    \*/
+	/*\
+	 * Snap.path.getTotalLength
+	 [ method ]
+	 **
+	 * Returns the length of the given path in pixels
+	 **
+	 - path (string) SVG path string
+	 **
+	 = (number) length
+	\*/
 	Snap.path.getTotalLength = getTotalLength;
-    /*\
-     * Snap.path.getPointAtLength
-     [ method ]
-     **
-     * Returns the coordinates of the point located at the given length along the given path
-     **
-     - path (string) SVG path string
-     - length (number) length, in pixels, from the start of the path, excluding non-rendering jumps
-     **
-     = (object) representation of the point:
-     o {
-     o     x: (number) x coordinate,
-     o     y: (number) y coordinate,
-     o     alpha: (number) angle of derivative
-     o }
-    \*/
+	/*\
+	 * Snap.path.getPointAtLength
+	 [ method ]
+	 **
+	 * Returns the coordinates of the point located at the given length along the given path
+	 **
+	 - path (string) SVG path string
+	 - length (number) length, in pixels, from the start of the path, excluding non-rendering jumps
+	 **
+	 = (object) representation of the point:
+	 o {
+	 o     x: (number) x coordinate,
+	 o     y: (number) y coordinate,
+	 o     alpha: (number) angle of derivative
+	 o }
+	\*/
 	Snap.path.getPointAtLength = getPointAtLength;
-    /*\
-     * Snap.path.getSubpath
-     [ method ]
-     **
-     * Returns the subpath of a given path between given start and end lengths
-     **
-     - path (string) SVG path string
-     - from (number) length, in pixels, from the start of the path to the start of the segment
-     - to (number) length, in pixels, from the start of the path to the end of the segment
-     **
-     = (string) path string definition for the segment
-    \*/
+	/*\
+	 * Snap.path.getSubpath
+	 [ method ]
+	 **
+	 * Returns the subpath of a given path between given start and end lengths
+	 **
+	 - path (string) SVG path string
+	 - from (number) length, in pixels, from the start of the path to the start of the segment
+	 - to (number) length, in pixels, from the start of the path to the end of the segment
+	 **
+	 = (string) path string definition for the segment
+	\*/
 	Snap.path.getSubpath = function (path, from, to) {
 		if (this.getTotalLength(path) - to < 1e-6) {
 			return getSubpathsAtLength(path, from).end;
@@ -5872,133 +5872,133 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		var a = getSubpathsAtLength(path, to, 1);
 		return from ? getSubpathsAtLength(a, from).end : a;
 	};
-    /*\
-     * Element.getTotalLength
-     [ method ]
-     **
-     * Returns the length of the path in pixels (only works for `path` elements)
-     = (number) length
-    \*/
+	/*\
+	 * Element.getTotalLength
+	 [ method ]
+	 **
+	 * Returns the length of the path in pixels (only works for `path` elements)
+	 = (number) length
+	\*/
 	elproto.getTotalLength = function () {
 		if (this.node.getTotalLength) {
 			return this.node.getTotalLength();
 		}
 	};
 	// SIERRA Element.getPointAtLength()/Element.getTotalLength(): If a <path> is broken into different segments, is the jump distance to the new coordinates set by the _M_ or _m_ commands calculated as part of the path's total length?
-    /*\
-     * Element.getPointAtLength
-     [ method ]
-     **
-     * Returns coordinates of the point located at the given length on the given path (only works for `path` elements)
-     **
-     - length (number) length, in pixels, from the start of the path, excluding non-rendering jumps
-     **
-     = (object) representation of the point:
-     o {
-     o     x: (number) x coordinate,
-     o     y: (number) y coordinate,
-     o     alpha: (number) angle of derivative
-     o }
-    \*/
+	/*\
+	 * Element.getPointAtLength
+	 [ method ]
+	 **
+	 * Returns coordinates of the point located at the given length on the given path (only works for `path` elements)
+	 **
+	 - length (number) length, in pixels, from the start of the path, excluding non-rendering jumps
+	 **
+	 = (object) representation of the point:
+	 o {
+	 o     x: (number) x coordinate,
+	 o     y: (number) y coordinate,
+	 o     alpha: (number) angle of derivative
+	 o }
+	\*/
 	elproto.getPointAtLength = function (length) {
 		return getPointAtLength(this.attr("d"), length);
 	};
 	// SIERRA Element.getSubpath(): Similar to the problem for Element.getPointAtLength(). Unclear how this would work for a segmented path. Overall, the concept of _subpath_ and what I'm calling a _segment_ (series of non-_M_ or _Z_ commands) is unclear.
-    /*\
-     * Element.getSubpath
-     [ method ]
-     **
-     * Returns subpath of a given element from given start and end lengths (only works for `path` elements)
-     **
-     - from (number) length, in pixels, from the start of the path to the start of the segment
-     - to (number) length, in pixels, from the start of the path to the end of the segment
-     **
-     = (string) path string definition for the segment
-    \*/
+	/*\
+	 * Element.getSubpath
+	 [ method ]
+	 **
+	 * Returns subpath of a given element from given start and end lengths (only works for `path` elements)
+	 **
+	 - from (number) length, in pixels, from the start of the path to the start of the segment
+	 - to (number) length, in pixels, from the start of the path to the end of the segment
+	 **
+	 = (string) path string definition for the segment
+	\*/
 	elproto.getSubpath = function (from, to) {
 		return Snap.path.getSubpath(this.attr("d"), from, to);
 	};
 	Snap._.box = box;
-    /*\
-     * Snap.path.findDotsAtSegment
-     [ method ]
-     **
-     * Utility method
-     **
-     * Finds dot coordinates on the given cubic beziér curve at the given t
-     - p1x (number) x of the first point of the curve
-     - p1y (number) y of the first point of the curve
-     - c1x (number) x of the first anchor of the curve
-     - c1y (number) y of the first anchor of the curve
-     - c2x (number) x of the second anchor of the curve
-     - c2y (number) y of the second anchor of the curve
-     - p2x (number) x of the second point of the curve
-     - p2y (number) y of the second point of the curve
-     - t (number) position on the curve (0..1)
-     = (object) point information in format:
-     o {
-     o     x: (number) x coordinate of the point,
-     o     y: (number) y coordinate of the point,
-     o     m: {
-     o         x: (number) x coordinate of the left anchor,
-     o         y: (number) y coordinate of the left anchor
-     o     },
-     o     n: {
-     o         x: (number) x coordinate of the right anchor,
-     o         y: (number) y coordinate of the right anchor
-     o     },
-     o     start: {
-     o         x: (number) x coordinate of the start of the curve,
-     o         y: (number) y coordinate of the start of the curve
-     o     },
-     o     end: {
-     o         x: (number) x coordinate of the end of the curve,
-     o         y: (number) y coordinate of the end of the curve
-     o     },
-     o     alpha: (number) angle of the curve derivative at the point
-     o }
-    \*/
+	/*\
+	 * Snap.path.findDotsAtSegment
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Finds dot coordinates on the given cubic beziér curve at the given t
+	 - p1x (number) x of the first point of the curve
+	 - p1y (number) y of the first point of the curve
+	 - c1x (number) x of the first anchor of the curve
+	 - c1y (number) y of the first anchor of the curve
+	 - c2x (number) x of the second anchor of the curve
+	 - c2y (number) y of the second anchor of the curve
+	 - p2x (number) x of the second point of the curve
+	 - p2y (number) y of the second point of the curve
+	 - t (number) position on the curve (0..1)
+	 = (object) point information in format:
+	 o {
+	 o     x: (number) x coordinate of the point,
+	 o     y: (number) y coordinate of the point,
+	 o     m: {
+	 o         x: (number) x coordinate of the left anchor,
+	 o         y: (number) y coordinate of the left anchor
+	 o     },
+	 o     n: {
+	 o         x: (number) x coordinate of the right anchor,
+	 o         y: (number) y coordinate of the right anchor
+	 o     },
+	 o     start: {
+	 o         x: (number) x coordinate of the start of the curve,
+	 o         y: (number) y coordinate of the start of the curve
+	 o     },
+	 o     end: {
+	 o         x: (number) x coordinate of the end of the curve,
+	 o         y: (number) y coordinate of the end of the curve
+	 o     },
+	 o     alpha: (number) angle of the curve derivative at the point
+	 o }
+	\*/
 	Snap.path.findDotsAtSegment = findDotsAtSegment;
-    /*\
-     * Snap.path.bezierBBox
-     [ method ]
-     **
-     * Utility method
-     **
-     * Returns the bounding box of a given cubic beziér curve
-     - p1x (number) x of the first point of the curve
-     - p1y (number) y of the first point of the curve
-     - c1x (number) x of the first anchor of the curve
-     - c1y (number) y of the first anchor of the curve
-     - c2x (number) x of the second anchor of the curve
-     - c2y (number) y of the second anchor of the curve
-     - p2x (number) x of the second point of the curve
-     - p2y (number) y of the second point of the curve
-     * or
-     - bez (array) array of six points for beziér curve
-     = (object) bounding box
-     o {
-     o     x: (number) x coordinate of the left top point of the box,
-     o     y: (number) y coordinate of the left top point of the box,
-     o     x2: (number) x coordinate of the right bottom point of the box,
-     o     y2: (number) y coordinate of the right bottom point of the box,
-     o     width: (number) width of the box,
-     o     height: (number) height of the box
-     o }
-    \*/
+	/*\
+	 * Snap.path.bezierBBox
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Returns the bounding box of a given cubic beziér curve
+	 - p1x (number) x of the first point of the curve
+	 - p1y (number) y of the first point of the curve
+	 - c1x (number) x of the first anchor of the curve
+	 - c1y (number) y of the first anchor of the curve
+	 - c2x (number) x of the second anchor of the curve
+	 - c2y (number) y of the second anchor of the curve
+	 - p2x (number) x of the second point of the curve
+	 - p2y (number) y of the second point of the curve
+	 * or
+	 - bez (array) array of six points for beziér curve
+	 = (object) bounding box
+	 o {
+	 o     x: (number) x coordinate of the left top point of the box,
+	 o     y: (number) y coordinate of the left top point of the box,
+	 o     x2: (number) x coordinate of the right bottom point of the box,
+	 o     y2: (number) y coordinate of the right bottom point of the box,
+	 o     width: (number) width of the box,
+	 o     height: (number) height of the box
+	 o }
+	\*/
 	Snap.path.bezierBBox = bezierBBox;
-    /*\
-     * Snap.path.isPointInsideBBox
-     [ method ]
-     **
-     * Utility method
-     **
-     * Returns `true` if given point is inside bounding box
-     - bbox (string) bounding box
-     - x (string) x coordinate of the point
-     - y (string) y coordinate of the point
-     = (boolean) `true` if point is inside
-    \*/
+	/*\
+	 * Snap.path.isPointInsideBBox
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Returns `true` if given point is inside bounding box
+	 - bbox (string) bounding box
+	 - x (string) x coordinate of the point
+	 - y (string) y coordinate of the point
+	 = (boolean) `true` if point is inside
+	\*/
 	Snap.path.isPointInsideBBox = isPointInsideBBox;
 	Snap.closest = function (x, y, X, Y) {
 		var r = 100,
@@ -6045,120 +6045,120 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		}
 		return res;
 	};
-    /*\
-     * Snap.path.isBBoxIntersect
-     [ method ]
-     **
-     * Utility method
-     **
-     * Returns `true` if two bounding boxes intersect
-     - bbox1 (string) first bounding box
-     - bbox2 (string) second bounding box
-     = (boolean) `true` if bounding boxes intersect
-    \*/
+	/*\
+	 * Snap.path.isBBoxIntersect
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Returns `true` if two bounding boxes intersect
+	 - bbox1 (string) first bounding box
+	 - bbox2 (string) second bounding box
+	 = (boolean) `true` if bounding boxes intersect
+	\*/
 	Snap.path.isBBoxIntersect = isBBoxIntersect;
-    /*\
-     * Snap.path.intersection
-     [ method ]
-     **
-     * Utility method
-     **
-     * Finds intersections of two paths
-     - path1 (string) path string
-     - path2 (string) path string
-     = (array) dots of intersection
-     o [
-     o     {
-     o         x: (number) x coordinate of the point,
-     o         y: (number) y coordinate of the point,
-     o         t1: (number) t value for segment of path1,
-     o         t2: (number) t value for segment of path2,
-     o         segment1: (number) order number for segment of path1,
-     o         segment2: (number) order number for segment of path2,
-     o         bez1: (array) eight coordinates representing beziér curve for the segment of path1,
-     o         bez2: (array) eight coordinates representing beziér curve for the segment of path2
-     o     }
-     o ]
-    \*/
+	/*\
+	 * Snap.path.intersection
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Finds intersections of two paths
+	 - path1 (string) path string
+	 - path2 (string) path string
+	 = (array) dots of intersection
+	 o [
+	 o     {
+	 o         x: (number) x coordinate of the point,
+	 o         y: (number) y coordinate of the point,
+	 o         t1: (number) t value for segment of path1,
+	 o         t2: (number) t value for segment of path2,
+	 o         segment1: (number) order number for segment of path1,
+	 o         segment2: (number) order number for segment of path2,
+	 o         bez1: (array) eight coordinates representing beziér curve for the segment of path1,
+	 o         bez2: (array) eight coordinates representing beziér curve for the segment of path2
+	 o     }
+	 o ]
+	\*/
 	Snap.path.intersection = pathIntersection;
 	Snap.path.intersectionNumber = pathIntersectionNumber;
-    /*\
-     * Snap.path.isPointInside
-     [ method ]
-     **
-     * Utility method
-     **
-     * Returns `true` if given point is inside a given closed path.
-     *
-     * Note: fill mode doesn’t affect the result of this method.
-     - path (string) path string
-     - x (number) x of the point
-     - y (number) y of the point
-     = (boolean) `true` if point is inside the path
-    \*/
+	/*\
+	 * Snap.path.isPointInside
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Returns `true` if given point is inside a given closed path.
+	 *
+	 * Note: fill mode doesn’t affect the result of this method.
+	 - path (string) path string
+	 - x (number) x of the point
+	 - y (number) y of the point
+	 = (boolean) `true` if point is inside the path
+	\*/
 	Snap.path.isPointInside = isPointInsidePath;
-    /*\
-     * Snap.path.getBBox
-     [ method ]
-     **
-     * Utility method
-     **
-     * Returns the bounding box of a given path
-     - path (string) path string
-     = (object) bounding box
-     o {
-     o     x: (number) x coordinate of the left top point of the box,
-     o     y: (number) y coordinate of the left top point of the box,
-     o     x2: (number) x coordinate of the right bottom point of the box,
-     o     y2: (number) y coordinate of the right bottom point of the box,
-     o     width: (number) width of the box,
-     o     height: (number) height of the box
-     o }
-    \*/
+	/*\
+	 * Snap.path.getBBox
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Returns the bounding box of a given path
+	 - path (string) path string
+	 = (object) bounding box
+	 o {
+	 o     x: (number) x coordinate of the left top point of the box,
+	 o     y: (number) y coordinate of the left top point of the box,
+	 o     x2: (number) x coordinate of the right bottom point of the box,
+	 o     y2: (number) y coordinate of the right bottom point of the box,
+	 o     width: (number) width of the box,
+	 o     height: (number) height of the box
+	 o }
+	\*/
 	Snap.path.getBBox = pathBBox;
 	Snap.path.get = getPath;
-    /*\
-     * Snap.path.toRelative
-     [ method ]
-     **
-     * Utility method
-     **
-     * Converts path coordinates into relative values
-     - path (string) path string
-     = (array) path string
-    \*/
+	/*\
+	 * Snap.path.toRelative
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Converts path coordinates into relative values
+	 - path (string) path string
+	 = (array) path string
+	\*/
 	Snap.path.toRelative = pathToRelative;
-    /*\
-     * Snap.path.toAbsolute
-     [ method ]
-     **
-     * Utility method
-     **
-     * Converts path coordinates into absolute values
-     - path (string) path string
-     = (array) path string
-    \*/
+	/*\
+	 * Snap.path.toAbsolute
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Converts path coordinates into absolute values
+	 - path (string) path string
+	 = (array) path string
+	\*/
 	Snap.path.toAbsolute = pathToAbsolute;
-    /*\
-     * Snap.path.toCubic
-     [ method ]
-     **
-     * Utility method
-     **
-     * Converts path to a new path where all segments are cubic beziér curves
-     - pathString (string|array) path string or array of segments
-     = (array) array of segments
-    \*/
+	/*\
+	 * Snap.path.toCubic
+	 [ method ]
+	 **
+	 * Utility method
+	 **
+	 * Converts path to a new path where all segments are cubic beziér curves
+	 - pathString (string|array) path string or array of segments
+	 = (array) array of segments
+	\*/
 	Snap.path.toCubic = path2curve;
-    /*\
-     * Snap.path.map
-     [ method ]
-     **
-     * Transform the path string with the given matrix
-     - path (string) path string
-     - matrix (object) see @Matrix
-     = (string) transformed path string
-    \*/
+	/*\
+	 * Snap.path.map
+	 [ method ]
+	 **
+	 * Transform the path string with the given matrix
+	 - path (string) path string
+	 - matrix (object) see @Matrix
+	 = (string) transformed path string
+	\*/
 	Snap.path.map = mapPath;
 	Snap.path.toString = toString;
 	Snap.path.clone = pathClone;
@@ -6197,13 +6197,13 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		}
 	},
 		setproto = Set.prototype;
-    /*\
-     * Set.push
-     [ method ]
-     **
-     * Adds each argument to the current set
-     = (object) original element
-    \*/
+	/*\
+	 * Set.push
+	 [ method ]
+	 **
+	 * Adds each argument to the current set
+	 = (object) original element
+	\*/
 	setproto.push = function () {
 		var item,
 			len;
@@ -6217,29 +6217,29 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		}
 		return this;
 	};
-    /*\
-     * Set.pop
-     [ method ]
-     **
-     * Removes last element and returns it
-     = (object) element
-    \*/
+	/*\
+	 * Set.pop
+	 [ method ]
+	 **
+	 * Removes last element and returns it
+	 = (object) element
+	\*/
 	setproto.pop = function () {
 		this.length && delete this[this.length--];
 		return this.items.pop();
 	};
-    /*\
-     * Set.forEach
-     [ method ]
-     **
-     * Executes given function for each element in the set
-     *
-     * If the function returns `false`, the loop stops running.
-     **
-     - callback (function) function to run
-     - thisArg (object) context object for the callback
-     = (object) Set object
-    \*/
+	/*\
+	 * Set.forEach
+	 [ method ]
+	 **
+	 * Executes given function for each element in the set
+	 *
+	 * If the function returns `false`, the loop stops running.
+	 **
+	 - callback (function) function to run
+	 - thisArg (object) context object for the callback
+	 = (object) Set object
+	\*/
 	setproto.forEach = function (callback, thisArg) {
 		for (var i = 0, ii = this.items.length; i < ii; i++) {
 			if (callback.call(thisArg, this.items[i], i) === false) {
@@ -6248,27 +6248,27 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		}
 		return this;
 	};
-    /*\
-     * Set.animate
-     [ method ]
-     **
-     * Animates each element in set in sync.
-     *
-     **
-     - attrs (object) key-value pairs of destination attributes
-     - duration (number) duration of the animation in milliseconds
-     - easing (function) #optional easing function from @mina or custom
-     - callback (function) #optional callback function that executes when the animation ends
-     * or
-     - animation (array) array of animation parameter for each element in set in format `[attrs, duration, easing, callback]`
-     > Usage
-     | // animate all elements in set to radius 10
-     | set.animate({r: 10}, 500, mina.easein);
-     | // or
-     | // animate first element to radius 10, but second to radius 20 and in different time
-     | set.animate([{r: 10}, 500, mina.easein], [{r: 20}, 1500, mina.easein]);
-     = (Element) the current element
-    \*/
+	/*\
+	 * Set.animate
+	 [ method ]
+	 **
+	 * Animates each element in set in sync.
+	 *
+	 **
+	 - attrs (object) key-value pairs of destination attributes
+	 - duration (number) duration of the animation in milliseconds
+	 - easing (function) #optional easing function from @mina or custom
+	 - callback (function) #optional callback function that executes when the animation ends
+	 * or
+	 - animation (array) array of animation parameter for each element in set in format `[attrs, duration, easing, callback]`
+	 > Usage
+	 | // animate all elements in set to radius 10
+	 | set.animate({r: 10}, 500, mina.easein);
+	 | // or
+	 | // animate first element to radius 10, but second to radius 20 and in different time
+	 | set.animate([{r: 10}, 500, mina.easein], [{r: 20}, 1500, mina.easein]);
+	 = (Element) the current element
+	\*/
 	setproto.animate = function (attrs, ms, easing, callback) {
 		if (typeof easing == "function" && !easing.length) {
 			callback = easing;
@@ -6308,39 +6308,39 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 			}
 		});
 	};
-    /*\
-     * Set.remove
-     [ method ]
-     **
-     * Removes all children of the set.
-     *
-     = (object) Set object
-    \*/
+	/*\
+	 * Set.remove
+	 [ method ]
+	 **
+	 * Removes all children of the set.
+	 *
+	 = (object) Set object
+	\*/
 	setproto.remove = function () {
 		while (this.length) {
 			this.pop().remove();
 		}
 		return this;
 	};
-    /*\
-     * Set.bind
-     [ method ]
-     **
-     * Specifies how to handle a specific attribute when applied
-     * to a set.
-     *
-     **
-     - attr (string) attribute name
-     - callback (function) function to run
-     * or
-     - attr (string) attribute name
-     - element (Element) specific element in the set to apply the attribute to
-     * or
-     - attr (string) attribute name
-     - element (Element) specific element in the set to apply the attribute to
-     - eattr (string) attribute on the element to bind the attribute to
-     = (object) Set object
-    \*/
+	/*\
+	 * Set.bind
+	 [ method ]
+	 **
+	 * Specifies how to handle a specific attribute when applied
+	 * to a set.
+	 *
+	 **
+	 - attr (string) attribute name
+	 - callback (function) function to run
+	 * or
+	 - attr (string) attribute name
+	 - element (Element) specific element in the set to apply the attribute to
+	 * or
+	 - attr (string) attribute name
+	 - element (Element) specific element in the set to apply the attribute to
+	 - eattr (string) attribute on the element to bind the attribute to
+	 = (object) Set object
+	\*/
 	setproto.bind = function (attr, a, b) {
 		var data = {};
 		if (typeof a == "function") {
@@ -6354,13 +6354,13 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		}
 		return this;
 	};
-    /*\
-     * Set.attr
-     [ method ]
-     **
-     * Equivalent of @Element.attr.
-     = (object) Set object
-    \*/
+	/*\
+	 * Set.attr
+	 [ method ]
+	 **
+	 * Equivalent of @Element.attr.
+	 = (object) Set object
+	\*/
 	setproto.attr = function (value) {
 		var unbound = {};
 		for (var k in value) {
@@ -6375,28 +6375,28 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		}
 		return this;
 	};
-    /*\
-     * Set.clear
-     [ method ]
-     **
-     * Removes all elements from the set
-    \*/
+	/*\
+	 * Set.clear
+	 [ method ]
+	 **
+	 * Removes all elements from the set
+	\*/
 	setproto.clear = function () {
 		while (this.length) {
 			this.pop();
 		}
 	};
-    /*\
-     * Set.splice
-     [ method ]
-     **
-     * Removes range of elements from the set
-     **
-     - index (number) position of the deletion
-     - count (number) number of element to remove
-     - insertion… (object) #optional elements to insert
-     = (object) set elements that were deleted
-    \*/
+	/*\
+	 * Set.splice
+	 [ method ]
+	 **
+	 * Removes range of elements from the set
+	 **
+	 - index (number) position of the deletion
+	 - count (number) number of element to remove
+	 - insertion… (object) #optional elements to insert
+	 = (object) set elements that were deleted
+	\*/
 	setproto.splice = function (index, count, insertion) {
 		index = index < 0 ? mmax(this.length + index, 0) : index;
 		count = mmax(0, mmin(this.length - index, count));
@@ -6423,15 +6423,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		}
 		return new Set(todel);
 	};
-    /*\
-     * Set.exclude
-     [ method ]
-     **
-     * Removes given element from the set
-     **
-     - element (object) element to remove
-     = (boolean) `true` if object was found and removed from the set
-    \*/
+	/*\
+	 * Set.exclude
+	 [ method ]
+	 **
+	 * Removes given element from the set
+	 **
+	 - element (object) element to remove
+	 = (boolean) `true` if object was found and removed from the set
+	\*/
 	setproto.exclude = function (el) {
 		for (var i = 0, ii = this.length; i < ii; i++) if (this[i] == el) {
 			this.splice(i, 1);
@@ -6439,15 +6439,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		}
 		return false;
 	};
-    /*\
-     * Set.insertAfter
-     [ method ]
-     **
-     * Inserts set elements after given element.
-     **
-     - element (object) set will be inserted after this element
-     = (object) Set object
-    \*/
+	/*\
+	 * Set.insertAfter
+	 [ method ]
+	 **
+	 * Inserts set elements after given element.
+	 **
+	 - element (object) set will be inserted after this element
+	 = (object) Set object
+	\*/
 	setproto.insertAfter = function (el) {
 		var i = this.items.length;
 		while (i--) {
@@ -6455,13 +6455,13 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		}
 		return this;
 	};
-    /*\
-     * Set.getBBox
-     [ method ]
-     **
-     * Union of all bboxes of the set. See @Element.getBBox.
-     = (object) bounding box descriptor. See @Element.getBBox.
-    \*/
+	/*\
+	 * Set.getBBox
+	 [ method ]
+	 **
+	 * Union of all bboxes of the set. See @Element.getBBox.
+	 = (object) bounding box descriptor. See @Element.getBBox.
+	\*/
 	setproto.getBBox = function () {
 		var x = [],
 			y = [],
@@ -6489,14 +6489,14 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 			cy: y + (y2 - y) / 2
 		};
 	};
-    /*\
-     * Set.insertAfter
-     [ method ]
-     **
-     * Creates a clone of the set.
-     **
-     = (object) New Set object
-    \*/
+	/*\
+	 * Set.insertAfter
+	 [ method ]
+	 **
+	 * Creates a clone of the set.
+	 **
+	 = (object) New Set object
+	\*/
 	setproto.clone = function (s) {
 		s = new Set;
 		for (var i = 0, ii = this.items.length; i < ii; i++) {
@@ -6509,24 +6509,24 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	};
 	setproto.type = "set";
 	// export
-    /*\
-     * Snap.Set
-     [ property ]
-     **
-     * Set constructor.
-    \*/
+	/*\
+	 * Snap.Set
+	 [ property ]
+	 **
+	 * Set constructor.
+	\*/
 	Snap.Set = Set;
-    /*\
-     * Snap.set
-     [ method ]
-     **
-     * Creates a set and fills it with list of arguments.
-     **
-     = (object) New Set object
-     | var r = paper.rect(0, 0, 10, 10),
-     |     s1 = Snap.set(), // empty set
-     |     s2 = Snap.set(r, paper.circle(100, 100, 20)); // prefilled set
-    \*/
+	/*\
+	 * Snap.set
+	 [ method ]
+	 **
+	 * Creates a set and fills it with list of arguments.
+	 **
+	 = (object) New Set object
+	 | var r = paper.rect(0, 0, 10, 10),
+	 |     s1 = Snap.set(), // empty set
+	 |     s2 = Snap.set(r, paper.circle(100, 100, 20)); // prefilled set
+	\*/
 	Snap.set = function () {
 		var set = new Set;
 		if (arguments.length) {
@@ -6635,10 +6635,12 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 			b[i] = out;
 		}
 		// return Function("val", "return Snap.path.toString.call([" + b + "])");
-        // return function (val) { return Snap.path.toString.call([eval(b[0])])}
-        return function (val) { return Snap.path.toString.call([
-            (new Function("val", "return " + b[0]))(val)
-        ])}
+		// return function (val) { return Snap.path.toString.call([eval(b[0])])}
+		return function (val) {
+			return Snap.path.toString.call([
+				(new Function("val", "return " + b[0]))(val)
+			])
+		}
 	}
 	function path2array(path) {
 		var out = [];
@@ -6873,192 +6875,192 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 			}
 			drag = [];
 		};
-    /*\
-     * Element.click
-     [ method ]
-     **
-     * Adds a click event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.unclick
-     [ method ]
-     **
-     * Removes a click event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.click
+	 [ method ]
+	 **
+	 * Adds a click event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.unclick
+	 [ method ]
+	 **
+	 * Removes a click event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.dblclick
-     [ method ]
-     **
-     * Adds a double click event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.undblclick
-     [ method ]
-     **
-     * Removes a double click event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.dblclick
+	 [ method ]
+	 **
+	 * Adds a double click event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.undblclick
+	 [ method ]
+	 **
+	 * Removes a double click event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.mousedown
-     [ method ]
-     **
-     * Adds a mousedown event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.unmousedown
-     [ method ]
-     **
-     * Removes a mousedown event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.mousedown
+	 [ method ]
+	 **
+	 * Adds a mousedown event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.unmousedown
+	 [ method ]
+	 **
+	 * Removes a mousedown event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.mousemove
-     [ method ]
-     **
-     * Adds a mousemove event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.unmousemove
-     [ method ]
-     **
-     * Removes a mousemove event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.mousemove
+	 [ method ]
+	 **
+	 * Adds a mousemove event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.unmousemove
+	 [ method ]
+	 **
+	 * Removes a mousemove event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.mouseout
-     [ method ]
-     **
-     * Adds a mouseout event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.unmouseout
-     [ method ]
-     **
-     * Removes a mouseout event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.mouseout
+	 [ method ]
+	 **
+	 * Adds a mouseout event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.unmouseout
+	 [ method ]
+	 **
+	 * Removes a mouseout event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.mouseover
-     [ method ]
-     **
-     * Adds a mouseover event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.unmouseover
-     [ method ]
-     **
-     * Removes a mouseover event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.mouseover
+	 [ method ]
+	 **
+	 * Adds a mouseover event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.unmouseover
+	 [ method ]
+	 **
+	 * Removes a mouseover event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.mouseup
-     [ method ]
-     **
-     * Adds a mouseup event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.unmouseup
-     [ method ]
-     **
-     * Removes a mouseup event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.mouseup
+	 [ method ]
+	 **
+	 * Adds a mouseup event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.unmouseup
+	 [ method ]
+	 **
+	 * Removes a mouseup event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.touchstart
-     [ method ]
-     **
-     * Adds a touchstart event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.untouchstart
-     [ method ]
-     **
-     * Removes a touchstart event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.touchstart
+	 [ method ]
+	 **
+	 * Adds a touchstart event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.untouchstart
+	 [ method ]
+	 **
+	 * Removes a touchstart event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.touchmove
-     [ method ]
-     **
-     * Adds a touchmove event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.untouchmove
-     [ method ]
-     **
-     * Removes a touchmove event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.touchmove
+	 [ method ]
+	 **
+	 * Adds a touchmove event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.untouchmove
+	 [ method ]
+	 **
+	 * Removes a touchmove event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.touchend
-     [ method ]
-     **
-     * Adds a touchend event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.untouchend
-     [ method ]
-     **
-     * Removes a touchend event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.touchend
+	 [ method ]
+	 **
+	 * Adds a touchend event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.untouchend
+	 [ method ]
+	 **
+	 * Removes a touchend event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 
-    /*\
-     * Element.touchcancel
-     [ method ]
-     **
-     * Adds a touchcancel event handler to the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
-    /*\
-     * Element.untouchcancel
-     [ method ]
-     **
-     * Removes a touchcancel event handler from the element
-     - handler (function) handler for the event
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.touchcancel
+	 [ method ]
+	 **
+	 * Adds a touchcancel event handler to the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
+	/*\
+	 * Element.untouchcancel
+	 [ method ]
+	 **
+	 * Removes a touchcancel event handler from the element
+	 - handler (function) handler for the event
+	 = (object) @Element
+	\*/
 	for (var i = events.length; i--;) {
 		(function (eventName) {
 			Snap[eventName] = elproto[eventName] = function (fn, scope) {
@@ -7093,29 +7095,29 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 				};
 		})(events[i]);
 	}
-    /*\
-     * Element.hover
-     [ method ]
-     **
-     * Adds hover event handlers to the element
-     - f_in (function) handler for hover in
-     - f_out (function) handler for hover out
-     - icontext (object) #optional context for hover in handler
-     - ocontext (object) #optional context for hover out handler
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.hover
+	 [ method ]
+	 **
+	 * Adds hover event handlers to the element
+	 - f_in (function) handler for hover in
+	 - f_out (function) handler for hover out
+	 - icontext (object) #optional context for hover in handler
+	 - ocontext (object) #optional context for hover out handler
+	 = (object) @Element
+	\*/
 	elproto.hover = function (f_in, f_out, scope_in, scope_out) {
 		return this.mouseover(f_in, scope_in).mouseout(f_out, scope_out || scope_in);
 	};
-    /*\
-     * Element.unhover
-     [ method ]
-     **
-     * Removes hover event handlers from the element
-     - f_in (function) handler for hover in
-     - f_out (function) handler for hover out
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.unhover
+	 [ method ]
+	 **
+	 * Removes hover event handlers from the element
+	 - f_in (function) handler for hover in
+	 - f_out (function) handler for hover out
+	 = (object) @Element
+	\*/
 	elproto.unhover = function (f_in, f_out) {
 		return this.unmouseover(f_in).unmouseout(f_out);
 	};
@@ -7124,36 +7126,36 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	// SIERRA Element.drag(): _x position of the mouse_: Where are the x/y values offset from?
 	// SIERRA Element.drag(): much of this member's doc appears to be duplicated for some reason.
 	// SIERRA Unclear about this sentence: _Additionally following drag events will be triggered: drag.start.<id> on start, drag.end.<id> on end and drag.move.<id> on every move._ Is there a global _drag_ object to which you can assign handlers keyed by an element's ID?
-    /*\
-     * Element.drag
-     [ method ]
-     **
-     * Adds event handlers for an element's drag gesture
-     **
-     - onmove (function) handler for moving
-     - onstart (function) handler for drag start
-     - onend (function) handler for drag end
-     - mcontext (object) #optional context for moving handler
-     - scontext (object) #optional context for drag start handler
-     - econtext (object) #optional context for drag end handler
-     * Additionaly following `drag` events are triggered: `drag.start.<id>` on start,
-     * `drag.end.<id>` on end and `drag.move.<id>` on every move. When element is dragged over another element
-     * `drag.over.<id>` fires as well.
-     *
-     * Start event and start handler are called in specified context or in context of the element with following parameters:
-     o x (number) x position of the mouse
-     o y (number) y position of the mouse
-     o event (object) DOM event object
-     * Move event and move handler are called in specified context or in context of the element with following parameters:
-     o dx (number) shift by x from the start point
-     o dy (number) shift by y from the start point
-     o x (number) x position of the mouse
-     o y (number) y position of the mouse
-     o event (object) DOM event object
-     * End event and end handler are called in specified context or in context of the element with following parameters:
-     o event (object) DOM event object
-     = (object) @Element
-    \*/
+	/*\
+	 * Element.drag
+	 [ method ]
+	 **
+	 * Adds event handlers for an element's drag gesture
+	 **
+	 - onmove (function) handler for moving
+	 - onstart (function) handler for drag start
+	 - onend (function) handler for drag end
+	 - mcontext (object) #optional context for moving handler
+	 - scontext (object) #optional context for drag start handler
+	 - econtext (object) #optional context for drag end handler
+	 * Additionaly following `drag` events are triggered: `drag.start.<id>` on start,
+	 * `drag.end.<id>` on end and `drag.move.<id>` on every move. When element is dragged over another element
+	 * `drag.over.<id>` fires as well.
+	 *
+	 * Start event and start handler are called in specified context or in context of the element with following parameters:
+	 o x (number) x position of the mouse
+	 o y (number) y position of the mouse
+	 o event (object) DOM event object
+	 * Move event and move handler are called in specified context or in context of the element with following parameters:
+	 o dx (number) shift by x from the start point
+	 o dy (number) shift by y from the start point
+	 o x (number) x position of the mouse
+	 o y (number) y position of the mouse
+	 o event (object) DOM event object
+	 * End event and end handler are called in specified context or in context of the element with following parameters:
+	 o event (object) DOM event object
+	 = (object) @Element
+	\*/
 	elproto.drag = function (onmove, onstart, onend, move_scope, start_scope, end_scope) {
 		var el = this;
 		if (!arguments.length) {
@@ -7187,22 +7189,22 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		el.mousedown(init);
 		return el;
 	};
-    /*
-     * Element.onDragOver
-     [ method ]
-     **
-     * Shortcut to assign event handler for `drag.over.<id>` event, where `id` is the element's `id` (see @Element.id)
-     - f (function) handler for event, first argument would be the element you are dragging over
-    \*/
+	/*
+	 * Element.onDragOver
+	 [ method ]
+	 **
+	 * Shortcut to assign event handler for `drag.over.<id>` event, where `id` is the element's `id` (see @Element.id)
+	 - f (function) handler for event, first argument would be the element you are dragging over
+	\*/
 	// elproto.onDragOver = function (f) {
 	//     f ? eve.on("snap.drag.over." + this.id, f) : eve.unbind("snap.drag.over." + this.id);
 	// };
-    /*\
-     * Element.undrag
-     [ method ]
-     **
-     * Removes all drag event handlers from the given element
-    \*/
+	/*\
+	 * Element.undrag
+	 [ method ]
+	 **
+	 * Removes all drag event handlers from the given element
+	\*/
 	elproto.undrag = function () {
 		var i = draggable.length;
 		while (i--) if (draggable[i].el == this) {
@@ -7236,21 +7238,21 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		Str = String,
 		$ = Snap._.$;
 	Snap.filter = {};
-    /*\
-     * Paper.filter
-     [ method ]
-     **
-     * Creates a `<filter>` element
-     **
-     - filstr (string) SVG fragment of filter provided as a string
-     = (object) @Element
-     * Note: It is recommended to use filters embedded into the page inside an empty SVG element.
-     > Usage
-     | var f = paper.filter('<feGaussianBlur stdDeviation="2"/>'),
-     |     c = paper.circle(10, 10, 10).attr({
-     |         filter: f
-     |     });
-    \*/
+	/*\
+	 * Paper.filter
+	 [ method ]
+	 **
+	 * Creates a `<filter>` element
+	 **
+	 - filstr (string) SVG fragment of filter provided as a string
+	 = (object) @Element
+	 * Note: It is recommended to use filters embedded into the page inside an empty SVG element.
+	 > Usage
+	 | var f = paper.filter('<feGaussianBlur stdDeviation="2"/>'),
+	 |     c = paper.circle(10, 10, 10).attr({
+	 |         filter: f
+	 |     });
+	\*/
 	pproto.filter = function (filstr) {
 		var paper = this;
 		if (paper.type != "svg") {
@@ -7295,21 +7297,21 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 			this.node.removeAttribute("filter");
 		}
 	});
-    /*\
-     * Snap.filter.blur
-     [ method ]
-     **
-     * Returns an SVG markup string for the blur filter
-     **
-     - x (number) amount of horizontal blur, in pixels
-     - y (number) #optional amount of vertical blur, in pixels
-     = (string) filter representation
-     > Usage
-     | var f = paper.filter(Snap.filter.blur(5, 10)),
-     |     c = paper.circle(10, 10, 10).attr({
-     |         filter: f
-     |     });
-    \*/
+	/*\
+	 * Snap.filter.blur
+	 [ method ]
+	 **
+	 * Returns an SVG markup string for the blur filter
+	 **
+	 - x (number) amount of horizontal blur, in pixels
+	 - y (number) #optional amount of vertical blur, in pixels
+	 = (string) filter representation
+	 > Usage
+	 | var f = paper.filter(Snap.filter.blur(5, 10)),
+	 |     c = paper.circle(10, 10, 10).attr({
+	 |         filter: f
+	 |     });
+	\*/
 	Snap.filter.blur = function (x, y) {
 		if (x == null) {
 			x = 2;
@@ -7322,33 +7324,33 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	Snap.filter.blur.toString = function () {
 		return this();
 	};
-    /*\
-     * Snap.filter.shadow
-     [ method ]
-     **
-     * Returns an SVG markup string for the shadow filter
-     **
-     - dx (number) #optional horizontal shift of the shadow, in pixels
-     - dy (number) #optional vertical shift of the shadow, in pixels
-     - blur (number) #optional amount of blur
-     - color (string) #optional color of the shadow
-     - opacity (number) #optional `0..1` opacity of the shadow
-     * or
-     - dx (number) #optional horizontal shift of the shadow, in pixels
-     - dy (number) #optional vertical shift of the shadow, in pixels
-     - color (string) #optional color of the shadow
-     - opacity (number) #optional `0..1` opacity of the shadow
-     * which makes blur default to `4`. Or
-     - dx (number) #optional horizontal shift of the shadow, in pixels
-     - dy (number) #optional vertical shift of the shadow, in pixels
-     - opacity (number) #optional `0..1` opacity of the shadow
-     = (string) filter representation
-     > Usage
-     | var f = paper.filter(Snap.filter.shadow(0, 2, .3)),
-     |     c = paper.circle(10, 10, 10).attr({
-     |         filter: f
-     |     });
-    \*/
+	/*\
+	 * Snap.filter.shadow
+	 [ method ]
+	 **
+	 * Returns an SVG markup string for the shadow filter
+	 **
+	 - dx (number) #optional horizontal shift of the shadow, in pixels
+	 - dy (number) #optional vertical shift of the shadow, in pixels
+	 - blur (number) #optional amount of blur
+	 - color (string) #optional color of the shadow
+	 - opacity (number) #optional `0..1` opacity of the shadow
+	 * or
+	 - dx (number) #optional horizontal shift of the shadow, in pixels
+	 - dy (number) #optional vertical shift of the shadow, in pixels
+	 - color (string) #optional color of the shadow
+	 - opacity (number) #optional `0..1` opacity of the shadow
+	 * which makes blur default to `4`. Or
+	 - dx (number) #optional horizontal shift of the shadow, in pixels
+	 - dy (number) #optional vertical shift of the shadow, in pixels
+	 - opacity (number) #optional `0..1` opacity of the shadow
+	 = (string) filter representation
+	 > Usage
+	 | var f = paper.filter(Snap.filter.shadow(0, 2, .3)),
+	 |     c = paper.circle(10, 10, 10).attr({
+	 |         filter: f
+	 |     });
+	\*/
 	Snap.filter.shadow = function (dx, dy, blur, color, opacity) {
 		if (opacity == null) {
 			if (color == null) {
@@ -7386,15 +7388,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	Snap.filter.shadow.toString = function () {
 		return this();
 	};
-    /*\
-     * Snap.filter.grayscale
-     [ method ]
-     **
-     * Returns an SVG markup string for the grayscale filter
-     **
-     - amount (number) amount of filter (`0..1`)
-     = (string) filter representation
-    \*/
+	/*\
+	 * Snap.filter.grayscale
+	 [ method ]
+	 **
+	 * Returns an SVG markup string for the grayscale filter
+	 **
+	 - amount (number) amount of filter (`0..1`)
+	 = (string) filter representation
+	\*/
 	Snap.filter.grayscale = function (amount) {
 		if (amount == null) {
 			amount = 1;
@@ -7413,15 +7415,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	Snap.filter.grayscale.toString = function () {
 		return this();
 	};
-    /*\
-     * Snap.filter.sepia
-     [ method ]
-     **
-     * Returns an SVG markup string for the sepia filter
-     **
-     - amount (number) amount of filter (`0..1`)
-     = (string) filter representation
-    \*/
+	/*\
+	 * Snap.filter.sepia
+	 [ method ]
+	 **
+	 * Returns an SVG markup string for the sepia filter
+	 **
+	 - amount (number) amount of filter (`0..1`)
+	 = (string) filter representation
+	\*/
 	Snap.filter.sepia = function (amount) {
 		if (amount == null) {
 			amount = 1;
@@ -7441,15 +7443,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	Snap.filter.sepia.toString = function () {
 		return this();
 	};
-    /*\
-     * Snap.filter.saturate
-     [ method ]
-     **
-     * Returns an SVG markup string for the saturate filter
-     **
-     - amount (number) amount of filter (`0..1`)
-     = (string) filter representation
-    \*/
+	/*\
+	 * Snap.filter.saturate
+	 [ method ]
+	 **
+	 * Returns an SVG markup string for the saturate filter
+	 **
+	 - amount (number) amount of filter (`0..1`)
+	 = (string) filter representation
+	\*/
 	Snap.filter.saturate = function (amount) {
 		if (amount == null) {
 			amount = 1;
@@ -7461,15 +7463,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	Snap.filter.saturate.toString = function () {
 		return this();
 	};
-    /*\
-     * Snap.filter.hueRotate
-     [ method ]
-     **
-     * Returns an SVG markup string for the hue-rotate filter
-     **
-     - angle (number) angle of rotation
-     = (string) filter representation
-    \*/
+	/*\
+	 * Snap.filter.hueRotate
+	 [ method ]
+	 **
+	 * Returns an SVG markup string for the hue-rotate filter
+	 **
+	 - angle (number) angle of rotation
+	 = (string) filter representation
+	\*/
 	Snap.filter.hueRotate = function (angle) {
 		angle = angle || 0;
 		return Snap.format('<feColorMatrix type="hueRotate" values="{angle}"/>', {
@@ -7479,15 +7481,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	Snap.filter.hueRotate.toString = function () {
 		return this();
 	};
-    /*\
-     * Snap.filter.invert
-     [ method ]
-     **
-     * Returns an SVG markup string for the invert filter
-     **
-     - amount (number) amount of filter (`0..1`)
-     = (string) filter representation
-    \*/
+	/*\
+	 * Snap.filter.invert
+	 [ method ]
+	 **
+	 * Returns an SVG markup string for the invert filter
+	 **
+	 - amount (number) amount of filter (`0..1`)
+	 = (string) filter representation
+	\*/
 	Snap.filter.invert = function (amount) {
 		if (amount == null) {
 			amount = 1;
@@ -7501,15 +7503,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	Snap.filter.invert.toString = function () {
 		return this();
 	};
-    /*\
-     * Snap.filter.brightness
-     [ method ]
-     **
-     * Returns an SVG markup string for the brightness filter
-     **
-     - amount (number) amount of filter (`0..1`)
-     = (string) filter representation
-    \*/
+	/*\
+	 * Snap.filter.brightness
+	 [ method ]
+	 **
+	 * Returns an SVG markup string for the brightness filter
+	 **
+	 - amount (number) amount of filter (`0..1`)
+	 = (string) filter representation
+	\*/
 	Snap.filter.brightness = function (amount) {
 		if (amount == null) {
 			amount = 1;
@@ -7521,15 +7523,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	Snap.filter.brightness.toString = function () {
 		return this();
 	};
-    /*\
-     * Snap.filter.contrast
-     [ method ]
-     **
-     * Returns an SVG markup string for the contrast filter
-     **
-     - amount (number) amount of filter (`0..1`)
-     = (string) filter representation
-    \*/
+	/*\
+	 * Snap.filter.contrast
+	 [ method ]
+	 **
+	 * Returns an SVG markup string for the contrast filter
+	 **
+	 - amount (number) amount of filter (`0..1`)
+	 = (string) filter representation
+	\*/
 	Snap.filter.contrast = function (amount) {
 		if (amount == null) {
 			amount = 1;
@@ -7564,20 +7566,20 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		toString = function () {
 			return "T" + this.dx + "," + this.dy;
 		};
-    /*\
-     * Element.getAlign
-     [ method ]
-     **
-     * Returns shift needed to align the element relatively to given element.
-     * If no elements specified, parent `<svg>` container will be used.
-     - el (object) @optional alignment element
-     - way (string) one of six values: `"top"`, `"middle"`, `"bottom"`, `"left"`, `"center"`, `"right"`
-     = (object|string) Object in format `{dx: , dy: }` also has a string representation as a transformation string
-     > Usage
-     | el.transform(el.getAlign(el2, "top"));
-     * or
-     | var dy = el.getAlign(el2, "top").dy;
-    \*/
+	/*\
+	 * Element.getAlign
+	 [ method ]
+	 **
+	 * Returns shift needed to align the element relatively to given element.
+	 * If no elements specified, parent `<svg>` container will be used.
+	 - el (object) @optional alignment element
+	 - way (string) one of six values: `"top"`, `"middle"`, `"bottom"`, `"left"`, `"center"`, `"right"`
+	 = (object|string) Object in format `{dx: , dy: }` also has a string representation as a transformation string
+	 > Usage
+	 | el.transform(el.getAlign(el2, "top"));
+	 * or
+	 | var dy = el.getAlign(el2, "top").dy;
+	\*/
 	Element.prototype.getAlign = function (el, way) {
 		if (way == null && is(el, "string")) {
 			way = el;
@@ -7618,20 +7620,20 @@ Snap.plugin(function (Snap, Element, Paper, glob, Fragment) {
 		out.toString = toString;
 		return out;
 	};
-    /*\
-     * Element.align
-     [ method ]
-     **
-     * Aligns the element relatively to given one via transformation.
-     * If no elements specified, parent `<svg>` container will be used.
-     - el (object) @optional alignment element
-     - way (string) one of six values: `"top"`, `"middle"`, `"bottom"`, `"left"`, `"center"`, `"right"`
-     = (object) this element
-     > Usage
-     | el.align(el2, "top");
-     * or
-     | el.align("middle");
-    \*/
+	/*\
+	 * Element.align
+	 [ method ]
+	 **
+	 * Aligns the element relatively to given one via transformation.
+	 * If no elements specified, parent `<svg>` container will be used.
+	 - el (object) @optional alignment element
+	 - way (string) one of six values: `"top"`, `"middle"`, `"bottom"`, `"left"`, `"center"`, `"right"`
+	 = (object) this element
+	 > Usage
+	 | el.align(el2, "top");
+	 * or
+	 | el.align("middle");
+	\*/
 	Element.prototype.align = function (el, way) {
 		return this.transform("..." + this.getAlign(el, way));
 	};
@@ -7671,23 +7673,23 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 		brown = "#EFEBE9#D7CCC8#BCAAA4#A1887F#8D6E63#795548#6D4C41#5D4037#4E342E#3E2723",
 		grey = "#FAFAFA#F5F5F5#EEEEEE#E0E0E0#BDBDBD#9E9E9E#757575#616161#424242#212121",
 		bluegrey = "#ECEFF1#CFD8DC#B0BEC5#90A4AE#78909C#607D8B#546E7A#455A64#37474F#263238";
-    /*\
-     * Snap.mui
-     [ property ]
-     **
-     * Contain Material UI colours.
-     | Snap().rect(0, 0, 10, 10).attr({fill: Snap.mui.deeppurple, stroke: Snap.mui.amber[600]});
-     # For colour reference: <a href="https://www.materialui.co">https://www.materialui.co</a>.
-    \*/
+	/*\
+	 * Snap.mui
+	 [ property ]
+	 **
+	 * Contain Material UI colours.
+	 | Snap().rect(0, 0, 10, 10).attr({fill: Snap.mui.deeppurple, stroke: Snap.mui.amber[600]});
+	 # For colour reference: <a href="https://www.materialui.co">https://www.materialui.co</a>.
+	\*/
 	Snap.mui = {};
-    /*\
-     * Snap.flat
-     [ property ]
-     **
-     * Contain Flat UI colours.
-     | Snap().rect(0, 0, 10, 10).attr({fill: Snap.flat.carrot, stroke: Snap.flat.wetasphalt});
-     # For colour reference: <a href="https://www.materialui.co">https://www.materialui.co</a>.
-    \*/
+	/*\
+	 * Snap.flat
+	 [ property ]
+	 **
+	 * Contain Flat UI colours.
+	 | Snap().rect(0, 0, 10, 10).attr({fill: Snap.flat.carrot, stroke: Snap.flat.wetasphalt});
+	 # For colour reference: <a href="https://www.materialui.co">https://www.materialui.co</a>.
+	\*/
 	Snap.flat = {};
 	function saveColor(colors) {
 		colors = colors.split(/(?=#)/);
@@ -7749,15 +7751,15 @@ Snap.plugin(function (Snap, Element, Paper, glob) {
 	Snap.flat.midnightblue = "#2c3e50";
 	Snap.flat.concrete = "#95a5a6";
 	Snap.flat.asbestos = "#7f8c8d";
-    /*\
-     * Snap.importMUIColors
-     [ method ]
-     **
-     * Imports Material UI colours into global object.
-     | Snap.importMUIColors();
-     | Snap().rect(0, 0, 10, 10).attr({fill: deeppurple, stroke: amber[600]});
-     # For colour reference: <a href="https://www.materialui.co">https://www.materialui.co</a>.
-    \*/
+	/*\
+	 * Snap.importMUIColors
+	 [ method ]
+	 **
+	 * Imports Material UI colours into global object.
+	 | Snap.importMUIColors();
+	 | Snap().rect(0, 0, 10, 10).attr({fill: deeppurple, stroke: amber[600]});
+	 # For colour reference: <a href="https://www.materialui.co">https://www.materialui.co</a>.
+	\*/
 	Snap.importMUIColors = function () {
 		for (var color in Snap.mui) {
 			if (Snap.mui.hasOwnProperty(color)) {
