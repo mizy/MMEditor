@@ -22862,7 +22862,7 @@ var Line_Line = /*#__PURE__*/function () {
         }, _this.tempLineData);
         if (_this.lines[data.uuid]) return;
 
-        _this.graph.editor.fire("line:beforeAdd", {
+        _this.graph.fire("line:beforeAdd", {
           line: data
         });
 

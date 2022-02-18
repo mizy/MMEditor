@@ -248,7 +248,7 @@ class Line {
 				this.tempLineData
 			);
 			if (this.lines[data.uuid]) return;
-			this.graph.editor.fire("line:beforeAdd", { line: data })
+			this.graph.fire("line:beforeAdd", { line: data })
 			if (this.shapes[data.type || 'default'].checkNewLine(data, this.graph.editor)) {
 				this.addLine(data);
 			}
