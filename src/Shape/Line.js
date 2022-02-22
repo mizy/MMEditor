@@ -145,7 +145,6 @@ class Line {
 
 	/**
 	 * 删除线
-	 * @param {*} uuid
 	 */
 	deleteLine(data, notEvent, byNode) {
 		let uuid = data;
@@ -289,6 +288,54 @@ class Line {
 		nodes[to].fromLines.add(id);
 	}
 
+
+	/**
+	 *
+	 * @param {*} line
+	 */
+	setActiveLine(line) {
+		this.unActiveLine();
+		this.activeLine = line;
+		this.activeLine.addClass('active');
+	}
+
+	/**
+	 * 取消激活
+	 */
+	unActiveLine() {
+		if (this.activeLine) {
+			this.activeLine.removeClass('active');
+		}
+		this.activeLine = null;
+	}
+
+	// 计算磁吸
+	calcLinkPoint = (x, y, adsorb = [20, 20]) => {
+		const newXY = this.allLinkPointsXY.find(item => {
+			if (Math.abs(x - item[0]) < adsorb[0] && Math.abs(y - item[1]) < adsorb[1]) {
+				this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass && this.graph.hoverLinkPoint.removeClass('hover');
+				this.graph.hoverLinkPoint = item[2];
+				item[2].addClass('hover');
+				return item;
+			}
+		});
+		if (!newXY) {
+			this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass('hover');
+		}
+		return newXY;
+	}
+
+	// 生成磁吸
+	makeAdsorbPoints = () => {
+		const linkPoints = this.paper.selectAll('.mm-link-points');
+		this.allLinkPointsXY = [];
+		linkPoints.forEach(item => {
+			const x = parseInt(item.attr('cx'));
+			const y = parseInt(item.attr('cy'));
+			this.allLinkPointsXY.push([x, y, item]);
+		});
+	}
+
 	/**
 	 * 绑定线拖动事件
 	 * @param {*} g
@@ -319,103 +366,59 @@ class Line {
 		// 箭头拖拽
 		g.arrow.drag(
 			(dx, dy) => {
-				const { shape, data } = g;
-				let x = (g.startX || 0) + dx;
-				let y = (g.startY || 0) + dy;
+				const {
+					tempLineData: { fromX, fromY, toX, toY }
+				} = this;
+				const transform = this.paper.transform();
+				const info = transform.globalMatrix.split();
+				let x = (toX || 0) + dx / info.scalex + 1;
+				let y = (toY || 0) + dy / info.scalex - 1;
+
 				// 计算磁吸坐标
-				const newXY = this.calcLinkPoint(x, y, data.type);
+				const { adsorb } = this.graph.line.shapes[g.data.type || 'default'];
+				const newXY = this.calcLinkPoint(x, y, adsorb);
 				if (newXY) {
 					x = newXY[0]; y = newXY[1];
 				}
-				shape.path.attr({
-					d: `M${data.fromX} ${data.fromY}L${x} ${y}`
-				});
+				this.shapes.tempLine.renderPath(
+					{
+						fromX,
+						fromY,
+						x,
+						y
+					},
+					this.tempLine
+				);
 			},
 			() => {
-				const { arrow, shape, data } = g;
-				const { toX, toY, from, fromPoint } = data;
-				g.startX = toX;
-				g.startY = toY - 2;
-				arrow.attr({
-					display: 'none'
-				});
-				shape.attr({
-					strokeDasharray: '5 5'
-				});
+				const { data } = g;
+				const { fromX, fromY, toX, toY, from, fromPoint } = data;
+
 				this.tempLineData = {
 					from,
 					fromPoint,
+					fromX, toX,
+					fromY, toY
 				};
 				this.makeAdsorbPoints();
-				this.graph.addLinkHoverEvent();
+				g.attr({
+					display: "none"
+				});
 				data.status = 'active';
 				/**
 				 * @event Graph#line:drag
 				 */
+				this.tempLine = this.shapes.tempLine.render(this.paper);
 				this.graph.fire('line:drag');
 			},
 			(e) => {
-				const { arrow, shape } = g;
-				arrow.attr({
-					display: 'initial'
+				g.attr({
+					display: "block"
 				});
-				shape.attr({
-					strokeDasharray: '0'
-				});
+				this.tempLine.remove();
 				this.updateActiveLine(g);
-				this.graph.offLinkHoverEvent();
 			}
 		);
-
-
-	}
-
-	/**
-	 *
-	 * @param {*} line
-	 */
-	setActiveLine(line) {
-		this.unActiveLine();
-		this.activeLine = line;
-		this.activeLine.addClass('active');
-	}
-
-	/**
-	 * 取消激活
-	 */
-	unActiveLine() {
-		if (this.activeLine) {
-			this.activeLine.removeClass('active');
-		}
-		this.activeLine = null;
-	}
-
-	// 计算磁吸
-	calcLinkPoint = (x, y, type = 'default') => {
-		const { adsorb = [20, 20] } = this.graph.node.shapes[type];
-		const newXY = this.allLinkPointsXY.find(item => {
-			if (Math.abs(x - item[0]) < adsorb[0] && Math.abs(y - item[1]) < adsorb[1]) {
-				this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass && this.graph.hoverLinkPoint.removeClass('hover');
-				this.graph.hoverLinkPoint = item[2];
-				item[2].addClass('hover');
-				return item;
-			}
-		});
-		if (!newXY) {
-			this.graph.hoverLinkPoint && this.graph.hoverLinkPoint.removeClass('hover');
-		}
-		return newXY;
-	}
-
-	// 生成磁吸
-	makeAdsorbPoints = () => {
-		const linkPoints = this.paper.selectAll('.mm-link-points');
-		this.allLinkPointsXY = [];
-		linkPoints.forEach(item => {
-			const x = parseInt(item.attr('cx'));
-			const y = parseInt(item.attr('cy'));
-			this.allLinkPointsXY.push([x, y, item]);
-		});
 	}
 
 	/**
@@ -434,7 +437,8 @@ class Line {
 				let y = (fromY || 0) + dy / info.scalex - 1;
 
 				// 计算磁吸坐标
-				const newXY = this.calcLinkPoint(x, y, node.data.type);
+				const { adsorb } = this.graph.node.shapes[node.data.type];
+				const newXY = this.calcLinkPoint(x, y, adsorb);
 				if (newXY) {
 					x = newXY[0]; y = newXY[1];
 				}
@@ -456,7 +460,6 @@ class Line {
 					fromY: point.y
 				};
 				this.makeAdsorbPoints();
-				this.graph.addLinkHoverEvent();
 				this.tempLine = this.shapes.tempLine.render(this.paper);
 
 				this.graph.fire('line:drag');
