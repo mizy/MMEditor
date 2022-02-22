@@ -157,9 +157,8 @@ class Line {
 		delete this.lines[uuid];
 		// 删除关联线
 		const { from, to } = line.data;
-		const id = this.getLineId(line.data);
-		nodes[from] && nodes[from].toLines.delete(id);
-		nodes[to] && nodes[to].fromLines.delete(id);
+		nodes[from] && nodes[from].toLines.delete(uuid);
+		nodes[to] && nodes[to].fromLines.delete(uuid);
 		!notEvent &&
 			// 是否由删除节点触发的线删除操作
 			/**
