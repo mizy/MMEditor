@@ -91,7 +91,6 @@ declare class Line {
     renderLine(lineData: any): any;
     /**
      * 删除线
-     * @param {*} uuid
      */
     deleteLine(data: any, notEvent: any, byNode: any): void;
     activeLine: any;
@@ -124,22 +123,6 @@ declare class Line {
      */
     addToNodes(nodes: any, g: any): void;
     /**
-     * 绑定线拖动事件
-     * @param {*} g
-     */
-    addLineEvents(g: any): void;
-    tempLineData: {
-        from: any;
-        fromPoint: any;
-        fromX?: undefined;
-        fromY?: undefined;
-    } | {
-        from: any;
-        fromPoint: any;
-        fromX: any;
-        fromY: any;
-    };
-    /**
      *
      * @param {*} line
      */
@@ -148,8 +131,28 @@ declare class Line {
      * 取消激活
      */
     unActiveLine(): void;
-    calcLinkPoint: (x: any, y: any, type?: string) => any;
+    calcLinkPoint: (x: any, y: any, adsorb?: number[]) => any;
     makeAdsorbPoints: () => void;
+    /**
+     * 绑定线拖动事件
+     * @param {*} g
+     */
+    addLineEvents(g: any): void;
+    tempLineData: {
+        from: any;
+        fromPoint: any;
+        fromX: any;
+        toX: any;
+        fromY: any;
+        toY: any;
+    } | {
+        from: any;
+        fromPoint: any;
+        fromX: any;
+        fromY: any;
+        toX?: undefined;
+        toY?: undefined;
+    };
     /**
      * 节点的新增线逻辑
      */
