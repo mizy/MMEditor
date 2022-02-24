@@ -1,6 +1,7 @@
 import History from "./History";
 import dagre from 'dagre';
 import MMEditor from "../MMEditor";
+import { v1 as getUuid } from 'uuid';
 /**
  * @class
  */
@@ -174,8 +175,8 @@ class Schema {
 			nodesMap[item.uuid] = item;
 		});
 		lines.forEach(item => {
-			const { from, to, fromPoint = 0, toPoint = 0 } = item;
-			linesMap[`${from}.${fromPoint}=${to}.${toPoint}`] = item;
+			const { from, to, fromPoint = 0, toPoint = 0,uuid } = item;
+			linesMap[uuid?uuid:getUuid()] = item;
 		});
 		this.data = {
 			nodesMap,
