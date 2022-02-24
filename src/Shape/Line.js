@@ -1,5 +1,7 @@
 import DefaultLine from './Lines/Line';
 import PolyLine from './Lines/PolyLine';
+import { v1 as getUuid } from 'uuid';
+
 /**
  * @class
  */
@@ -108,7 +110,7 @@ class Line {
 	 * @param {*} lineData
 	 */
 	renderLine(lineData) {
-		const key = this.getLineId(lineData);
+		const key=getUuid()
 		const { nodes } = this.node;
 		const shape = this.shapes[lineData.type || 'default'];
 		shape.paper = this.paper;
@@ -239,7 +241,7 @@ class Line {
 			const { from, fromPoint = 0, to } = this.tempLineData;
 			const data = Object.assign(
 				{
-					uuid: `${from}.${fromPoint}=${toNodeId}.${toPoint}`,
+					uuid: getUuid(),
 					to: toNodeId,
 					toPoint
 				},
@@ -282,7 +284,8 @@ class Line {
 	 */
 	addToNodes(nodes, g) {
 		const { from, to } = g.data;
-		const id = this.getLineId(g.data);
+		const id = g.data.uuid;
+
 		nodes[from].toLines.add(id);
 		nodes[to].fromLines.add(id);
 	}
