@@ -104,9 +104,9 @@ class AchorLine {
 				return { x, y };
 			}
 			// 中心点坐标补齐
-			if(final.x===undefined){
+			if (final.x === undefined) {
 				final.x = cc.x;
-			}else{
+			} else {
 				final.y = cc.y;
 			}
 			const path = `M${final.x},${final.y} L${anchor.x},${anchor.y}`;
@@ -123,9 +123,9 @@ class AchorLine {
 		return { x, y };
 	}
 
-    /**
-     * 隐藏线
-     */
+	/**
+	 * 隐藏线
+	 */
 	hidePath() {
 		this.path.attr({
 			style: 'display: none'

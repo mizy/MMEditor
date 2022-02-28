@@ -85,24 +85,31 @@ class Line {
 
 	/**
 	 * 重绘某个线
-	 * @param {*} lineId
+	 * @param {*} lineData
 	 */
-	updateLine(lineId) {
+	updateLine(lineData, rerenderShape = true) {
+		let lineId = lineData;
+		if (lineData.uuid) {
+			lineId = lineData.uuid;
+		}
 		const line = this.lines[lineId];
 		const { nodes } = this.graph.node;
 		const {
 			data: { type, className = '' }
 		} = line;
-		const { data } = this.shapes[type || 'default'].render(line.data, nodes, line.shape);
-		line.arrow = this.shapes[type || 'default'].renderArrow(line.data, nodes, line.arrow);
-
-		line.attr({
-			class: `mm-line ${className || ''}`
-		});
+		if (rerenderShape) {
+			const { data } = this.shapes[type || 'default'].render(line.data, nodes, line.shape);
+			line.arrow = this.shapes[type || 'default'].renderArrow(line.data, nodes, line.arrow);
+			line.attr({
+				class: `mm-line ${className || ''}`
+			});
+			line.data = Object.assign(line.data, lineData ? lineData : {}, data);
+		} else {
+			line.data = Object.assign(line.data, lineData ? lineData : {});
+		}
 		if (this.activeLine === line) {
 			this.setActiveLine(line)
 		}
-		line.data = Object.assign({}, line.data, data);
 	}
 
 	/**
@@ -110,7 +117,7 @@ class Line {
 	 * @param {*} lineData
 	 */
 	renderLine(lineData) {
-		const key=getUuid()
+		const key = getUuid()
 		const { nodes } = this.node;
 		const shape = this.shapes[lineData.type || 'default'];
 		shape.paper = this.paper;
@@ -131,6 +138,9 @@ class Line {
 		);
 		g.shape = newLine.path;
 		g.arrow = arrow;
+		if (lineData.arrow2 && shape.renderArrow2) {
+			g.arrow2 = shape.renderArrow(lineData, nodes);
+		}
 		// g.label = label;
 		g.attr({
 			class: `mm-line ${lineData.className || ''}`

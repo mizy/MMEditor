@@ -179,15 +179,14 @@ class Node {
 		const node = this.nodes[uuid];
 		const shape = this.shapes[nodeData.type || 'default'];
 		if (rerenderShape) {
-			const { data } = shape.render(nodeData, node);
-			node.data = { ...nodeData, ...data };
+			// TODO: remove this.paper
+			shape.render(nodeData, this.paper, node);
 		}
 		node.transform(`translate(${nodeData.x} ,${nodeData.y})`)
 		node.data = nodeData;
 		node.linkPointsTypes.forEach((linkPoint, index) => {
 			shape.renderLinkPoint(node, linkPoint, node.linkPoints[index]);
 		});
-
 	}
 
 	/**

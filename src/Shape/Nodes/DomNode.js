@@ -2,18 +2,18 @@
  * @interface DomNode
  * @implements {DefaultNode}
  */
- const DomNode = {
+const DomNode = {
 	adsorb: [20, 20],//磁吸的范围
-	linkPoints: [{ x: 0, y: 0.5 }, { x:1 , y: 0.5 },{ x: 0.5, y: 0 }, { x:0.5 , y: 1 }],
+	linkPoints: [{ x: 0, y: 0.5 }, { x: 1, y: 0.5 }, { x: 0.5, y: 0 }, { x: 0.5, y: 1 }],
 	render: (data, snapPaper) => {
-		const dom = snapPaper.el('foreignObject', {
+		const dom = this.paper.el('foreignObject', {
 			width: data.width,
 			height: data.height
 		});
 		dom.node.innerHTML = (`<div style="width:${data.width}px;height:${data.height}" class="mm-node-wrapper">
 			<div class="node-text">${data.name}</div>
 		</div>`);
-		const group = snapPaper.group(dom);
+		const group = this.paper.group(dom);
 		return group;
 	},
 

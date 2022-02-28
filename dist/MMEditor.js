@@ -21593,6 +21593,8 @@ var IconNode = {
 };
 /* harmony default export */ var Nodes_IconNode = (IconNode);
 // CONCATENATED MODULE: ./src/Shape/Nodes/DomNode.js
+var DomNode_this = undefined;
+
 
 
 
@@ -21618,12 +21620,15 @@ var DomNode = {
     y: 1
   }],
   render: function render(data, snapPaper) {
-    var dom = snapPaper.el('foreignObject', {
+    var dom = DomNode_this.paper.el('foreignObject', {
       width: data.width,
       height: data.height
     });
+
     dom.node.innerHTML = "<div style=\"width:".concat(data.width, "px;height:").concat(data.height, "\" class=\"mm-node-wrapper\">\n\t\t\t<div class=\"node-text\">").concat(data.name, "</div>\n\t\t</div>");
-    var group = snapPaper.group(dom);
+
+    var group = DomNode_this.paper.group(dom);
+
     return group;
   },
 
@@ -21945,10 +21950,8 @@ var Node_Node = /*#__PURE__*/function () {
       var shape = this.shapes[nodeData.type || 'default'];
 
       if (rerenderShape) {
-        var _shape$render = shape.render(nodeData, node),
-            data = _shape$render.data;
-
-        node.data = _objectSpread(_objectSpread({}, nodeData), data);
+        // TODO: remove this.paper
+        shape.render(nodeData, this.paper, node);
       }
 
       node.transform("translate(".concat(nodeData.x, " ,").concat(nodeData.y, ")"));
@@ -23074,12 +23077,19 @@ var Line_Line = /*#__PURE__*/function () {
     }
     /**
      * 重绘某个线
-     * @param {*} lineId
+     * @param {*} lineData
      */
 
   }, {
     key: "updateLine",
-    value: function updateLine(lineId) {
+    value: function updateLine(lineData) {
+      var rerenderShape = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      var lineId = lineData;
+
+      if (lineData.uuid) {
+        lineId = lineData.uuid;
+      }
+
       var line = this.lines[lineId];
       var nodes = this.graph.node.nodes;
       var _line$data = line.data,
@@ -23087,19 +23097,22 @@ var Line_Line = /*#__PURE__*/function () {
           _line$data$className = _line$data.className,
           className = _line$data$className === void 0 ? '' : _line$data$className;
 
-      var _this$shapes$render = this.shapes[type || 'default'].render(line.data, nodes, line.shape),
-          data = _this$shapes$render.data;
+      if (rerenderShape) {
+        var _this$shapes$render = this.shapes[type || 'default'].render(line.data, nodes, line.shape),
+            data = _this$shapes$render.data;
 
-      line.arrow = this.shapes[type || 'default'].renderArrow(line.data, nodes, line.arrow);
-      line.attr({
-        "class": "mm-line ".concat(className || '')
-      });
+        line.arrow = this.shapes[type || 'default'].renderArrow(line.data, nodes, line.arrow);
+        line.attr({
+          "class": "mm-line ".concat(className || '')
+        });
+        line.data = Object.assign(line.data, lineData ? lineData : {}, data);
+      } else {
+        line.data = Object.assign(line.data, lineData ? lineData : {});
+      }
 
       if (this.activeLine === line) {
         this.setActiveLine(line);
       }
-
-      line.data = Object.assign({}, line.data, data);
     }
     /**
      * 添加线
@@ -23124,7 +23137,12 @@ var Line_Line = /*#__PURE__*/function () {
         uuid: key
       }, newLine.data);
       g.shape = newLine.path;
-      g.arrow = arrow; // g.label = label;
+      g.arrow = arrow;
+
+      if (lineData.arrow2 && shape.renderArrow2) {
+        g.arrow2 = shape.renderArrow(lineData, nodes);
+      } // g.label = label;
+
 
       g.attr({
         "class": "mm-line ".concat(lineData.className || '')
