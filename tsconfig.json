@@ -7,6 +7,6 @@
     "declaration": true,
     "noResolve":true,
     "emitDeclarationOnly": true,
-    "outDir": "dist",
+    "outDir": "types",
   }
 }

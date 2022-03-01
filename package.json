@@ -3,7 +3,7 @@
     "version": "3.0.10",
     "description": "svg flow editor",
     "main": "./dist/MMEditor.js",
-    "types": "./dist/MMEditor.d.ts",
+    "types": "./types/MMEditor.d.ts",
     "scripts": {
         "start": "webpack-dev-server",
         "demo:build": "webpack -p --config webpack.config.js",
