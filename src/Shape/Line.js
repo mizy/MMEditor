@@ -117,7 +117,7 @@ class Line {
 	 * @param {*} lineData
 	 */
 	renderLine(lineData) {
-		const key = getUuid()
+		const key = lineData.uuid
 		const { nodes } = this.node;
 		const shape = this.shapes[lineData.type || 'default'];
 		shape.paper = this.paper;
