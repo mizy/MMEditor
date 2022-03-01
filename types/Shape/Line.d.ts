@@ -36,7 +36,7 @@ declare class Line {
             getDirection({ x, y }: {
                 x: any;
                 y: any;
-            }, bbox: any, center: any): "left" | "right" | "bottom" | "top";
+            }, bbox: any, center: any): "left" | "bottom" | "right" | "top";
             arcRatio: number;
             render(data: any, allNodesMap: any, line: any): {
                 path: any;
