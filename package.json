@@ -1,6 +1,6 @@
 {
     "name": "mmeditor",
-    "version": "3.0.9",
+    "version": "3.0.10",
     "description": "svg flow editor",
     "main": "./dist/MMEditor.js",
     "types": "./dist/MMEditor.d.ts",
