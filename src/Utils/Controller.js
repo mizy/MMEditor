@@ -1,5 +1,4 @@
 import Event from "./Event";
-import { Snap } from "../MMEditor";
 /**
  * 控制器
  * @class
@@ -29,9 +28,9 @@ class Controller extends Event {
 	/**
 	 * 自适应,支持
 	 */
-	autoFit(center=true,vertical=true) {
+	autoFit(center = true, vertical = true) {
 		const data = this.editor.schema.getData();
-		
+
 		this.x = 0;
 		this.y = 0;
 		this.paper.transform(`scale(${this.scale})`);
@@ -39,14 +38,14 @@ class Controller extends Event {
 		const width = this.editor.dom.node.clientWidth;
 		const height = this.editor.dom.node.clientHeight;
 		const bbox = this.paper.getBBox();
-		const dx = ((width - bbox.width) / 2 - bbox.x)/this.scale;
-		const dy = ((height - bbox.height) / 2 - bbox.y)/this.scale;
-		data.nodes.forEach(node=>{
-            if(center)node.x +=  dx;
-			if(vertical)node.y += dy;
+		const dx = ((width - bbox.width) / 2 - bbox.x) / this.scale;
+		const dy = ((height - bbox.height) / 2 - bbox.y) / this.scale;
+		data.nodes.forEach(node => {
+			if (center) node.x += dx;
+			if (vertical) node.y += dy;
 		});
 		this.editor.schema.setData(data);
-		this.editor.fire("autofit",{data});
+		this.editor.fire("autofit", { data });
 		setTimeout(() => {
 			this.paper.node.style.transition = null;
 		}, 200);
@@ -91,21 +90,25 @@ class Controller extends Event {
 		this.editor.fire("panning")
 	}
 
-    /**
-     * 移动到指定位置
-     * @param {*} x 
-     * @param {*} y 
-     */
-	moveTo(x,y){
+	/**
+	 * 移动到指定位置
+	 * @param {*} x 
+	 * @param {*} y 
+	 */
+	moveTo(x, y) {
 		this.x = x;
 		this.y = y;
 		this.update();
 	}
 
 	onWheel = e => {
+		if (this.status === 'disabled') {
+			return;
+		}
 		e.preventDefault();
+
 		if (e.ctrlKey) {// 双指
-			const newScale = Math.max((1 - e.deltaY * this.scaleRatio),0.1);
+			const newScale = Math.max((1 - e.deltaY * this.scaleRatio), 0.1);
 			this.zoom(newScale, e.offsetX, e.offsetY);
 		} else {
 			this.pan(-e.deltaX, -e.deltaY)
@@ -113,10 +116,10 @@ class Controller extends Event {
 	};
 
 	panStart = ev => {
-		ev.preventDefault();
-		if (ev.target.tagName !== "svg") {
+		if (ev.target.tagName !== "svg" || this.status === 'disabled') {
 			return;
 		}
+		ev.preventDefault();
 		this.startPosition = { x: ev.clientX, y: ev.clientY };
 		this.matrix = this.svg.mousemove(this.panning);
 	};
@@ -135,29 +138,29 @@ class Controller extends Event {
 	 */
 	zoom = (newScale, cx = 0, cy = 0) => {
 		this.scale *= newScale;
-		const dis = [(cx - this.x)*(newScale - 1),(cy - this.y)*(newScale - 1)];
+		const dis = [(cx - this.x) * (newScale - 1), (cy - this.y) * (newScale - 1)];
 		this.x -= dis[0];
 		this.y -= dis[1];
 		this.update();
-		this.editor.fire("zoom", { scale:newScale });
+		this.editor.fire("zoom", { scale: newScale });
 
 	};
 
-    /**
-     * 滚动到指定位置
-     * @param {*} newScale 
-     */
+	/**
+	 * 滚动到指定位置
+	 * @param {*} newScale 
+	 */
 	zoomTo = (newScale) => {
 		this.scale = newScale;
 		this.update();
 	};
 
-    /**
-     * 做指定转换
-     * @param {*} newScale 
-     * @param {*} x 
-     * @param {*} y 
-     */
+	/**
+	 * 做指定转换
+	 * @param {*} newScale 
+	 * @param {*} x 
+	 * @param {*} y 
+	 */
 	transform = (newScale, x = 0, y = 0) => {
 		this.scale = newScale;
 		this.x = x;
@@ -177,13 +180,20 @@ class Controller extends Event {
 		this.y += deltaP[1]
 		this.update();
 		this.startPosition = p1;
-		this.editor.fire("panning",{event:ev})
+		this.editor.fire("panning", { event: ev })
 	};
 
-    /**
-     * 更新最新的matrix
-     */
-	update(){
+	disable() {
+		this.status = 'disabled'
+	}
+
+	enable() {
+		this.status = 'enable'
+	}
+	/**
+	 * 更新最新的matrix
+	 */
+	update() {
 		this.paper.transform(`matrix(${this.scale},0,0,${this.scale},${this.x},${this.y})`);
 	}
 }
