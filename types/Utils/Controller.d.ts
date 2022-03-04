@@ -74,6 +74,9 @@ declare class Controller extends Event {
      */
     transform: (newScale: any, x?: any, y?: any) => void;
     panning: (ev: any) => void;
+    disable(): void;
+    status: string;
+    enable(): void;
     /**
      * 更新最新的matrix
      */

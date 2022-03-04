@@ -182,6 +182,9 @@ class Node {
 			// TODO: remove this.paper
 			shape.render(nodeData, this.paper, node);
 		}
+		node.attr({
+			class: `mm-node ${nodeData.className || ''}`
+		});
 		node.transform(`translate(${nodeData.x} ,${nodeData.y})`)
 		node.data = nodeData;
 		node.linkPointsTypes.forEach((linkPoint, index) => {
