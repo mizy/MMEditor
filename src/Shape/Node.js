@@ -175,7 +175,12 @@ class Node {
 		 * @param {*} rerenderShape 
 		 */
 	updateNode(nodeData = {}, rerenderShape = false) {
-		const { uuid } = nodeData;
+		let uuid = nodeData;
+		if (nodeData.uuid) {
+			uuid = nodeData.uuid;
+		} else {
+			nodeData = this.nodes[uuid].data;
+		}
 		const node = this.nodes[uuid];
 		const shape = this.shapes[nodeData.type || 'default'];
 		if (rerenderShape) {
