@@ -1,5 +1,5 @@
 {
-    "name": "@vesoft-inc/veditor",
+    "name": "mmeditor",
     "version": "3.1.0",
     "description": "svg flow editor",
     "main": "./dist/MMEditor.js",

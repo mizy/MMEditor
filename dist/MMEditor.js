@@ -21945,7 +21945,14 @@ var Node_Node = /*#__PURE__*/function () {
     value: function updateNode() {
       var nodeData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var rerenderShape = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var uuid = nodeData.uuid;
+      var uuid = nodeData;
+
+      if (nodeData.uuid) {
+        uuid = nodeData.uuid;
+      } else {
+        nodeData = this.nodes[uuid].data;
+      }
+
       var node = this.nodes[uuid];
       var shape = this.shapes[nodeData.type || 'default'];
 
