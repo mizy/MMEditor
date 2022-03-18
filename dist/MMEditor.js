@@ -23098,7 +23098,7 @@ var Line_Line = /*#__PURE__*/function () {
       var lineData;
 
       if (data.uuid) {
-        lineId = lineData.uuid;
+        lineId = data.uuid;
         lineData = data;
       } else {
         lineId = data;
