@@ -20709,7 +20709,7 @@ exports = module.exports = __webpack_require__(502)(false);
 
 
 // module
-exports.push([module.i, "@keyframes dashing {\n  from {\n    stroke-dashoffset: 200;\n  }\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.mm-editor {\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n.mm-editor .mm-editor-back {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  z-index: 0;\n  left: 0;\n  top: 0;\n}\n.mm-editor .mm-minimap {\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  background: #fff;\n  border: 1px solid #cecece;\n  border-radius: 5px;\n  overflow: hidden;\n  width: 160px;\n  height: 127px;\n}\n.mm-editor .mm-minimap .drag-rect {\n  position: absolute;\n  left: 0px;\n  box-sizing: content-box;\n  top: 0px;\n  border: 2px solid #08c;\n  cursor: pointer;\n  transition: all 200ms ease;\n}\n.mm-editor .mm-minimap .drag-point {\n  width: 10px;\n  height: 10px;\n  border-radius: 5px;\n  border: 2px solid #08c;\n  background: #fff;\n  position: absolute;\n  right: -5px;\n  bottom: -5px;\n  cursor: nwse-resize;\n}\n.mm-editor > .mm-editor-svg {\n  cursor: grab;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor > .mm-editor-svg svg {\n  outline: none;\n}\n.mm-editor > .mm-editor-svg * {\n  transition: x, y, transform, cx, cy, width, stroke, height, fill 400ms;\n}\n.mm-editor > .mm-editor-svg .mm-node {\n  cursor: move;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:hover > .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.active > .icon-node {\n  transition: stroke 400ms;\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.success .icon-node {\n  stroke: green;\n  fill: #fff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.error .icon-node {\n  stroke: red;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.running .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.running .mm-line-shape path {\n  stroke-dasharray: 5 !important;\n  animation: dashing 5s linear infinite;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-shape {\n  cursor: pointer;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-arrow {\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-label text {\n  text-anchor: middle;\n}\n.mm-editor > .mm-editor-svg .anchor-line {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points:hover,\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points.hover {\n  fill: #4c79ff;\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-html {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor .anchor-back {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.mm-node-wrapper {\n  border: 1px solid #08c;\n  border-radius: 8px;\n  box-sizing: border-box;\n  display: flex;\n  justify-content: center;\n  background-color: #fff;\n  align-items: center;\n}\n", ""]);
+exports.push([module.i, "@keyframes dashing {\n  from {\n    stroke-dashoffset: 200;\n  }\n  to {\n    stroke-dashoffset: 0;\n  }\n}\n.mm-editor {\n  width: 100%;\n  height: 100%;\n  position: relative;\n}\n.mm-editor .mm-editor-back {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  z-index: 0;\n  left: 0;\n  top: 0;\n}\n.mm-editor .mm-minimap {\n  position: absolute;\n  top: 10px;\n  right: 10px;\n  background: #fff;\n  border: 1px solid #cecece;\n  border-radius: 5px;\n  overflow: hidden;\n  width: 160px;\n  height: 127px;\n}\n.mm-editor .mm-minimap .drag-rect {\n  position: absolute;\n  left: 0px;\n  box-sizing: content-box;\n  top: 0px;\n  border: 2px solid #08c;\n  cursor: pointer;\n  transition: all 200ms ease;\n}\n.mm-editor .mm-minimap .drag-point {\n  width: 10px;\n  height: 10px;\n  border-radius: 5px;\n  border: 2px solid #08c;\n  background: #fff;\n  position: absolute;\n  right: -5px;\n  bottom: -5px;\n  cursor: nwse-resize;\n}\n.mm-editor > .mm-editor-svg {\n  cursor: grab;\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor > .mm-editor-svg svg {\n  outline: none;\n}\n.mm-editor > .mm-editor-svg * {\n  transition: x, y, transform, cx, cy, width, stroke, height, fill 400ms;\n  outline: none;\n}\n.mm-editor > .mm-editor-svg .mm-node {\n  cursor: move;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:hover > .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.active > .icon-node {\n  transition: stroke 400ms;\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.success .icon-node {\n  stroke: green;\n  fill: #fff;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.error .icon-node {\n  stroke: red;\n}\n.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.running .icon-node {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.active .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-shape {\n  stroke-width: 5px;\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-arrow {\n  opacity: 0.5;\n}\n.mm-editor > .mm-editor-svg .mm-line.running .mm-line-shape path {\n  stroke-dasharray: 5 !important;\n  animation: dashing 5s linear infinite;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-shape {\n  cursor: pointer;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-arrow {\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-svg .mm-line .mm-line-label text {\n  text-anchor: middle;\n}\n.mm-editor > .mm-editor-svg .anchor-line {\n  stroke: #4c79ff;\n}\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points:hover,\n.mm-editor > .mm-editor-svg .link-points-g .mm-link-points.hover {\n  fill: #4c79ff;\n  cursor: crosshair;\n}\n.mm-editor > .mm-editor-html {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n}\n.mm-editor .anchor-back {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.mm-node-wrapper {\n  border: 1px solid #08c;\n  border-radius: 8px;\n  box-sizing: border-box;\n  display: flex;\n  justify-content: center;\n  background-color: #fff;\n  align-items: center;\n}\n", ""]);
 
 // exports
 
@@ -23087,17 +23087,24 @@ var Line_Line = /*#__PURE__*/function () {
     }
     /**
      * 重绘某个线
-     * @param {*} lineData
+     * @param {*} data
      */
 
   }, {
     key: "updateLine",
-    value: function updateLine(lineData) {
+    value: function updateLine(data) {
       var rerenderShape = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-      var lineId = lineData;
+      var lineId;
+      var lineData;
 
-      if (lineData.uuid) {
+      if (data.uuid) {
         lineId = lineData.uuid;
+        lineData = data;
+      } else {
+        lineId = data;
+        lineData = {
+          uuid: lineId
+        };
       }
 
       var line = this.lines[lineId];
@@ -23109,13 +23116,13 @@ var Line_Line = /*#__PURE__*/function () {
 
       if (rerenderShape) {
         var _this$shapes$render = this.shapes[type || 'default'].render(line.data, nodes, line.shape),
-            data = _this$shapes$render.data;
+            _data = _this$shapes$render.data;
 
         line.arrow = this.shapes[type || 'default'].renderArrow(line.data, nodes, line.arrow);
         line.attr({
           "class": "mm-line ".concat(className || '')
         });
-        line.data = Object.assign(line.data, lineData ? lineData : {}, data);
+        line.data = Object.assign(line.data, lineData ? lineData : {}, _data);
       } else {
         line.data = Object.assign(line.data, lineData ? lineData : {});
       }

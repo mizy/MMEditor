@@ -85,12 +85,19 @@ class Line {
 
 	/**
 	 * 重绘某个线
-	 * @param {*} lineData
+	 * @param {*} data
 	 */
-	updateLine(lineData, rerenderShape = true) {
-		let lineId = lineData;
-		if (lineData.uuid) {
+	updateLine(data, rerenderShape = true) {
+		let lineId;
+		let lineData
+		if (data.uuid) {
 			lineId = lineData.uuid;
+			lineData = data;
+		} else {
+			lineId = data;
+			lineData = {
+				uuid: lineId
+			}
 		}
 		const line = this.lines[lineId];
 		const { nodes } = this.graph.node;
