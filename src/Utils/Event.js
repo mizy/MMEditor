@@ -36,8 +36,12 @@ class Event {
 	 * @param {*} event 
 	 * @param {*} offFunc 不传清空所有
 	 */
-	off(event, offFunc) {
-		this.events[event] = this.events[event].filter(func => offFunc !== func);
+	 off(event, offFunc) {
+		if (!offFunc) {
+			this.events[event] = [];
+		} else {
+			this.events[event] = this.events[event].filter(func => offFunc !== func.func);
+		}
 	}
 
 	/**
