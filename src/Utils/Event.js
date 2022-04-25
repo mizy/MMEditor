@@ -36,7 +36,7 @@ class Event {
 	 * @param {*} event 
 	 * @param {*} offFunc 不传清空所有
 	 */
-	 off(event, offFunc) {
+	off(event, offFunc) {
 		if (!offFunc) {
 			this.events[event] = [];
 		} else {
