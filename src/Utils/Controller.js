@@ -28,7 +28,7 @@ class Controller extends Event {
 	/**
 	 * 自适应,支持
 	 */
-	autoFit(center = true, vertical = true) {
+	async autoFit(center = true, vertical = true) {
 		const data = this.editor.schema.getData();
 
 		this.x = 0;
@@ -44,7 +44,7 @@ class Controller extends Event {
 			if (center) node.x += dx;
 			if (vertical) node.y += dy;
 		});
-		this.editor.schema.setData(data);
+		await this.editor.schema.setData(data);
 		this.editor.fire("autofit", { data });
 		setTimeout(() => {
 			this.paper.node.style.transition = null;
@@ -92,8 +92,8 @@ class Controller extends Event {
 
 	/**
 	 * 移动到指定位置
-	 * @param {*} x 
-	 * @param {*} y 
+	 * @param {*} x
+	 * @param {*} y
 	 */
 	moveTo(x, y) {
 		this.x = x;
@@ -148,7 +148,7 @@ class Controller extends Event {
 
 	/**
 	 * 滚动到指定位置
-	 * @param {*} newScale 
+	 * @param {*} newScale
 	 */
 	zoomTo = (newScale) => {
 		this.scale = newScale;
@@ -157,9 +157,9 @@ class Controller extends Event {
 
 	/**
 	 * 做指定转换
-	 * @param {*} newScale 
-	 * @param {*} x 
-	 * @param {*} y 
+	 * @param {*} newScale
+	 * @param {*} x
+	 * @param {*} y
 	 */
 	transform = (newScale, x = 0, y = 0) => {
 		this.scale = newScale;
