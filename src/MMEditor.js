@@ -8,7 +8,7 @@ import Util from './Utils/util'
 import "./index.less";
 
 /**
- * @class 
+ * @class
  * @extends Event
  */
 class MMEditor extends Event {
@@ -112,11 +112,11 @@ class MMEditor extends Event {
 	}
 
 	/**
-	 * 重绘 
+	 * 重绘
 	 */
-	repaint() {
+	async repaint() {
 		this.graph.clearGraph();
-		this.graph.render(this.schema.data);
+		await this.graph.render(this.schema.data);
 	}
 
 }

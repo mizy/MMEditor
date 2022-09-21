@@ -5,9 +5,9 @@ MMEditor is a library for building flow graphs. You can custom your node's shape
 
 ## Demo
 
-[Editor Demo](https://mizy.github.io/MMEditor/dist/)
+[Editor Demo](https://mizy.github.io/MMEditor/public/)
 
-[Basic Demo](https://mizy.github.io/MMEditor/dist/basic.html)
+[Basic Demo](https://mizy.github.io/MMEditor/public/basic.html)
 
 [DAG Flow Chart](https://mizy.github.io/MMEditor/public/flowChart.html)
 

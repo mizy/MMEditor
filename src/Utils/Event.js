@@ -1,7 +1,7 @@
 /**
  * @class
  */
-class Event {
+ class Event {
 	events = {};
 	/**
 	 * 箭头
