@@ -1,4 +1,4 @@
-# the repo has been transfer to https://github.com/vesoft-inc/nebulagraph-veditor, a new typescript refact lib!
+## The repository has undergone a remarkable transformation and is now relocated to the advanced https://github.com/vesoft-inc/nebulagraph-veditor. The library has been refactored in TypeScript for improved efficiency and enhanced performance. 
 
 ![](https://mizy.github.io/MMEditor/snapshot.png)
 ## [MMEditor](https://mizy.github.io/MMEditor)
