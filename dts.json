@@ -4,18 +4,16 @@
   ],
   "compileOnSave": true,
   "compilerOptions": {
-    "pretty": true,
     "sourceMap": true,
     "allowJs": true,
-    "declaration": false,
-    "importHelpers": true,
+    "emitDeclarationOnly": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "jsx": "react",
-    "outDir": "dist",
-    "module": "NodeNext",
-    "target": "ES2015",
+    "outDir": "types",
+    "module": "es6",
+    "target": "es5",
+    "declaration": true,
     "resolveJsonModule": true,
-    "moduleResolution": "NodeNext"
+    "moduleResolution": "node"
   }
 }
