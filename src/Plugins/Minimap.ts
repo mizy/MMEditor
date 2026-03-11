@@ -1,11 +1,11 @@
 import { SVGHelper } from "../Utils/svg";
-import VEditor from "../VEditor";
+import MMEditor from "../MMEditor";
 import { Canvg } from "canvg";
 import { mat2d } from "gl-matrix";
 import { Position } from "../Utils/types";
 
 class MiniMap {
-  editor: VEditor;
+  editor: MMEditor;
   width: number;
   height: number;
   padding: number;
@@ -25,7 +25,7 @@ class MiniMap {
   limitScale: number;
   converting: Canvg;
   timeout: any;
-  constructor(editor: VEditor) {
+  constructor(editor: MMEditor) {
     this.editor = editor;
     const { minimap = [] } = editor.config;
     this.width = minimap.width || 160;
@@ -35,7 +35,7 @@ class MiniMap {
   }
 
   init() {
-    const dom = `<div class="ve-minimap" >
+    const dom = `<div class="mm-minimap" >
 			<canvas width="100%" height="100%"></canvas>
 			<div class="drag-rect" style="left:${this.padding}px;top:${this.padding}px">
 				<div class="drag-point"></div>
@@ -43,7 +43,7 @@ class MiniMap {
 		</div>`;
     const can = document.createElement("div");
     can.innerHTML = dom;
-    this.container = can.querySelector(".ve-minimap");
+    this.container = can.querySelector(".mm-minimap");
     this.editor.container.append(this.container);
     this.canvas = this.container.querySelector("canvas");
     this.ctx = this.canvas.getContext("2d");

@@ -8,7 +8,7 @@ import * as Utils from "./Utils";
 /**
  * @link
  */
-export interface VEditorOptions {
+export interface MMEditorOptions {
   dom: HTMLDivElement;
   hideAchor?: boolean;
   hideAchorLine?: boolean;
@@ -24,8 +24,8 @@ export interface VEditorOptions {
  * @class
  * @extends Utils.Event
  */
-class VEditor extends Utils.Event {
-  config: VEditorOptions;
+class MMEditor extends Utils.Event {
+  config: MMEditorOptions;
   dom: HTMLDivElement;
   svg: SVGSVGElement;
   paper: SVGGElement;
@@ -35,9 +35,9 @@ class VEditor extends Utils.Event {
   schema: Schema;
   minimap: Minimap;
   /**
-   * @param {VEditorOptions} options 配置项
+   * @param {MMEditorOptions} options 配置项
    */
-  constructor(config: VEditorOptions) {
+  constructor(config: MMEditorOptions) {
     super();
     this.config = Object.assign(
       {
@@ -64,11 +64,11 @@ class VEditor extends Utils.Event {
      * @property {Snap.Element} paper
      */
     this.paper = createSVGElement("g", this.svg) as SVGGElement;
-    this.paper.classList.add("ve-editor-paper");
+    this.paper.classList.add("mm-editor-paper");
     /**
      * @property {HTMLElement} container 实例dom
      */
-    this.container = this.dom.querySelector(".ve-editor");
+    this.container = this.dom.querySelector(".mm-editor");
     this.resize();
     /**
      * @property {Graph} graph 画布
@@ -92,9 +92,9 @@ class VEditor extends Utils.Event {
   }
 
   initDom(dom: HTMLDivElement): HTMLDivElement {
-    dom.innerHTML = `<div class="ve-editor ${this.config.mode || ""}" >
-				<div class="ve-editor-back" ></div>
-				<div class="ve-editor-svg" >
+    dom.innerHTML = `<div class="mm-editor ${this.config.mode || ""}" >
+				<div class="mm-editor-back" ></div>
+				<div class="mm-editor-svg" >
 					<svg  />
 				</div>
 			</div>`;
@@ -132,4 +132,4 @@ class VEditor extends Utils.Event {
     this.graph.render(this.schema.data);
   }
 }
-export default VEditor;
+export default MMEditor;

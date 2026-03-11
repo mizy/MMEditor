@@ -1,10 +1,10 @@
 import History from "./History";
 import dagre from "dagre";
 import { v1 as getUuid } from "uuid";
-import VEditor from "../VEditor";
+import MMEditor from "../MMEditor";
 import { AnyMap, Position } from "../Utils/types";
 
-export interface VEditorNode extends AnyMap {
+export interface MMEditorNode extends AnyMap {
   uuid?: string;
   type: string;
   x?: number;
@@ -16,7 +16,7 @@ export interface VEditorNode extends AnyMap {
   className?: string;
   linkPointsTypes?: Position[]
 }
-export type VEditorLine = {
+export type MMEditorLine = {
   type?: string;
   uuid?: string;
   from: string;
@@ -41,23 +41,23 @@ export type VEditorLine = {
     style?: AnyMap;
   };
 } & AnyMap;
-export interface VEditorData {
-  nodes: VEditorNode[];
-  lines: VEditorLine[];
+export interface MMEditorData {
+  nodes: MMEditorNode[];
+  lines: MMEditorLine[];
 }
-export interface VEditorSchema {
-  nodesMap: Record<string, VEditorNode>;
-  linesMap: Record<string, VEditorLine>;
+export interface MMEditorSchema {
+  nodesMap: Record<string, MMEditorNode>;
+  linesMap: Record<string, MMEditorLine>;
 }
 class Schema {
-  data: VEditorSchema;
-  editor: VEditor;
+  data: MMEditorSchema;
+  editor: MMEditor;
   history: History;
   /**
    *
-   * @param {VEditor} editor - VEditor实例
+   * @param {MMEditor} editor - MMEditor实例
    */
-  constructor(editor: VEditor) {
+  constructor(editor: MMEditor) {
     this.data = {
       nodesMap: {},
       linesMap: {},
@@ -130,8 +130,8 @@ class Schema {
     // 触发format事件，保存历史
     this.editor.graph.update();
     /**
-     * @event VEditor#format
-     * @property {{data:VEditorData}} data
+     * @event MMEditor#format
+     * @property {{data:MMEditorData}} data
      */
     this.editor.fire("format", { data: this.makeNowDataMap() });
   }
@@ -203,24 +203,24 @@ class Schema {
     return this.data;
   }
 
-  async setData(data: VEditorData) {
+  async setData(data: MMEditorData) {
     this.parseData(data); // 解析数据
     this.editor.graph.clearGraph();
     await this.renderData();
     /**
-     * @event VEditor#load
+     * @event MMEditor#load
      * @type {Object}
      */
     this.editor.fire("load", data);
   }
 
-  async setInitData(data: VEditorData) {
+  async setInitData(data: MMEditorData) {
     await this.setData(data);
     this.history.clear();
     this.history.push(this.data);
   }
 
-  parseData({ nodes = [], lines = [] }: VEditorData) {
+  parseData({ nodes = [], lines = [] }: MMEditorData) {
     let nodesMap = {};
     let linesMap = {};
     nodes.forEach((item) => {

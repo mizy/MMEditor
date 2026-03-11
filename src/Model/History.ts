@@ -1,4 +1,4 @@
-import Schema, { VEditorSchema } from "./Schema";
+import Schema, { MMEditorSchema } from "./Schema";
 
 /**
  * History
@@ -14,7 +14,7 @@ class History {
 
   /**
    */
-  push(data: VEditorSchema) {
+  push(data: MMEditorSchema) {
     const json = JSON.stringify(data).trim();
     const last = this.schemaList[this.index];
     if (last === json) { return }

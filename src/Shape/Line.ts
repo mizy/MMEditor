@@ -5,7 +5,7 @@ import Graph from "./Graph";
 import { SVGHelper } from "../Utils/svg";
 import Node, { InstanceNode, InstanceNodePoint } from "./Node";
 import { createSVGElement, setAttrs } from "../Utils/dom";
-import { VEditorLine } from "../Model/Schema";
+import { MMEditorLine } from "../Model/Schema";
 import Path from "../Utils/path";
 import { AnyMap, Position } from "../Utils/types";
 import ForceLine from './Lines/ForceLine';
@@ -15,7 +15,7 @@ export interface InstanceLine extends AnyMap {
   shape: SVGElement; //shapeDOM
   arrow: SVGElement; //arrowDOM
   label?: LabelInstance; //label instance
-  data: VEditorLine;
+  data: MMEditorLine;
   from: InstanceNodePoint;
   to: InstanceNodePoint;
   pathData: Path;
@@ -40,7 +40,7 @@ class Line {
   activeLine: InstanceLine;
   tempLine: {
     dom: SVGPathElement;
-    data: VEditorLine;
+    data: MMEditorLine;
   };
   tempLineRender = {
     render: (): SVGPathElement => {
@@ -54,7 +54,7 @@ class Line {
     },
     renderPath: (
       { fromX = 0, fromY = 0, x = 0, y = 0 },
-      line: { dom: SVGPathElement; data: VEditorLine }
+      line: { dom: SVGPathElement; data: MMEditorLine }
     ) => {
       setAttrs(line.dom, {
         d: `M${fromX} ${fromY}L${x} ${y}`,
@@ -68,7 +68,7 @@ class Line {
     this.lines = {};
     this.lineG = createSVGElement("g", this.paper) as SVGGElement;
     this.paper.prepend(this.lineG);
-    this.lineG.classList.add("ve-lines");
+    this.lineG.classList.add("mm-lines");
     this.allLinkPoints = [];
     this.shapes = {
       default: DefaultLine,
@@ -91,7 +91,7 @@ class Line {
   /**
    * 添加线
    */
-  addLine(data: VEditorLine) {
+  addLine(data: MMEditorLine) {
     /**
      * @event Graph#line:beforeadd
      */
@@ -118,7 +118,7 @@ class Line {
   /**
    * 添加线
    */
-  renderLine(lineData: VEditorLine): InstanceLine {
+  renderLine(lineData: MMEditorLine): InstanceLine {
     const key = lineData.uuid || getUuid();
     const { nodes } = this.node;
     const shape = this.shapes[lineData.type || "default"];
@@ -144,7 +144,7 @@ class Line {
     const arrow = shape.renderArrow(instanceLine);
     const g = SVGHelper.group(lineShape, arrow);
     setAttrs(lineShape, {
-      class: "ve-line-shape",
+      class: "mm-line-shape",
     });
     instanceLine.dom = g;
     instanceLine.shape = lineShape;
@@ -153,7 +153,7 @@ class Line {
       ? (instanceLine.arrow2 = shape.renderArrow2(instanceLine))
       : undefined;
     setAttrs(g, {
-      class: `ve-line ${lineData.className || ""}`,
+      class: `mm-line ${lineData.className || ""}`,
     });
     this.addToNodes(instanceLine);
     this.addLineEvents(instanceLine);
@@ -174,7 +174,7 @@ class Line {
   /**
    * 重绘某个线
    */
-  updateLine(data: VEditorLine | string, rerenderShape = true) {
+  updateLine(data: MMEditorLine | string, rerenderShape = true) {
     let lineId;
     let lineData;
     if (typeof data !== "string") {
@@ -201,7 +201,7 @@ class Line {
     if (rerenderShape) {
       this.shapes[type || "default"].render(line);
       line.arrow = this.shapes[type || "default"].renderArrow(line);
-      line.dom.setAttribute("class", `ve-line ${className || ""}`);
+      line.dom.setAttribute("class", `mm-line ${className || ""}`);
       Object.assign(
         line.data,
         lineData ? lineData : {},
@@ -216,7 +216,7 @@ class Line {
   /**
    * 删除线
    */
-  deleteLine(data: VEditorLine | string, notEvent = false, byNode = false) {
+  deleteLine(data: MMEditorLine | string, notEvent = false, byNode = false) {
     let line: InstanceLine;
     if (typeof data === "string") {
       line = this.lines[data];
@@ -302,7 +302,7 @@ class Line {
     if (hoverLinkPoint) {
       const toNodeId = hoverLinkPoint.nodeId;
       const toPoint = hoverLinkPoint.index;
-      const data: VEditorLine = Object.assign(this.tempLine.data, {
+      const data: MMEditorLine = Object.assign(this.tempLine.data, {
         uuid: getUuid(),
         to: toNodeId,
         toPoint,
@@ -332,7 +332,7 @@ class Line {
   /**
    * 渲染
    */
-  render(lines: Record<string, VEditorLine> = {}) {
+  render(lines: Record<string, MMEditorLine> = {}) {
     Object.keys(lines).map((key) => {
       const item = lines[key];
       this.renderLine(item);

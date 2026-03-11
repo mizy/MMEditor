@@ -1,4 +1,4 @@
-import { VEditorLine } from '../Model/Schema';
+import { MMEditorLine } from '../Model/Schema';
 
 export { SVGHelper } from "./svg";
 export * as dom from "./dom";
@@ -9,7 +9,7 @@ export { default as BezierLine } from "./BezierLine";
 export { default as Path } from "./path";
 
 // makeLineSort by line's direction & rank to make the same direction be close
-export function makeLineSort(links:VEditorLine[]) {
+export function makeLineSort(links:MMEditorLine[]) {
   // update link sort
   const sourceMap = {};
   links.forEach((link) => {

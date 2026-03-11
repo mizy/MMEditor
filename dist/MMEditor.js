@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["uuid", "dagre", "canvg"], factory);
 	else if(typeof exports === 'object')
-		exports["VEditor"] = factory(require("uuid"), require("dagre"), require("canvg"));
+		exports["MMEditor"] = factory(require("uuid"), require("dagre"), require("canvg"));
 	else
-		root["VEditor"] = factory(root["uuid"], root["dagre"], root["canvg"]);
+		root["MMEditor"] = factory(root["uuid"], root["dagre"], root["canvg"]);
 })(self, (__WEBPACK_EXTERNAL_MODULE__315__, __WEBPACK_EXTERNAL_MODULE__577__, __WEBPACK_EXTERNAL_MODULE__801__) => {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
@@ -35,12 +35,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `@keyframes dashing {
     stroke-dashoffset: 0;
   }
 }
-.ve-editor {
+.mm-editor {
   width: 100%;
   height: 100%;
   position: relative;
 }
-.ve-editor .ve-editor-back {
+.mm-editor .mm-editor-back {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -48,7 +48,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `@keyframes dashing {
   left: 0;
   top: 0;
 }
-.ve-editor .ve-minimap {
+.mm-editor .mm-minimap {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -59,7 +59,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `@keyframes dashing {
   width: 160px;
   height: 127px;
 }
-.ve-editor .ve-minimap .drag-rect {
+.mm-editor .mm-minimap .drag-rect {
   position: absolute;
   left: 0px;
   box-sizing: content-box;
@@ -68,7 +68,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `@keyframes dashing {
   cursor: pointer;
   transition: all 200ms ease;
 }
-.ve-editor .ve-minimap .drag-point {
+.mm-editor .mm-minimap .drag-point {
   width: 10px;
   height: 10px;
   border-radius: 5px;
@@ -79,105 +79,105 @@ ___CSS_LOADER_EXPORT___.push([module.id, `@keyframes dashing {
   bottom: -5px;
   cursor: nwse-resize;
 }
-.ve-editor > .ve-editor-svg {
+.mm-editor > .mm-editor-svg {
   cursor: grab;
   width: 100%;
   height: 100%;
   position: absolute;
 }
-.ve-editor > .ve-editor-svg svg {
+.mm-editor > .mm-editor-svg svg {
   position: absolute;
   left: 0;
   top: 0;
   outline: none;
 }
-.ve-editor > .ve-editor-svg .ve-node .ve-node-shape:focus {
+.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:focus {
   outline: none;
 }
-.ve-editor > .ve-editor-svg .ve-node:hover .ve-link-points,
-.ve-editor > .ve-editor-svg .ve-node.active .ve-link-points {
+.mm-editor > .mm-editor-svg .mm-node:hover .mm-link-points,
+.mm-editor > .mm-editor-svg .mm-node.active .mm-link-points {
   display: block;
 }
-.ve-editor > .ve-editor-svg .ve-node .ve-link-points {
+.mm-editor > .mm-editor-svg .mm-node .mm-link-points {
   cursor: crosshair;
   display: none;
 }
-.ve-editor > .ve-editor-svg .ve-node .ve-link-points:hover,
-.ve-editor > .ve-editor-svg .ve-node .ve-link-points.hover {
+.mm-editor > .mm-editor-svg .mm-node .mm-link-points:hover,
+.mm-editor > .mm-editor-svg .mm-node .mm-link-points.hover {
   fill: #4c79ff;
   cursor: crosshair;
   display: block;
 }
-.ve-editor > .ve-editor-svg .ve-node.active .icon-node {
+.mm-editor > .mm-editor-svg .mm-node.active .icon-node {
   transition: stroke 400ms;
   stroke: #4c79ff;
 }
-.ve-editor > .ve-editor-svg .ve-node .ve-node-shape {
+.mm-editor > .mm-editor-svg .mm-node .mm-node-shape {
   cursor: move;
 }
-.ve-editor > .ve-editor-svg .ve-node .ve-node-shape:hover > .icon-node {
+.mm-editor > .mm-editor-svg .mm-node .mm-node-shape:hover > .icon-node {
   stroke: #4c79ff;
 }
-.ve-editor > .ve-editor-svg .ve-node .ve-node-shape.success .icon-node {
+.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.success .icon-node {
   stroke: green;
   fill: #fff;
 }
-.ve-editor > .ve-editor-svg .ve-node .ve-node-shape.error .icon-node {
+.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.error .icon-node {
   stroke: red;
 }
-.ve-editor > .ve-editor-svg .ve-node .ve-node-shape.running .icon-node {
+.mm-editor > .mm-editor-svg .mm-node .mm-node-shape.running .icon-node {
   stroke: #4c79ff;
 }
-.ve-editor > .ve-editor-svg .ve-line .ve-line-path {
+.mm-editor > .mm-editor-svg .mm-line .mm-line-path {
   transition: stroke-dasharray 300ms ease-out;
 }
-.ve-editor > .ve-editor-svg .ve-line .ve-shdow-path {
+.mm-editor > .mm-editor-svg .mm-line .mm-shdow-path {
   stroke: transparent;
   stroke-width: 5px;
   fill: none;
 }
-.ve-editor > .ve-editor-svg .ve-line:hover .ve-line-shape {
+.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-shape {
   opacity: 0.5;
 }
-.ve-editor > .ve-editor-svg .ve-line:hover .ve-line-arrow {
+.mm-editor > .mm-editor-svg .mm-line:hover .mm-line-arrow {
   opacity: 0.5;
 }
-.ve-editor > .ve-editor-svg .ve-line.active .ve-line-arrow {
+.mm-editor > .mm-editor-svg .mm-line.active .mm-line-arrow {
   stroke: #4c79ff;
 }
-.ve-editor > .ve-editor-svg .ve-line.active path {
+.mm-editor > .mm-editor-svg .mm-line.active path {
   stroke: #4c79ff;
 }
-.ve-editor > .ve-editor-svg .ve-line.running .ve-line-path {
+.mm-editor > .mm-editor-svg .mm-line.running .mm-line-path {
   stroke-dasharray: 5 !important;
   animation: dashing 5s linear infinite;
 }
-.ve-editor > .ve-editor-svg .ve-line .ve-line-shape {
+.mm-editor > .mm-editor-svg .mm-line .mm-line-shape {
   cursor: pointer;
 }
-.ve-editor > .ve-editor-svg .ve-line .ve-line-arrow {
+.mm-editor > .mm-editor-svg .mm-line .mm-line-arrow {
   cursor: crosshair;
 }
-.ve-editor > .ve-editor-svg .ve-line .ve-line-label text {
+.mm-editor > .mm-editor-svg .mm-line .mm-line-label text {
   text-anchor: middle;
 }
-.ve-editor > .ve-editor-svg .anchor-line {
+.mm-editor > .mm-editor-svg .anchor-line {
   stroke: #4c79ff;
 }
-.ve-editor > .ve-editor-svg .ve-paper-lineing .ve-link-points {
+.mm-editor > .mm-editor-svg .mm-paper-lineing .mm-link-points {
   display: block;
 }
-.ve-editor > .ve-editor-html {
+.mm-editor > .mm-editor-html {
   width: 100%;
   height: 100%;
   position: absolute;
 }
-.ve-editor .anchor-back {
+.mm-editor .anchor-back {
   position: absolute;
   top: 0;
   left: 0;
 }
-.ve-node-wrapper {
+.mm-node-wrapper {
   border: 1px solid #08c;
   border-radius: 8px;
   box-sizing: border-box;
@@ -8425,6 +8425,121 @@ module.exports = styleTagTransform;
 
 /***/ },
 
+/***/ 229
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const tslib_1 = __webpack_require__(635);
+const Graph_1 = tslib_1.__importDefault(__webpack_require__(798));
+const Controller_1 = tslib_1.__importDefault(__webpack_require__(400));
+const Schema_1 = tslib_1.__importDefault(__webpack_require__(507));
+const Minimap_1 = tslib_1.__importDefault(__webpack_require__(140));
+__webpack_require__(667);
+const dom_1 = __webpack_require__(26);
+const Utils = tslib_1.__importStar(__webpack_require__(586));
+/**
+ * @class
+ * @extends Utils.Event
+ */
+class MMEditor extends Utils.Event {
+    /**
+     * @param {MMEditorOptions} options 配置项
+     */
+    constructor(config) {
+        super();
+        this.config = Object.assign({
+            hideAchor: false,
+            hideAchorLine: false,
+            anchorDistance: 5,
+            showBackGrid: true,
+            showMiniMap: false,
+            mode: undefined,
+            dagreOption: {},
+        }, config);
+        if (!config.dom)
+            return;
+        /**
+         * @property {HTMLElement} dom 容器
+         */
+        this.dom = this.initDom(config.dom);
+        /**
+         * @property {Snap.Element} svg
+         */
+        this.svg = this.dom.querySelector("svg");
+        /**
+         * @property {Snap.Element} paper
+         */
+        this.paper = (0, dom_1.createSVGElement)("g", this.svg);
+        this.paper.classList.add("mm-editor-paper");
+        /**
+         * @property {HTMLElement} container 实例dom
+         */
+        this.container = this.dom.querySelector(".mm-editor");
+        this.resize();
+        /**
+         * @property {Graph} graph 画布
+         */
+        this.graph = new Graph_1.default(this);
+        /**
+         * @property {Controller} controller 控制器
+         */
+        this.controller = new Controller_1.default(this);
+        /**
+         * @property {Schema} schema 数据管理器
+         */
+        this.schema = new Schema_1.default(this);
+        if (this.config.showMiniMap) {
+            /**
+             * @property {Minimap?} minimap 小地图
+             */
+            this.minimap = new Minimap_1.default(this);
+            this.minimap.init();
+        }
+    }
+    initDom(dom) {
+        dom.innerHTML = `<div class="mm-editor ${this.config.mode || ""}" >
+				<div class="mm-editor-back" ></div>
+				<div class="mm-editor-svg" >
+					<svg  />
+				</div>
+			</div>`;
+        return dom;
+    }
+    resize() {
+        const { width, height } = this.config;
+        (0, dom_1.setAttrs)(this.svg, {
+            width: width || "100%",
+            height: height || "100%",
+        });
+    }
+    /**
+     * destroy
+     */
+    destroy() {
+        this.minimap && this.minimap.destroy();
+        this.graph.destroy();
+        this.graph = undefined;
+        this.svg.remove();
+        this.dom.innerHTML = undefined;
+        this.controller.clear();
+        this.controller = undefined;
+        this.schema = undefined;
+        this.clear();
+    }
+    /**
+     * repaint
+     */
+    repaint() {
+        this.graph.clearGraph();
+        this.graph.render(this.schema.data);
+    }
+}
+exports["default"] = MMEditor;
+
+
+/***/ },
+
 /***/ 666
 (__unused_webpack_module, exports) {
 
@@ -8509,7 +8624,7 @@ const uuid_1 = __webpack_require__(315);
 class Schema {
     /**
      *
-     * @param {VEditor} editor - VEditor实例
+     * @param {MMEditor} editor - MMEditor实例
      */
     constructor(editor) {
         this.data = {
@@ -8576,8 +8691,8 @@ class Schema {
         // 触发format事件，保存历史
         this.editor.graph.update();
         /**
-         * @event VEditor#format
-         * @property {{data:VEditorData}} data
+         * @event MMEditor#format
+         * @property {{data:MMEditorData}} data
          */
         this.editor.fire("format", { data: this.makeNowDataMap() });
     }
@@ -8641,7 +8756,7 @@ class Schema {
             this.editor.graph.clearGraph();
             yield this.renderData();
             /**
-             * @event VEditor#load
+             * @event MMEditor#load
              * @type {Object}
              */
             this.editor.fire("load", data);
@@ -8770,7 +8885,7 @@ class MiniMap {
         this.scale = minimap.scale || 10;
     }
     init() {
-        const dom = `<div class="ve-minimap" >
+        const dom = `<div class="mm-minimap" >
 			<canvas width="100%" height="100%"></canvas>
 			<div class="drag-rect" style="left:${this.padding}px;top:${this.padding}px">
 				<div class="drag-point"></div>
@@ -8778,7 +8893,7 @@ class MiniMap {
 		</div>`;
         const can = document.createElement("div");
         can.innerHTML = dom;
-        this.container = can.querySelector(".ve-minimap");
+        this.container = can.querySelector(".mm-minimap");
         this.editor.container.append(this.container);
         this.canvas = this.container.querySelector("canvas");
         this.ctx = this.canvas.getContext("2d");
@@ -9129,7 +9244,7 @@ class Graph extends Utils.Event {
         }
     }
     addBack() {
-        this.editor.container.querySelector(".ve-editor-back").style.backgroundImage = `url(${backSvg})`;
+        this.editor.container.querySelector(".mm-editor-back").style.backgroundImage = `url(${backSvg})`;
     }
     listenEvents() {
         this.on("node:move", ({ node }) => {
@@ -9146,11 +9261,11 @@ class Graph extends Utils.Event {
         document.addEventListener("keydown", this.onKeyDown);
         this.on("line:drag", () => {
             this.linkStatus = "lineing";
-            this.editor.paper.classList.add("ve-paper-lineing");
+            this.editor.paper.classList.add("mm-paper-lineing");
         });
         this.on("line:drop", () => {
             this.linkStatus = "none";
-            this.editor.paper.classList.remove("ve-paper-lineing");
+            this.editor.paper.classList.remove("mm-paper-lineing");
         });
     }
     render(data) {
@@ -9177,14 +9292,14 @@ class Graph extends Utils.Event {
         this.fire("update");
     }
     initDefs() {
-        if (document.getElementById("ve-svg-defs")) {
-            this.shadow = document.getElementById("ve-svg-defs");
+        if (document.getElementById("mm-svg-defs")) {
+            this.shadow = document.getElementById("mm-svg-defs");
             return;
         }
         ;
-        this.shadow = (0, dom_1.svgWrapper)(`<svg id="ve-svg-defs" style="position:absolute;left:-9999px;top:-9999px;" xmlns="http://www.w3.org/2000/svg">
+        this.shadow = (0, dom_1.svgWrapper)(`<svg id="mm-svg-defs" style="position:absolute;left:-9999px;top:-9999px;" xmlns="http://www.w3.org/2000/svg">
       <defs>
-			<filter id="ve-black-shadow" >
+			<filter id="mm-black-shadow" >
                 <feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur>
                 <feGaussianBlur stdDeviation="3" />
                 <feOffset dx="0" dy="0" result="offsetblur"></feOffset>
@@ -9413,7 +9528,7 @@ class Line {
         this.lines = {};
         this.lineG = (0, dom_1.createSVGElement)("g", this.paper);
         this.paper.prepend(this.lineG);
-        this.lineG.classList.add("ve-lines");
+        this.lineG.classList.add("mm-lines");
         this.allLinkPoints = [];
         this.shapes = {
             default: Line_1.default,
@@ -9485,7 +9600,7 @@ class Line {
         const arrow = shape.renderArrow(instanceLine);
         const g = svg_1.SVGHelper.group(lineShape, arrow);
         (0, dom_1.setAttrs)(lineShape, {
-            class: "ve-line-shape",
+            class: "mm-line-shape",
         });
         instanceLine.dom = g;
         instanceLine.shape = lineShape;
@@ -9494,7 +9609,7 @@ class Line {
             ? (instanceLine.arrow2 = shape.renderArrow2(instanceLine))
             : undefined;
         (0, dom_1.setAttrs)(g, {
-            class: `ve-line ${lineData.className || ""}`,
+            class: `mm-line ${lineData.className || ""}`,
         });
         this.addToNodes(instanceLine);
         this.addLineEvents(instanceLine);
@@ -9532,7 +9647,7 @@ class Line {
         if (rerenderShape) {
             this.shapes[type || "default"].render(line);
             line.arrow = this.shapes[type || "default"].renderArrow(line);
-            line.dom.setAttribute("class", `ve-line ${className || ""}`);
+            line.dom.setAttribute("class", `mm-line ${className || ""}`);
             Object.assign(line.data, lineData ? lineData : {});
         }
         else {
@@ -9828,7 +9943,7 @@ const ForceLine = Object.assign(Object.assign({}, Line_1.default), { endSpace: 1
         const matrix = gl_matrix_1.mat2d.create();
         gl_matrix_1.mat2d.translate(matrix, matrix, [coord.x, coord.y]);
         gl_matrix_1.mat2d.rotate(matrix, matrix, angle);
-        (0, dom_1.setAttrs)(path, Object.assign({ class: "ve-line-arrow", d: pathString, fill: "rgba(178,190,205,0.7)", transform: `matrix(${Array.from(matrix).join(",")})` }, line.data.arrowStyle));
+        (0, dom_1.setAttrs)(path, Object.assign({ class: "mm-line-arrow", d: pathString, fill: "rgba(178,190,205,0.7)", transform: `matrix(${Array.from(matrix).join(",")})` }, line.data.arrowStyle));
         return path;
     },
     checkNewLine(data) {
@@ -9867,7 +9982,7 @@ const DefaultLine = {
         const shadowPath = line.shadowPath
             ? line.shadowPath
             : (line.shadowPath = svg_1.SVGHelper.path());
-        (0, dom_1.setAttrs)(path, Object.assign({ d: pathString, class: "ve-line-path", "stroke-dasharray": data.width || "10", fill: "none", "stroke-width": 2, "pointer-events": "visiblepainted", stroke: "rgba(178,190,205,0.7)" }, (data.style || {})));
+        (0, dom_1.setAttrs)(path, Object.assign({ d: pathString, class: "mm-line-path", "stroke-dasharray": data.width || "10", fill: "none", "stroke-width": 2, "pointer-events": "visiblepainted", stroke: "rgba(178,190,205,0.7)" }, (data.style || {})));
         (0, dom_1.setAttrs)(shadowPath, {
             d: pathString,
             stroke: "transparent",
@@ -9875,7 +9990,7 @@ const DefaultLine = {
             "pointer-events": "visiblestroke",
         });
         line.pathData = new Utils_1.Path(pathString);
-        shadowPath.setAttribute("class", "ve-shdow-path");
+        shadowPath.setAttribute("class", "mm-shdow-path");
         (0, dom_1.animate)(10, 0, (val) => (0, dom_1.setAttrs)(path, {
             "stroke-dasharray": `${val}`,
         }), 300);
@@ -9997,7 +10112,7 @@ const DefaultLine = {
         const matrix = gl_matrix_1.mat2d.create();
         gl_matrix_1.mat2d.translate(matrix, matrix, [to.x, to.y]);
         gl_matrix_1.mat2d.rotate(matrix, matrix, angle);
-        (0, dom_1.setAttrs)(path, Object.assign({ class: "ve-line-arrow", d: pathString, fill: ((_c = data.data) === null || _c === void 0 ? void 0 : _c.arrowColor) || "rgba(178,190,205,0.7)", transform: `matrix(${Array.from(matrix).join(",")})` }, line.data.arrowStyle));
+        (0, dom_1.setAttrs)(path, Object.assign({ class: "mm-line-arrow", d: pathString, fill: ((_c = data.data) === null || _c === void 0 ? void 0 : _c.arrowColor) || "rgba(178,190,205,0.7)", transform: `matrix(${Array.from(matrix).join(",")})` }, line.data.arrowStyle));
         return path;
     },
     /** 是否渲染文字
@@ -10061,7 +10176,7 @@ const DefaultLine = {
             ry: 5,
         });
         (0, dom_1.setAttrs)(labelGroup, {
-            class: "ve-line-label",
+            class: "mm-line-label",
             "data-label": encodeURI(totalLabel),
         });
         //fix text vertical middle
@@ -10246,7 +10361,7 @@ class Node {
         this.nodes = {};
         this.paper = graph.editor.paper;
         this.nodeG = (0, dom_1.createSVGElement)("g", this.paper);
-        this.nodeG.classList.add("ve-nodes");
+        this.nodeG.classList.add("mm-nodes");
         this.listenEvent();
         this.actives = {};
         this.shapes = {
@@ -10322,8 +10437,8 @@ class Node {
         node.shape = nodeShape;
         node.dom = dom;
         node.linkPointsTypes = item.linkPointsTypes;
-        nodeShape.classList.add("ve-node-shape");
-        dom.setAttribute("class", `ve-node ${item.className || ""}`);
+        nodeShape.classList.add("mm-node-shape");
+        dom.setAttribute("class", `mm-node ${item.className || ""}`);
         dom.setAttribute("data-id", key);
         dom.setAttribute("transform", `translate(${item.x || 0},${item.y || 0})`);
         this.nodeG.appendChild(dom);
@@ -10362,7 +10477,7 @@ class Node {
             node.dom.prepend(nodeShape);
         }
         (0, dom_1.setAttrs)(node.dom, {
-            class: `ve-node ${nodeData.className || ""} ${this.actives[uuid] ? "active" : ""}`,
+            class: `mm-node ${nodeData.className || ""} ${this.actives[uuid] ? "active" : ""}`,
         });
         node.dom.setAttribute("transform", `translate(${nodeData.x} ,${nodeData.y})`);
         node.data = nodeData;
@@ -10528,7 +10643,7 @@ class Node {
             node = nodes[key];
             node.dom.classList.add("active");
             (0, dom_1.setAttrs)(node.shape, {
-                filter: "url(#ve-black-shadow)",
+                filter: "url(#mm-black-shadow)",
             });
             this.actives[node.data.uuid] = node;
         }
@@ -10627,7 +10742,7 @@ const DefaultNode = {
             cy: y,
             fill: "#fff",
             stroke: "#08c",
-            class: "ve-link-points",
+            class: "mm-link-points",
         });
         if (!instance.data) {
             instance.data = linkPoint;
@@ -10673,7 +10788,7 @@ const DomNode = {
             shape.remove();
         }
         const dom = (0, dom_1.svgWrapper)(`<foreignObject width=${data.width} height=${data.height} >
-		<div style="width:${data.width}px;height:${data.height}" class="ve-node-wrapper">
+		<div style="width:${data.width}px;height:${data.height}" class="mm-node-wrapper">
 			<div class="node-text">${data.name}</div>
 		</div>
 		</foreignObject>`);
@@ -11803,144 +11918,29 @@ exports.multiple = multiple;
 
 /***/ },
 
-/***/ 95
-(__unused_webpack_module, exports, __webpack_require__) {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const tslib_1 = __webpack_require__(635);
-const Graph_1 = tslib_1.__importDefault(__webpack_require__(798));
-const Controller_1 = tslib_1.__importDefault(__webpack_require__(400));
-const Schema_1 = tslib_1.__importDefault(__webpack_require__(507));
-const Minimap_1 = tslib_1.__importDefault(__webpack_require__(140));
-__webpack_require__(667);
-const dom_1 = __webpack_require__(26);
-const Utils = tslib_1.__importStar(__webpack_require__(586));
-/**
- * @class
- * @extends Utils.Event
- */
-class VEditor extends Utils.Event {
-    /**
-     * @param {VEditorOptions} options 配置项
-     */
-    constructor(config) {
-        super();
-        this.config = Object.assign({
-            hideAchor: false,
-            hideAchorLine: false,
-            anchorDistance: 5,
-            showBackGrid: true,
-            showMiniMap: false,
-            mode: undefined,
-            dagreOption: {},
-        }, config);
-        if (!config.dom)
-            return;
-        /**
-         * @property {HTMLElement} dom 容器
-         */
-        this.dom = this.initDom(config.dom);
-        /**
-         * @property {Snap.Element} svg
-         */
-        this.svg = this.dom.querySelector("svg");
-        /**
-         * @property {Snap.Element} paper
-         */
-        this.paper = (0, dom_1.createSVGElement)("g", this.svg);
-        this.paper.classList.add("ve-editor-paper");
-        /**
-         * @property {HTMLElement} container 实例dom
-         */
-        this.container = this.dom.querySelector(".ve-editor");
-        this.resize();
-        /**
-         * @property {Graph} graph 画布
-         */
-        this.graph = new Graph_1.default(this);
-        /**
-         * @property {Controller} controller 控制器
-         */
-        this.controller = new Controller_1.default(this);
-        /**
-         * @property {Schema} schema 数据管理器
-         */
-        this.schema = new Schema_1.default(this);
-        if (this.config.showMiniMap) {
-            /**
-             * @property {Minimap?} minimap 小地图
-             */
-            this.minimap = new Minimap_1.default(this);
-            this.minimap.init();
-        }
-    }
-    initDom(dom) {
-        dom.innerHTML = `<div class="ve-editor ${this.config.mode || ""}" >
-				<div class="ve-editor-back" ></div>
-				<div class="ve-editor-svg" >
-					<svg  />
-				</div>
-			</div>`;
-        return dom;
-    }
-    resize() {
-        const { width, height } = this.config;
-        (0, dom_1.setAttrs)(this.svg, {
-            width: width || "100%",
-            height: height || "100%",
-        });
-    }
-    /**
-     * destroy
-     */
-    destroy() {
-        this.minimap && this.minimap.destroy();
-        this.graph.destroy();
-        this.graph = undefined;
-        this.svg.remove();
-        this.dom.innerHTML = undefined;
-        this.controller.clear();
-        this.controller = undefined;
-        this.schema = undefined;
-        this.clear();
-    }
-    /**
-     * repaint
-     */
-    repaint() {
-        this.graph.clearGraph();
-        this.graph.render(this.schema.data);
-    }
-}
-exports["default"] = VEditor;
-
-
-/***/ },
-
 /***/ 156
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.VEditor = exports.Event = exports.Minimap = exports.Controller = exports.AnchorLine = exports.History = exports.Graph = exports.DefaultNode = exports.DefaultLine = exports.Schema = exports.Line = exports.Node = exports.Utils = void 0;
+exports.MMEditor = exports.Event = exports.Minimap = exports.Controller = exports.AnchorLine = exports.History = exports.Graph = exports.DefaultNode = exports.DefaultLine = exports.Schema = exports.Line = exports.Node = exports.Utils = void 0;
 const tslib_1 = __webpack_require__(635);
-const VEditor_1 = tslib_1.__importDefault(__webpack_require__(95));
-exports.VEditor = VEditor_1.default;
+const MMEditor_1 = tslib_1.__importDefault(__webpack_require__(229));
+exports.MMEditor = MMEditor_1.default;
 exports.Utils = tslib_1.__importStar(__webpack_require__(586));
 exports.Node = tslib_1.__importStar(__webpack_require__(420));
 exports.Line = tslib_1.__importStar(__webpack_require__(326));
 exports.Schema = tslib_1.__importStar(__webpack_require__(507));
 exports.DefaultLine = tslib_1.__importStar(__webpack_require__(346));
 exports.DefaultNode = tslib_1.__importStar(__webpack_require__(740));
-tslib_1.__exportStar(__webpack_require__(95), exports);
+tslib_1.__exportStar(__webpack_require__(229), exports);
 exports.Graph = tslib_1.__importStar(__webpack_require__(798));
 exports.History = tslib_1.__importStar(__webpack_require__(666));
 exports.AnchorLine = tslib_1.__importStar(__webpack_require__(343));
 exports.Controller = tslib_1.__importStar(__webpack_require__(400));
 exports.Minimap = tslib_1.__importStar(__webpack_require__(140));
 exports.Event = tslib_1.__importStar(__webpack_require__(238));
-exports["default"] = VEditor_1.default;
+exports["default"] = MMEditor_1.default;
 
 
 /***/ },

@@ -1,4 +1,4 @@
-import VEditor from "../VEditor";
+import MMEditor from "../MMEditor";
 import { setAttrs, setTransform } from "./dom";
 import * as Utils from ".";
 /**
@@ -7,7 +7,7 @@ import * as Utils from ".";
  * @extends Event
  */
 class Controller extends Utils.Event {
-  editor: VEditor;
+  editor: MMEditor;
   paper: SVGGElement;
   svg: SVGSVGElement;
   scaleRatio: number = 0.01;
@@ -18,7 +18,7 @@ class Controller extends Utils.Event {
   status: string;
   startPosition: { x: any; y: any };
   disableScroll: boolean = false;
-  constructor(editor: VEditor) {
+  constructor(editor: MMEditor) {
     super();
     this.editor = editor;
     this.paper = editor.paper;

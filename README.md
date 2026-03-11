@@ -11,9 +11,9 @@ npm install mmeditor
 ## Quick Start
 
 ```typescript
-import VEditor from "mmeditor";
+import MMEditor from "mmeditor";
 
-const editor = new VEditor({ dom: document.getElementById("root") });
+const editor = new MMEditor({ dom: document.getElementById("root") });
 
 // add node
 editor.graph.node.addNode({

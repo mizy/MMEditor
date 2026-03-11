@@ -2,14 +2,14 @@ import React, { Fragment, PureComponent } from 'react';
 import ReactDom from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.less';
-import VEditor, { Utils } from '../src/index.ts';
+import MMEditor, { Utils } from '../src/index.ts';
 import LeftBar from './Content/LeftBar';
 import RightBar from './Content/RightBar';
 import TopBar from './Content/TopBar';
 import { message, Popover, Drawer, Modal } from 'antd';
 import RightMenu from './Content/RightMenu';
 import testdata from './testdata';
-window.VEditor = VEditor;
+window.MMEditor = MMEditor;
 const { SVGHelper } = Utils;
 class Editor extends PureComponent {
   state = {};
@@ -61,7 +61,7 @@ class Editor extends PureComponent {
 
   // 初始化editor
   async componentDidMount() {
-    this.editor = new VEditor({ dom: this.editorRef, showMiniMap: true }); // 只读模式设置 mode:"view"
+    this.editor = new MMEditor({ dom: this.editorRef, showMiniMap: true }); // 只读模式设置 mode:"view"
     this.initEditorShape();
     this.editor.graph.line.shapes['default'].checkNewLine = this.checkNewLine;
     await this.editor.schema.setInitData(testdata);
@@ -251,7 +251,7 @@ class Editor extends PureComponent {
           <div
             onDragOver={this.onDragOver}
             onDrop={this.onDrop}
-            className="job-ve-editor"
+            className="job-mm-editor"
             ref={ref => {
               this.editorRef = ref;
             }}

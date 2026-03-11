@@ -6,7 +6,7 @@ import { InstanceNodePoint } from "../Node";
 import BezierLine from "../../Utils/BezierLine";
 import { mat2d } from "gl-matrix";
 import { AnyMap } from "../../Utils/types";
-import { VEditorLine } from "../../Model/Schema";
+import { MMEditorLine } from "../../Model/Schema";
 import DefaultLine, { LineRender } from './Line';
 import { getVectorLength, normalize } from '../../Utils/vector';
 import { Path } from '../../Utils';
@@ -122,7 +122,7 @@ const ForceLine: LineRender = {
     mat2d.translate(matrix, matrix, [coord.x, coord.y]);
     mat2d.rotate(matrix, matrix, angle);
     setAttrs(path, {
-      class: "ve-line-arrow",
+      class: "mm-line-arrow",
       d: pathString,
       fill: "rgba(178,190,205,0.7)",
       transform: `matrix(${Array.from(matrix).join(",")})`,
@@ -131,7 +131,7 @@ const ForceLine: LineRender = {
     return path;
   },
 
-  checkNewLine(data: VEditorLine): boolean {
+  checkNewLine(data: MMEditorLine): boolean {
     return true;
   },
 };

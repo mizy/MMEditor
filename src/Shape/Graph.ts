@@ -1,22 +1,22 @@
 import Node from "./Node";
 import Line from "./Line";
 import AnchorLine from "./AnchorLine";
-import VEditor from "../VEditor";
+import MMEditor from "../MMEditor";
 import { setAttrs, svgWrapper } from "../Utils/dom";
-import { VEditorSchema } from "../Model/Schema";
+import { MMEditorSchema } from "../Model/Schema";
 import * as Utils from "../Utils";
 const backSvg = require("../back.svg").default;
 
 class Graph extends Utils.Event {
-  editor: VEditor;
+  editor: MMEditor;
   node: Node;
   line: Line;
   anchorLine: AnchorLine;
   linkStatus: string;
-  data: VEditorSchema;
+  data: MMEditorSchema;
   shadow: SVGSVGElement;
 
-  constructor(editor: VEditor) {
+  constructor(editor: MMEditor) {
     super();
     this.editor = editor;
     this.node = new Node(this);
@@ -33,7 +33,7 @@ class Graph extends Utils.Event {
   addBack() {
     (
       this.editor.container.querySelector(
-        ".ve-editor-back"
+        ".mm-editor-back"
       ) as HTMLDivElement
     ).style.backgroundImage = `url(${backSvg})`;
   }
@@ -56,11 +56,11 @@ class Graph extends Utils.Event {
 
     this.on("line:drag", () => {
       this.linkStatus = "lineing";
-      this.editor.paper.classList.add("ve-paper-lineing");
+      this.editor.paper.classList.add("mm-paper-lineing");
     });
     this.on("line:drop", () => {
       this.linkStatus = "none";
-      this.editor.paper.classList.remove("ve-paper-lineing");
+      this.editor.paper.classList.remove("mm-paper-lineing");
     });
   }
 
@@ -131,7 +131,7 @@ class Graph extends Utils.Event {
     return false;
   };
 
-  async render(data: VEditorSchema) {
+  async render(data: MMEditorSchema) {
     /**
      * @event Graph#beforeRender 渲染之前触发
      */
@@ -158,14 +158,14 @@ class Graph extends Utils.Event {
 
 
   initDefs() {
-    if (document.getElementById("ve-svg-defs")) {
-      this.shadow = document.getElementById("ve-svg-defs") as unknown as SVGSVGElement;
+    if (document.getElementById("mm-svg-defs")) {
+      this.shadow = document.getElementById("mm-svg-defs") as unknown as SVGSVGElement;
       return;
     };
     this.shadow = svgWrapper(
-      `<svg id="ve-svg-defs" style="position:absolute;left:-9999px;top:-9999px;" xmlns="http://www.w3.org/2000/svg">
+      `<svg id="mm-svg-defs" style="position:absolute;left:-9999px;top:-9999px;" xmlns="http://www.w3.org/2000/svg">
       <defs>
-			<filter id="ve-black-shadow" >
+			<filter id="mm-black-shadow" >
                 <feGaussianBlur in="SourceAlpha" stdDeviation="4"></feGaussianBlur>
                 <feGaussianBlur stdDeviation="3" />
                 <feOffset dx="0" dy="0" result="offsetblur"></feOffset>

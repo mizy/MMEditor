@@ -5,9 +5,9 @@ module.exports = (env) => ({
     app: "./src/index.ts"
   },
   output: {
-    library: "VEditor",
+    library: "MMEditor",
     libraryTarget: "umd",
-    filename: env.browser ? "VEditor.browser.js" : "VEditor.js"
+    filename: env.browser ? "MMEditor.browser.js" : "MMEditor.js"
   },
   resolve: {
     extensions: ['.ts', '.js'],

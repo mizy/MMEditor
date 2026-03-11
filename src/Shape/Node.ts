@@ -9,14 +9,14 @@ import {
   setTransform,
   svgWrapper,
 } from "../Utils/dom";
-import { VEditorNode } from "../Model/Schema";
+import { MMEditorNode } from "../Model/Schema";
 import { SVGHelper } from "../Utils/svg";
 import { AnyMap, Position } from "../Utils/types";
 export interface InstanceNode {
   dom: SVGGElement;
   shape?: SVGGElement;
   shapeBBox?: DOMRect;
-  data: VEditorNode;
+  data: MMEditorNode;
   toLines: Set<string>;
   fromLines: Set<string>;
   linkPointsTypes?: Position[];
@@ -62,7 +62,7 @@ class Node {
     this.nodes = {};
     this.paper = graph.editor.paper;
     this.nodeG = createSVGElement("g", this.paper) as SVGGElement;
-    this.nodeG.classList.add("ve-nodes");
+    this.nodeG.classList.add("mm-nodes");
     this.listenEvent();
     this.actives = {};
     this.shapes = {
@@ -111,7 +111,7 @@ class Node {
     this.shapes[type] = Object.assign({}, this.shapes[extend], data);
   }
 
-  render(data: Record<string, VEditorNode> = {}) {
+  render(data: Record<string, MMEditorNode> = {}) {
     return new Promise((resolve, reject) => {
       this.tmpLinkPoints = []; //先缓存获取所有节点渲染后触发，避免重绘
       Object.keys(data).map((key) => {
@@ -131,7 +131,7 @@ class Node {
    * 添加节点
    * @param {object} data
    */
-  addNode = (data: VEditorNode) => {
+  addNode = (data: MMEditorNode) => {
     if (!data.uuid) {
       data.uuid = uuid();
       this.graph.editor.fire("node:makeuuid", data);
@@ -152,7 +152,7 @@ class Node {
    * 删除节点
    *  @param {object} data
    */
-  deleteNode = (input: VEditorNode | string, noEvent: boolean = false) => {
+  deleteNode = (input: MMEditorNode | string, noEvent: boolean = false) => {
     const uuid = typeof input === "string" ? input : input.uuid;
     const deleteNode = this.nodes[uuid] as InstanceNode;
     const nodeRender = this.shapes[deleteNode.data.type || "default"];
@@ -181,7 +181,7 @@ class Node {
   /**
    * 渲染新节点
    */
-  renderNode(item: VEditorNode): InstanceNode {
+  renderNode(item: MMEditorNode): InstanceNode {
     const key = item.uuid;
     const shape = this.shapes[item.type || "default"];
     shape.paper = this.paper;
@@ -198,8 +198,8 @@ class Node {
     node.shape = nodeShape;
     node.dom = dom;
     node.linkPointsTypes = item.linkPointsTypes;
-    nodeShape.classList.add("ve-node-shape");
-    dom.setAttribute("class", `ve-node ${item.className || ""}`);
+    nodeShape.classList.add("mm-node-shape");
+    dom.setAttribute("class", `mm-node ${item.className || ""}`);
     dom.setAttribute("data-id", key);
     dom.setAttribute(
       "transform",
@@ -224,8 +224,8 @@ class Node {
   /**
    * 根据数据更新节点位置
    */
-  updateNode(input: VEditorNode | string, rerenderShape = false) {
-    let nodeData: VEditorNode;
+  updateNode(input: MMEditorNode | string, rerenderShape = false) {
+    let nodeData: MMEditorNode;
     if (typeof input !== "object") {
       nodeData = this.nodes[input].data;
     } else {
@@ -241,7 +241,7 @@ class Node {
       node.dom.prepend(nodeShape);
     }
     setAttrs(node.dom, {
-      class: `ve-node ${nodeData.className || ""} ${this.actives[uuid] ? "active" : ""}`,
+      class: `mm-node ${nodeData.className || ""} ${this.actives[uuid] ? "active" : ""}`,
     });
     node.dom.setAttribute("transform", `translate(${nodeData.x} ,${nodeData.y})`);
     node.data = nodeData;
@@ -426,7 +426,7 @@ class Node {
       node = nodes[key];
       node.dom.classList.add("active");
       setAttrs(node.shape, {
-        filter: "url(#ve-black-shadow)",
+        filter: "url(#mm-black-shadow)",
       });
       this.actives[node.data.uuid] = node;
     }

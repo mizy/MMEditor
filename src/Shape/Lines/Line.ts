@@ -7,8 +7,8 @@ import BezierLine from "../../Utils/BezierLine";
 import { mat2d } from "gl-matrix";
 import { Path } from "../../Utils";
 import { AnyMap } from "../../Utils/types";
-import { VEditorLine } from "../../Model/Schema";
-import VEditor from "../../VEditor";
+import { MMEditorLine } from "../../Model/Schema";
+import MMEditor from "../../MMEditor";
 import { Utils } from '../..';
 
 export interface LineRender extends AnyMap {
@@ -18,7 +18,7 @@ export interface LineRender extends AnyMap {
   renderArrow?: (instanceLine: InstanceLine) => SVGElement;
   renderArrow2?: (instanceLine: InstanceLine) => SVGElement;
   renderLabel?: (instanceLine?: InstanceLine) => SVGElement;
-  checkNewLine?: (lineData: VEditorLine, editor: VEditor) => boolean;
+  checkNewLine?: (lineData: MMEditorLine, editor: MMEditor) => boolean;
 }
 export interface LabelInstance {
   text: SVGTextElement;
@@ -49,7 +49,7 @@ const DefaultLine: LineRender = {
       : (line.shadowPath = SVGHelper.path());
     setAttrs(path, {
       d: pathString,
-      class: "ve-line-path",
+      class: "mm-line-path",
       "stroke-dasharray": data.width||"10",
       fill: "none",
       "stroke-width": 2,
@@ -64,7 +64,7 @@ const DefaultLine: LineRender = {
       "pointer-events": "visiblestroke",
     });
     line.pathData = new Path(pathString);
-    shadowPath.setAttribute("class", "ve-shdow-path");
+    shadowPath.setAttribute("class", "mm-shdow-path");
     animate(
       10,
       0,
@@ -201,7 +201,7 @@ const DefaultLine: LineRender = {
     mat2d.translate(matrix, matrix, [to.x, to.y]);
     mat2d.rotate(matrix, matrix, angle);
     setAttrs(path, {
-      class: "ve-line-arrow",
+      class: "mm-line-arrow",
       d: pathString,
       fill: data.data?.arrowColor||"rgba(178,190,205,0.7)",
       transform: `matrix(${Array.from(matrix).join(",")})`,
@@ -284,7 +284,7 @@ const DefaultLine: LineRender = {
       ry: 5,
     });
     setAttrs(labelGroup, {
-      class: "ve-line-label",
+      class: "mm-line-label",
       "data-label": encodeURI(totalLabel),
     });
       //fix text vertical middle
@@ -303,7 +303,7 @@ const DefaultLine: LineRender = {
     return labelGroup;
   },
 
-  checkNewLine(data: VEditorLine): boolean {
+  checkNewLine(data: MMEditorLine): boolean {
     const { from, to } = data;
     if (from === to) {
       return false;

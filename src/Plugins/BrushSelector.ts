@@ -1,7 +1,7 @@
-import { VEditorLine, VEditorNode } from "../Model/Schema";
+import { MMEditorLine, MMEditorNode } from "../Model/Schema";
 import { Event, SVGHelper } from "../Utils";
 import { setAttrs } from "../Utils/dom";
-import VEditor from "../VEditor";
+import MMEditor from "../MMEditor";
 interface IPosition {
   x: number;
   y: number;
@@ -10,7 +10,7 @@ interface IPosition {
 }
 class BrushSelector extends Event {
   paper: SVGGElement;
-  editor: VEditor;
+  editor: MMEditor;
   svg: SVGSVGElement;
   container: SVGGElement;
   dom: SVGElement;
@@ -18,7 +18,7 @@ class BrushSelector extends Event {
   position: any;
   radius: any;
 
-  constructor(editor: VEditor) {
+  constructor(editor: MMEditor) {
     super();
     this.editor = editor;
     this.paper = editor.paper;
@@ -103,16 +103,16 @@ class BrushSelector extends Event {
     const { node, line } = this.editor.graph;
     const uuids: string[] = [];
     for (const key in node.nodes) {
-      const item = node.nodes[key].data as VEditorNode;
+      const item = node.nodes[key].data as MMEditorNode;
       if (item.x > bbox[0] && item.x < bbox[2] && item.y > bbox[1] && item.y < bbox[3]) {
         uuids.push(item.uuid);
       }
     }
     for (const key in line.lines) {
-      const item = line.lines[key].data as VEditorLine;
+      const item = line.lines[key].data as MMEditorLine;
       const { from, to } = item;
-      const fromNode = node.nodes[from].data as VEditorLine;
-      const toNode = node.nodes[to].data as VEditorLine;
+      const fromNode = node.nodes[from].data as MMEditorLine;
+      const toNode = node.nodes[to].data as MMEditorLine;
 
       if (
         fromNode.x > bbox[0] &&
