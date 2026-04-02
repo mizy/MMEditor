@@ -1,6 +1,6 @@
 {
   "name": "mmeditor",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "svg flow editor",
   "main": "./dist/MMEditor.js",
   "types": "./types/index.d.ts",
@@ -27,6 +27,7 @@
     "editor"
   ],
   "files": [
+    "SKILL.md",
     "dist/MMEditor.js",
     "dist/MMEditor.browser.js",
     "types"
