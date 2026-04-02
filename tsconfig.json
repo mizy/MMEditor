@@ -16,6 +16,7 @@
     "module": "NodeNext",
     "target": "ES2015",
     "resolveJsonModule": true,
-    "moduleResolution": "NodeNext"
+    "moduleResolution": "NodeNext",
+    "skipLibCheck": true
   }
 }

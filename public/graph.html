@@ -29,7 +29,7 @@
       const { data } = point;
       const box = node.shapeBBox || node.shape.getBBox();
       point.x = data.x * box.width + node.data.x;
-      point.y = data.x * box.height + node.data.y;
+      point.y = data.y * box.height + node.data.y;
       point.dom = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       point.dom.style.display = 'none';
       return point

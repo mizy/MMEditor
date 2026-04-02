@@ -1,6 +1,6 @@
 {
   "name": "mmeditor",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "svg flow editor",
   "main": "./dist/MMEditor.js",
   "types": "./types/index.d.ts",
@@ -11,6 +11,8 @@
     "build:browser": "webpack --env browser=true --config webpack.config.build.js",
     "makeDts": "npx -p typescript tsc -p ./dts.json",
     "build:all": "npm run build && npm run makeDts && npm run build:browser && npm run build:demo ",
+    "lint": "npx tsc --noEmit",
+    "test": "npm run build && npm run build:browser && npm run build:demo && npm run makeDts",
     "doc": "typedoc ",
     "watch": "webpack --watch --env browser=true --config webpack.config.build.js"
   },
@@ -25,7 +27,8 @@
     "editor"
   ],
   "files": [
-    "dist",
+    "dist/MMEditor.js",
+    "dist/MMEditor.browser.js",
     "types"
   ],
   "dependencies": {
