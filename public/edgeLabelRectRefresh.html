@@ -1,0 +1,83 @@
+<html>
+
+<body>
+  <div style="margin-bottom: 12px;">
+    <button id="toggle">toggle label</button>
+    <span id="status" style="margin-left: 12px;font-family: monospace;"></span>
+  </div>
+  <div id="app" style="width:100%;height:320px;box-shadow: 0 0 10px 1px #123"></div>
+</body>
+<script src="../dist/MMEditor.browser.js"></script>
+<script>
+  const { MMEditor } = window.MMEditor;
+  const editor = new MMEditor({
+    dom: document.getElementById("app"),
+  });
+
+  const data = {
+    nodes: [
+      {
+        type: "domNode",
+        name: "from",
+        uuid: "0",
+        width: 120,
+        height: 50,
+        x: 40,
+        y: 120,
+      },
+      {
+        type: "domNode",
+        name: "to",
+        uuid: "1",
+        width: 120,
+        height: 50,
+        x: 360,
+        y: 120,
+      },
+    ],
+    lines: [
+      {
+        uuid: "line-0",
+        from: "0",
+        fromPoint: 1,
+        to: "1",
+        toPoint: 3,
+        label: "1/5",
+      },
+    ],
+  };
+
+  let expectedLabel = data.lines[0].label;
+
+  function updateStatus() {
+    const line = editor.graph.line.lines["line-0"];
+    const text = line.label.text;
+    const rect = line.label.textRect;
+    const textBBox = text.getBBox();
+    const renderedLabel = text.textContent;
+    const rectWidth = Number(rect.getAttribute("width"));
+    const pass = renderedLabel === expectedLabel && rectWidth >= textBBox.width + 10;
+    const status = document.getElementById("status");
+    status.textContent = `expected=${expectedLabel} rendered=${renderedLabel} rect=${rectWidth.toFixed(1)} text=${textBBox.width.toFixed(1)} pass=${pass}`;
+    status.style.color = pass ? "green" : "red";
+  }
+
+  async function init() {
+    await editor.schema.setData(data);
+    updateStatus();
+  }
+
+  document.getElementById("toggle").onclick = () => {
+    const line = editor.graph.line.lines["line-0"];
+    expectedLabel = expectedLabel === "1/5" ? "loop 25/125" : "1/5";
+    editor.graph.line.updateLine({
+      ...line.data,
+      label: expectedLabel,
+    });
+    updateStatus();
+  };
+
+  init();
+</script>
+
+</html>

@@ -1,6 +1,6 @@
 {
   "name": "mmeditor",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "svg flow editor",
   "main": "./dist/MMEditor.js",
   "types": "./types/index.d.ts",
@@ -9,10 +9,12 @@
     "build:demo": "webpack --mode production --config webpack.config.js",
     "build": "webpack --config webpack.config.build.js",
     "build:browser": "webpack --env browser=true --config webpack.config.build.js",
+    "test:edge-label-rect": "node ./scripts/runEdgeLabelRectRefreshTest.js",
     "makeDts": "npx -p typescript tsc -p ./dts.json",
-    "build:all": "npm run build && npm run makeDts && npm run build:browser && npm run build:demo ",
+    "build:all": "npm run build && npm run makeDts && npm run build:browser && npm run build:demo",
     "lint": "npx tsc --noEmit",
     "test": "npm run build && npm run build:browser && npm run build:demo && npm run makeDts",
+    "test:all": "npm run test && npm run test:edge-label-rect",
     "doc": "typedoc ",
     "watch": "webpack --watch --env browser=true --config webpack.config.build.js"
   },

@@ -1,0 +1,161 @@
+<html>
+
+<body>
+  <div id="app" style="width:100%;height:320px;"></div>
+  <pre id="result" data-pass="false">pending</pre>
+</body>
+<script src="../dist/MMEditor.browser.js"></script>
+<script>
+  const { MMEditor } = window.MMEditor;
+  const result = document.getElementById("result");
+  const editor = new MMEditor({
+    dom: document.getElementById("app"),
+  });
+
+  const data = {
+    nodes: [
+      {
+        type: "domNode",
+        name: "from",
+        uuid: "0",
+        width: 120,
+        height: 50,
+        x: 40,
+        y: 120,
+      },
+      {
+        type: "domNode",
+        name: "to",
+        uuid: "1",
+        width: 120,
+        height: 50,
+        x: 360,
+        y: 120,
+      },
+    ],
+    lines: [
+      {
+        uuid: "line-0",
+        from: "0",
+        fromPoint: 1,
+        to: "1",
+        toPoint: 3,
+        label: "1/5",
+      },
+    ],
+  };
+
+  function waitFrame() {
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => resolve());
+    });
+  }
+
+  function getSnapshot(expectedLabel) {
+    const line = editor.graph.line.lines["line-0"];
+    const text = line.label.text;
+    const rect = line.label.textRect;
+    const textBBox = text.getBBox();
+    const linePoint = line.pathData.getPointAtLength(line.pathData.getTotalLength() / 2);
+    const rectWidth = Number(rect.getAttribute("width"));
+    const rectX = Number(rect.getAttribute("x"));
+    const rectY = Number(rect.getAttribute("y"));
+    const x = Number(text.getAttribute("x"));
+    const y = Number(text.getAttribute("y"));
+    return {
+      expectedLabel,
+      renderedLabel: text.textContent,
+      rectWidth,
+      textWidth: textBBox.width,
+      rectX,
+      rectY,
+      x,
+      y,
+      pathMidX: linePoint.x,
+      pathMidY: linePoint.y,
+      expectedRectX: x - textBBox.width * 0.5 - 5,
+      expectedRectY: y - textBBox.height - 2.5,
+      pass:
+        text.textContent === expectedLabel &&
+        rectWidth >= textBBox.width + 10 &&
+        Math.abs(rectX - (x - textBBox.width * 0.5 - 5)) < 0.5 &&
+        Math.abs(rectY - (y - textBBox.height - 2.5)) < 0.5 &&
+        Math.abs(x - linePoint.x) < 0.5 &&
+        Math.abs(y - linePoint.y) < 0.5,
+    };
+  }
+
+  async function captureCase(name, expectedLabel) {
+    const frames = [];
+    frames.push({
+      phase: "same tick",
+      ...getSnapshot(expectedLabel),
+    });
+    await waitFrame();
+    frames.push({
+      phase: "next frame",
+      ...getSnapshot(expectedLabel),
+    });
+    await waitFrame();
+    frames.push({
+      phase: "stable frame",
+      ...getSnapshot(expectedLabel),
+    });
+    return {
+      name,
+      pass: frames
+        .filter((item) => item.phase !== "same tick")
+        .every((item) => item.pass),
+      frames,
+    };
+  }
+
+  function moveNode(nodeId, x) {
+    const node = editor.graph.node.nodes[nodeId];
+    node.data.x = x;
+    editor.graph.node.updateNode(node.data, true);
+    editor.graph.line.updateByNode(node);
+  }
+
+  async function run() {
+    const cases = [];
+    await editor.schema.setData(data);
+    cases.push(await captureCase("initial render", "1/5"));
+
+    const line = editor.graph.line.lines["line-0"];
+    editor.graph.line.updateLine({
+      ...line.data,
+      label: "loop 25/125",
+    });
+    cases.push(await captureCase("label change", "loop 25/125"));
+
+    editor.graph.line.updateLine({
+      ...line.data,
+      label: "1/5",
+    });
+    moveNode("1", 520);
+    editor.graph.line.updateLine({
+      ...line.data,
+      label: "1/5",
+    });
+    cases.push(await captureCase("rerender while refresh pending", "1/5"));
+
+    const pass = cases.every((item) => item.pass);
+    result.dataset.pass = String(pass);
+    result.textContent = JSON.stringify({ pass, cases }, null, 2);
+  }
+
+  run().catch((error) => {
+    result.dataset.pass = "false";
+    result.textContent = JSON.stringify(
+      {
+        pass: false,
+        error: error && error.stack ? error.stack : String(error),
+      },
+      null,
+      2
+    );
+  });
+</script>
+
+</html>

@@ -18,6 +18,13 @@ export interface LabelInstance {
     textBBox?: DOMRect;
     oldText?: string;
     labelGroup: SVGGElement;
+    refreshFrame?: number;
+    needsRefreshRect?: boolean;
+    pendingRect?: {
+        x: number;
+        y: number;
+        stroke: string;
+    };
 }
 export type Direction = "left" | "right" | "top" | "bottom";
 declare const DefaultLine: LineRender;

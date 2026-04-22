@@ -74,6 +74,7 @@ declare class Line {
     /**
      * 删除线
      */
+    clearLineLabel(line: InstanceLine): void;
     deleteLine(data: MMEditorLine | string, notEvent?: boolean, byNode?: boolean): void;
     /**
      * 更新线为

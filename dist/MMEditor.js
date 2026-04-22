@@ -9641,17 +9641,14 @@ class Line {
         }
         const { nodes } = this.graph.node;
         const line = this.lines[lineId];
-        const { data: { type, className = "", from, to, fromPoint = 0, toPoint = 0, }, } = line;
+        Object.assign(line.data, lineData ? lineData : {});
+        const { type, className = "", from, to, fromPoint = 0, toPoint = 0, } = line.data;
         line.from = nodes[from].linkPoints[fromPoint];
         line.to = nodes[to].linkPoints[toPoint];
         if (rerenderShape) {
             this.shapes[type || "default"].render(line);
             line.arrow = this.shapes[type || "default"].renderArrow(line);
             line.dom.setAttribute("class", `mm-line ${className || ""}`);
-            Object.assign(line.data, lineData ? lineData : {});
-        }
-        else {
-            Object.assign(line.data, lineData ? lineData : {});
         }
         if (this.activeLine === line) {
             this.setActiveLine(line);
@@ -9660,6 +9657,20 @@ class Line {
     /**
      * 删除线
      */
+    clearLineLabel(line) {
+        var _a;
+        if (!(line === null || line === void 0 ? void 0 : line.label)) {
+            return;
+        }
+        if (line.label.refreshFrame) {
+            cancelAnimationFrame(line.label.refreshFrame);
+            line.label.refreshFrame = undefined;
+        }
+        line.label.needsRefreshRect = false;
+        line.label.pendingRect = undefined;
+        (_a = line.label.labelGroup) === null || _a === void 0 ? void 0 : _a.remove();
+        line.label = null;
+    }
     deleteLine(data, notEvent = false, byNode = false) {
         let line;
         if (typeof data === "string") {
@@ -9692,7 +9703,7 @@ class Line {
         line.arrow.remove();
         line.arrow = null;
         line.dom.remove();
-        line.label = null;
+        this.clearLineLabel(line);
         this.activeLine = null;
     }
     /**
@@ -10121,8 +10132,7 @@ const DefaultLine = {
         let { from, to, pathData, data: { label, labelCfg = {} }, } = line;
         if (!label) {
             if (line.label) {
-                line.label.labelGroup.remove();
-                line.label = null;
+                this.graph.line.clearLineLabel(line);
             }
             return null;
         }
@@ -10150,6 +10160,35 @@ const DefaultLine = {
         const { text, textBBox, oldText, labelGroup } = line.label;
         const x = xPoint + (refX || 0);
         const y = yPoint + (refY || 0);
+        const hadPendingRefresh = Boolean(line.label.needsRefreshRect);
+        if (line.label.refreshFrame) {
+            cancelAnimationFrame(line.label.refreshFrame);
+            line.label.refreshFrame = undefined;
+        }
+        line.label.pendingRect = {
+            x,
+            y,
+            stroke: String(style.stroke),
+        };
+        const updateTextRect = (bbox, pendingRect = line.label && line.label.pendingRect) => {
+            if (!pendingRect) {
+                return;
+            }
+            line.label.textBBox = bbox;
+            const { width, height } = bbox;
+            (0, dom_1.setAttrs)(line.label.textRect, {
+                fill: pendingRect.stroke,
+                width: width + 10,
+                height: height + 5,
+                stroke: "transparent",
+                x: pendingRect.x - width * 0.5 - 5,
+                y: pendingRect.y - height - 2.5,
+                rx: 5,
+                ry: 5,
+            });
+            //fix text vertical middle
+            labelGroup.style.transform = `translate(0px,${height / 2}px)`;
+        };
         text.textContent = label;
         (0, dom_1.setAttrs)(text, {
             text: label || "",
@@ -10159,28 +10198,29 @@ const DefaultLine = {
             x,
             y,
         });
+        const shouldRefreshRect = !textBBox || oldText !== label || hadPendingRefresh;
+        line.label.oldText = label;
         if (!textBBox || oldText !== label) {
-            line.oldText = label;
-            line.label.textBBox = text.getBBox();
+            updateTextRect(text.getBBox());
         }
-        // 性能优化
-        const { width, height } = line.label.textBBox;
-        (0, dom_1.setAttrs)(line.label.textRect, {
-            fill: style.stroke,
-            width: width + 10,
-            height: height + 5,
-            stroke: "transparent",
-            x: x - width * 0.5 - 5,
-            y: y - height - 2.5,
-            rx: 5,
-            ry: 5,
-        });
+        else {
+            updateTextRect(line.label.textBBox);
+        }
+        if (shouldRefreshRect) {
+            line.label.needsRefreshRect = true;
+            line.label.refreshFrame = requestAnimationFrame(() => {
+                if (!line.label || !line.label.needsRefreshRect || !text.isConnected) {
+                    return;
+                }
+                updateTextRect(text.getBBox(), line.label.pendingRect);
+                line.label.needsRefreshRect = false;
+                line.label.refreshFrame = undefined;
+            });
+        }
         (0, dom_1.setAttrs)(labelGroup, {
             class: "mm-line-label",
             "data-label": encodeURI(totalLabel),
         });
-        //fix text vertical middle
-        labelGroup.style.transform = `translate(0px,${height / 2}px)`;
         if (autoRotate) {
             // 文字顺序方向
             let angle = svg_1.SVGHelper.getAngle(from, to);

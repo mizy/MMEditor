@@ -186,28 +186,21 @@ class Line {
     }
     const { nodes } = this.graph.node;
     const line = this.lines[lineId];
+    Object.assign(line.data, lineData ? lineData : {});
     const {
-      data: {
-        type,
-        className = "",
-        from,
-        to,
-        fromPoint = 0,
-        toPoint = 0,
-      },
-    } = line;
+      type,
+      className = "",
+      from,
+      to,
+      fromPoint = 0,
+      toPoint = 0,
+    } = line.data;
     line.from = nodes[from].linkPoints[fromPoint];
     line.to = nodes[to].linkPoints[toPoint];
     if (rerenderShape) {
       this.shapes[type || "default"].render(line);
       line.arrow = this.shapes[type || "default"].renderArrow(line);
       line.dom.setAttribute("class", `mm-line ${className || ""}`);
-      Object.assign(
-        line.data,
-        lineData ? lineData : {},
-      );
-    } else {
-      Object.assign(line.data, lineData ? lineData : {});
     }
     if (this.activeLine === line) {
       this.setActiveLine(line);
@@ -216,6 +209,20 @@ class Line {
   /**
    * 删除线
    */
+  clearLineLabel(line: InstanceLine) {
+    if (!line?.label) {
+      return;
+    }
+    if (line.label.refreshFrame) {
+      cancelAnimationFrame(line.label.refreshFrame);
+      line.label.refreshFrame = undefined;
+    }
+    line.label.needsRefreshRect = false;
+    line.label.pendingRect = undefined;
+    line.label.labelGroup?.remove();
+    line.label = null;
+  }
+
   deleteLine(data: MMEditorLine | string, notEvent = false, byNode = false) {
     let line: InstanceLine;
     if (typeof data === "string") {
@@ -246,7 +253,7 @@ class Line {
     line.arrow.remove();
     line.arrow = null;
     line.dom.remove();
-    line.label = null;
+    this.clearLineLabel(line);
     this.activeLine = null;
   }
 

@@ -26,6 +26,13 @@ export interface LabelInstance {
   textBBox?: DOMRect;
   oldText?: string;
   labelGroup: SVGGElement;
+  refreshFrame?: number;
+  needsRefreshRect?: boolean;
+  pendingRect?: {
+    x: number;
+    y: number;
+    stroke: string;
+  };
 }
 
 export type Direction = "left" | "right" | "top" | "bottom";
@@ -220,8 +227,7 @@ const DefaultLine: LineRender = {
     } = line;
     if (!label) {
       if (line.label) {
-        line.label.labelGroup.remove();
-        line.label = null;
+        (this.graph as Graph).line.clearLineLabel(line);
       }
       return null;
     }
@@ -258,6 +264,38 @@ const DefaultLine: LineRender = {
     const { text, textBBox, oldText, labelGroup } = line.label;
     const x = xPoint + (refX || 0);
     const y = yPoint + (refY || 0);
+    const hadPendingRefresh = Boolean(line.label.needsRefreshRect);
+    if (line.label.refreshFrame) {
+      cancelAnimationFrame(line.label.refreshFrame);
+      line.label.refreshFrame = undefined;
+    }
+    line.label.pendingRect = {
+      x,
+      y,
+      stroke: String(style.stroke),
+    };
+    const updateTextRect = (
+      bbox: DOMRect,
+      pendingRect = line.label && line.label.pendingRect
+    ) => {
+      if (!pendingRect) {
+        return;
+      }
+      line.label.textBBox = bbox;
+      const { width, height } = bbox;
+      setAttrs(line.label.textRect, {
+        fill: pendingRect.stroke,
+        width: width + 10,
+        height:height + 5,
+        stroke: "transparent",
+        x: pendingRect.x - width * 0.5 - 5,
+        y: pendingRect.y - height - 2.5,
+        rx: 5,
+        ry: 5,
+      });
+      //fix text vertical middle
+      labelGroup.style.transform =  `translate(0px,${height/2}px)`;
+    };
     text.textContent = label;
     setAttrs(text, {
       text: label || "",
@@ -267,28 +305,28 @@ const DefaultLine: LineRender = {
       x,
       y,
     });
+    const shouldRefreshRect = !textBBox || oldText !== label || hadPendingRefresh;
+    line.label.oldText = label;
     if (!textBBox || oldText !== label) {
-      line.oldText = label;
-      line.label.textBBox = text.getBBox();
+      updateTextRect(text.getBBox());
+    } else {
+      updateTextRect(line.label.textBBox);
     }
-    // 性能优化
-    const { width, height } = line.label.textBBox;
-    setAttrs(line.label.textRect, {
-      fill: style.stroke,
-      width: width + 10,
-      height:height + 5,
-      stroke: "transparent",
-      x: x - width * 0.5 - 5,
-      y: y - height - 2.5,
-      rx: 5,
-      ry: 5,
-    });
+    if (shouldRefreshRect) {
+      line.label.needsRefreshRect = true;
+      line.label.refreshFrame = requestAnimationFrame(() => {
+        if (!line.label || !line.label.needsRefreshRect || !text.isConnected) {
+          return;
+        }
+        updateTextRect(text.getBBox(), line.label.pendingRect);
+        line.label.needsRefreshRect = false;
+        line.label.refreshFrame = undefined;
+      });
+    }
     setAttrs(labelGroup, {
       class: "mm-line-label",
       "data-label": encodeURI(totalLabel),
     });
-      //fix text vertical middle
-    labelGroup.style.transform =  `translate(0px,${height/2}px)`;
     if (autoRotate) {
       // 文字顺序方向
       let angle = SVGHelper.getAngle(from, to);
